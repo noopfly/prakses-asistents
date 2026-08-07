@@ -158,19 +158,26 @@ export function PraksesHomepage() {
     ["endo", "Endokrinologi"],
   ];
 
-  const RoleSelector = () => (
+  const RoleSelector = ({ interactive = true }: { interactive?: boolean }) => (
     <div className="inline-flex rounded-full border border-[#dfdee8] bg-white/90 p-1.5 shadow-[0_8px_24px_rgba(47,45,100,.07)]">
       <div className="flex gap-1">
         {roleOptions.map(([id, label]) => (
-          <button
+          <span
             key={id}
-            type="button"
-            aria-pressed={role === id}
-            onClick={() => changeRole(id)}
-            className={`relative rounded-full px-4 py-2.5 text-[11px] font-semibold transition-all duration-300 sm:px-5 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497] hover:bg-[#f5f4ff] hover:text-[#3f3d67]"}`}
+            role={interactive ? "button" : undefined}
+            aria-pressed={interactive ? role === id : undefined}
+            tabIndex={interactive ? 0 : undefined}
+            onClick={interactive ? () => changeRole(id) : undefined}
+            onKeyDown={interactive ? (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                changeRole(id);
+              }
+            } : undefined}
+            className={`relative rounded-full px-4 py-2.5 text-[11px] font-semibold sm:px-5 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497]"} ${interactive ? "cursor-pointer transition-all duration-300 hover:bg-[#f5f4ff] hover:text-[#3f3d67]" : "cursor-default"}`}
           >
             {label}
-          </button>
+          </span>
         ))}
       </div>
     </div>
@@ -206,7 +213,7 @@ export function PraksesHomepage() {
           <div className="absolute -left-28 top-24 h-72 w-72 rounded-full bg-[#f0efff] blur-3xl" />
           <div className="relative">
             <div className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-[#e3e2ef] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6a679b]"><span className="h-1.5 w-1.5 rounded-full bg-[#759f85]" /> {content.eyebrow}</div>
-            <div className="rise mb-7"><RoleSelector /></div>
+            <div className="rise mb-7"><RoleSelector interactive={false} /></div>
             <h1 className="rise delay-1 max-w-xl font-['DM_Serif_Display'] text-[clamp(3rem,7vw,5.7rem)] leading-[.96] tracking-[-0.055em] text-[#202052]">{content.title}</h1>
             <p className="rise delay-2 mt-7 max-w-md text-[16px] leading-7 text-[#6d6b7d]">{content.description}</p>
             <div className="rise delay-3 mt-8 flex flex-wrap items-center gap-3"><a href="#funkcionalitate" className="group inline-flex items-center gap-3 rounded-xl bg-[#17175b] px-5 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(23,23,91,.18)] transition hover:-translate-y-0.5 hover:bg-[#292976]">Iepazīt iespējas <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a><a href="#parskats" className="inline-flex items-center gap-2 rounded-xl border border-[#dedde8] bg-white px-5 py-3.5 text-[13px] font-semibold text-[#48466d] transition hover:border-[#aaa8d0]">Kā tas strādā <ArrowDown size={15} /></a></div>
