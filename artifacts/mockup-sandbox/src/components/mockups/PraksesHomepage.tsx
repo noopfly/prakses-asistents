@@ -22,9 +22,9 @@ type Role = "gp" | "endo";
 const roleContent = {
   gp: {
     eyebrow: "Ģimenes ārstiem",
-    title: "Skaidrāka ikdiena ģimenes ārsta praksē.",
+    title: "Skaidrāka ikdiena ģimenes ārstiem.",
     description:
-      "Prakses Asistents palīdz ģimenes ārstam pirms konsultācijas ātri pārskatīt pacienta riskus, profilakses vajadzības un svarīgāko turpmākajai sarunai.",
+      "Prakses Asistents palīdz ģimenes ārstiem pirms konsultācijas ātri pārskatīt pacienta riskus, profilakses vajadzības un svarīgāko sarunai.",
     cta: "Pieteikties demonstrācijai",
     features: [
       {
@@ -58,9 +58,9 @@ const roleContent = {
   },
   endo: {
     eyebrow: "Endokrinologiem",
-    title: "Kopaina precīzākai endokrinologa konsultācijai.",
+    title: "Skaidrāka ikdiena endokrinologiem.",
     description:
-      "Pārskatiet diabēta un vairogdziedzera pacientu dinamiku vienuviet, lai konsultācija sāktos ar būtisko, nevis datu meklēšanu.",
+      "Prakses Asistents palīdz endokrinologiem vienuviet pārskatīt pacientu dinamiku, analīzes un terapijas izmaiņas pirms konsultācijas.",
     cta: "Apskatīt endokrinoloģijas iespējas",
     features: [
       {
@@ -159,27 +159,25 @@ export function PraksesHomepage() {
   ];
 
   const RoleSelector = ({ interactive = true }: { interactive?: boolean }) => (
-    <div className="inline-flex rounded-full border border-[#dfdee8] bg-white/90 p-1.5 shadow-[0_8px_24px_rgba(47,45,100,.07)]">
-      <div className="flex gap-1">
-        {roleOptions.map(([id, label]) => (
-          <span
-            key={id}
-            role={interactive ? "button" : undefined}
-            aria-pressed={interactive ? role === id : undefined}
-            tabIndex={interactive ? 0 : undefined}
-            onClick={interactive ? () => changeRole(id) : undefined}
-            onKeyDown={interactive ? (event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                changeRole(id);
-              }
-            } : undefined}
-            className={`relative rounded-full px-4 py-2.5 text-[11px] font-semibold sm:px-5 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497]"} ${interactive ? "cursor-pointer transition-all duration-300 hover:bg-[#f5f4ff] hover:text-[#3f3d67]" : "cursor-default"}`}
-          >
-            {label}
-          </span>
-        ))}
-      </div>
+    <div className="inline-flex items-center gap-2">
+      {roleOptions.map(([id, label]) => (
+        <span
+          key={id}
+          role={interactive ? "button" : undefined}
+          aria-pressed={interactive ? role === id : undefined}
+          tabIndex={interactive ? 0 : undefined}
+          onClick={interactive ? () => changeRole(id) : undefined}
+          onKeyDown={interactive ? (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              changeRole(id);
+            }
+          } : undefined}
+          className={`relative rounded-full border px-4 py-2.5 text-[11px] font-semibold sm:px-5 sm:text-[12px] ${role === id ? "border-[#17175b] bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "border-[#dfdee8] bg-white/90 text-[#868497]"} ${interactive ? "cursor-pointer transition-all duration-300 hover:border-[#b7b5d8] hover:bg-[#f5f4ff] hover:text-[#3f3d67]" : "cursor-default"}`}
+        >
+          {label}
+        </span>
+      ))}
     </div>
   );
 
@@ -214,8 +212,8 @@ export function PraksesHomepage() {
           <div className="relative">
             <div className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-[#e3e2ef] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6a679b]"><span className="h-1.5 w-1.5 rounded-full bg-[#759f85]" /> {content.eyebrow}</div>
             <div className="rise mb-7"><RoleSelector interactive={false} /></div>
-            <h1 className="rise delay-1 max-w-xl font-['DM_Serif_Display'] text-[clamp(3rem,7vw,5.7rem)] leading-[.96] tracking-[-0.055em] text-[#202052]">{content.title}</h1>
-            <p className="rise delay-2 mt-7 max-w-md text-[16px] leading-7 text-[#6d6b7d]">{content.description}</p>
+            <h1 className="rise delay-1 min-h-[2.88em] max-w-[17ch] font-['DM_Serif_Display'] text-[clamp(2.85rem,6.4vw,5.25rem)] leading-[.96] tracking-[-0.055em] text-[#202052]">{content.title}</h1>
+            <p className="rise delay-2 mt-7 min-h-[5.25rem] max-w-md text-[16px] leading-7 text-[#6d6b7d]">{content.description}</p>
             <div className="rise delay-3 mt-8 flex flex-wrap items-center gap-3"><a href="#funkcionalitate" className="group inline-flex items-center gap-3 rounded-xl bg-[#17175b] px-5 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(23,23,91,.18)] transition hover:-translate-y-0.5 hover:bg-[#292976]">Iepazīt iespējas <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a><a href="#parskats" className="inline-flex items-center gap-2 rounded-xl border border-[#dedde8] bg-white px-5 py-3.5 text-[13px] font-semibold text-[#48466d] transition hover:border-[#aaa8d0]">Kā tas strādā <ArrowDown size={15} /></a></div>
             <div className="mt-10 flex items-center gap-5 text-[11px] text-[#89879a]"><span className="flex items-center gap-2"><ShieldCheck size={15} className="text-[#6f9b82]" /> Datu drošība pirmajā vietā</span><span className="hidden h-4 w-px bg-[#dbdae3] sm:block" /><span className="hidden sm:block">Veidots Latvijas praksēm</span></div>
           </div>
