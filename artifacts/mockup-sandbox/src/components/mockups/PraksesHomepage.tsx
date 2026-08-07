@@ -22,9 +22,9 @@ type Role = "gp" | "endo";
 const roleContent = {
   gp: {
     eyebrow: "Ģimenes ārstiem",
-    title: "Mazāk meklēšanas. Vairāk sarunas.",
+    title: "Skaidrāka ikdiena ģimenes ārsta praksē.",
     description:
-      "Prakses Asistents sakārto pacienta informāciju pirms vizītes, lai katram lēmumam paliktu vairāk skaidrības un laika.",
+      "Prakses Asistents palīdz ģimenes ārstam pirms konsultācijas ātri pārskatīt pacienta riskus, profilakses vajadzības un svarīgāko turpmākajai sarunai.",
     cta: "Pieteikties demonstrācijai",
     features: [
       {
@@ -58,7 +58,7 @@ const roleContent = {
   },
   endo: {
     eyebrow: "Endokrinologiem",
-    title: "Kopaina, kas palīdz sarunai kļūt precīzākai.",
+    title: "Kopaina precīzākai endokrinologa konsultācijai.",
     description:
       "Pārskatiet diabēta un vairogdziedzera pacientu dinamiku vienuviet, lai konsultācija sāktos ar būtisko, nevis datu meklēšanu.",
     cta: "Apskatīt endokrinoloģijas iespējas",
@@ -94,9 +94,14 @@ const roleContent = {
   },
 } as const;
 
-function ProductPreview() {
+function ProductPreview({ role }: { role: Role }) {
+  const roleLabel = role === "gp" ? "Ģimenes ārsta prakse" : "Endokrinologa prakse";
+
   return (
     <div className="relative mx-auto w-full max-w-[610px] rotate-[1deg] rounded-[22px] border border-[#d8d8e8] bg-[#fbfbfe] p-2 shadow-[0_24px_70px_rgba(36,35,93,0.16)] transition-transform duration-500 hover:rotate-0">
+      <div className="absolute -top-4 left-5 z-10 rounded-full border border-[#d9d7ed] bg-[#f4f3ff] px-3 py-1.5 text-[10px] font-bold tracking-[0.02em] text-[#4d4a87] shadow-sm">
+        {roleLabel}
+      </div>
       <div className="overflow-hidden rounded-[15px] border border-[#e8e7f0] bg-white">
         <div className="flex items-center justify-between border-b border-[#ecebf2] px-4 py-3 text-[9px] text-[#78768c]">
           <div className="flex items-center gap-2">
@@ -148,6 +153,32 @@ export function PraksesHomepage() {
     setExpanded(null);
   };
 
+  const roleOptions: readonly [Role, string][] = [
+    ["gp", "Ģimenes ārsta prakse"],
+    ["endo", "Endokrinologa prakse"],
+  ];
+
+  const RoleSelector = ({ compact = false }: { compact?: boolean }) => (
+    <div className={`rounded-2xl border border-[#dfdee8] bg-white/90 p-1.5 shadow-[0_8px_24px_rgba(47,45,100,.07)] ${compact ? "max-w-[440px]" : "max-w-[390px]"}`}>
+      <p className="px-3 pb-1.5 pt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[#7773b5]">
+        Izvēlieties savu praksi
+      </p>
+      <div className="flex gap-1">
+        {roleOptions.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={role === id}
+            onClick={() => changeRole(id)}
+            className={`relative flex-1 rounded-xl px-2.5 py-2.5 text-[11px] font-semibold transition-all duration-300 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497] hover:bg-[#f5f4ff] hover:text-[#3f3d67]"}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#fcfcfb] text-[#202052] selection:bg-[#dfdefa] selection:text-[#17175b]">
       <style>{`
@@ -177,33 +208,32 @@ export function PraksesHomepage() {
         <section className="relative mx-auto grid max-w-6xl gap-14 px-5 pb-24 pt-16 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:px-8 lg:pb-32 lg:pt-24">
           <div className="absolute -left-28 top-24 h-72 w-72 rounded-full bg-[#f0efff] blur-3xl" />
           <div className="relative">
-            <div className="rise mb-6 inline-flex items-center gap-2 rounded-full border border-[#e3e2ef] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6a679b]"><span className="h-1.5 w-1.5 rounded-full bg-[#759f85]" /> Digitāls atbalsts Latvijas ārstiem</div>
-            <h1 className="rise delay-1 max-w-xl font-['DM_Serif_Display'] text-[clamp(3rem,7vw,5.7rem)] leading-[.96] tracking-[-0.055em] text-[#202052]">Skaidrāks skats uz <span className="text-[#6f6abe]">katru pacientu.</span></h1>
-            <p className="rise delay-2 mt-7 max-w-md text-[16px] leading-7 text-[#6d6b7d]">Prakses Asistents palīdz pārvērst izkaisītu pacienta informāciju pārskatāmos nākamajos soļos — mierīgākai, sagatavotākai darba dienai.</p>
+            <div className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-[#e3e2ef] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6a679b]"><span className="h-1.5 w-1.5 rounded-full bg-[#759f85]" /> {content.eyebrow}</div>
+            <div className="rise mb-7"><RoleSelector /></div>
+            <h1 className="rise delay-1 max-w-xl font-['DM_Serif_Display'] text-[clamp(3rem,7vw,5.7rem)] leading-[.96] tracking-[-0.055em] text-[#202052]">{content.title}</h1>
+            <p className="rise delay-2 mt-7 max-w-md text-[16px] leading-7 text-[#6d6b7d]">{content.description}</p>
             <div className="rise delay-3 mt-8 flex flex-wrap items-center gap-3"><a href="#funkcionalitate" className="group inline-flex items-center gap-3 rounded-xl bg-[#17175b] px-5 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(23,23,91,.18)] transition hover:-translate-y-0.5 hover:bg-[#292976]">Iepazīt iespējas <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a><a href="#parskats" className="inline-flex items-center gap-2 rounded-xl border border-[#dedde8] bg-white px-5 py-3.5 text-[13px] font-semibold text-[#48466d] transition hover:border-[#aaa8d0]">Kā tas strādā <ArrowDown size={15} /></a></div>
             <div className="mt-10 flex items-center gap-5 text-[11px] text-[#89879a]"><span className="flex items-center gap-2"><ShieldCheck size={15} className="text-[#6f9b82]" /> Datu drošība pirmajā vietā</span><span className="hidden h-4 w-px bg-[#dbdae3] sm:block" /><span className="hidden sm:block">Veidots Latvijas praksēm</span></div>
           </div>
-          <div className="relative pt-4 lg:pt-8"><ProductPreview /><div className="absolute -right-5 -top-2 hidden rounded-full border border-[#e2e0ee] bg-white px-4 py-2 text-[10px] font-semibold text-[#5c5a91] shadow-md sm:block"><MousePointer2 size={12} className="mr-1 inline text-[#8580d2]" /> Mazāk meklēšanas</div></div>
+          <div className="relative pt-4 lg:pt-8"><ProductPreview role={role} /><div className="absolute -right-5 -top-2 hidden rounded-full border border-[#e2e0ee] bg-white px-4 py-2 text-[10px] font-semibold text-[#5c5a91] shadow-md sm:block"><MousePointer2 size={12} className="mr-1 inline text-[#8580d2]" /> {role === "gp" ? "Mazāk meklēšanas" : "Sagatavota konsultācija"}</div></div>
         </section>
 
         <section id="parskats" className="border-y border-[#ecebf0] bg-[#f4f3ff] px-5 py-20 lg:px-8 lg:py-24">
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[.8fr_1.2fr]">
             <div><p className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-[#7975bd]">Pacienta pārskats — būtiskais vienuviet</p><h2 className="max-w-md font-['DM_Serif_Display'] text-4xl leading-[1.03] tracking-[-0.045em] text-[#202052] sm:text-5xl">Dati, kas palīdz sagatavoties sarunai.</h2><p className="mt-5 max-w-md text-[15px] leading-7 text-[#6c6a80]">Strukturēts kopsavilkums palīdz pirms konsultācijas ātri ieraudzīt pacienta būtiskākās izmaiņas, analizēt dinamiku un atkārtot svarīgo.</p><a href="#funkcionalitate" className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold text-[#282870] underline decoration-[#b9b6e3] underline-offset-4 transition hover:text-[#6e69ba]">Apskatīt funkcionalitāti <ArrowRight size={15} /></a></div>
-            <ProductPreview />
+             <ProductPreview role={role} />
           </div>
         </section>
 
         <section id="funkcionalitate" className="mx-auto max-w-6xl px-5 py-24 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-2xl text-center"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7975bd]">Viena platforma, dažādi darba ritmi</p><h2 className="mt-4 font-['DM_Serif_Display'] text-4xl tracking-[-0.045em] text-[#202052] sm:text-5xl">Funkcionalitāte, kas pielāgojas jums.</h2><p className="mt-4 text-[15px] leading-7 text-[#777589]">Izvēlieties savu specialitāti, lai redzētu, kā Prakses Asistents palīdz ikdienas darbā.</p></div>
-          <div className="mx-auto mt-10 flex max-w-[440px] rounded-full border border-[#dfdee8] bg-[#f8f8fa] p-1.5 shadow-inner">
-            {([["gp", "Ģimenes ārstiem"], ["endo", "Endokrinologiem"]] as const).map(([id, label]) => <button key={id} onClick={() => changeRole(id)} className={`relative flex-1 rounded-full px-3 py-3 text-[12px] font-semibold transition-all duration-300 ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497] hover:text-[#3f3d67]"}`}>{label}</button>)}
-          </div>
+           <div className="mx-auto max-w-2xl text-center"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7975bd]">Viena platforma, dažādi darba ritmi</p><h2 className="mt-4 font-['DM_Serif_Display'] text-4xl tracking-[-0.045em] text-[#202052] sm:text-5xl">Funkcionalitāte, kas pielāgojas jums.</h2><p className="mt-4 text-[15px] leading-7 text-[#777589]">Jūs skatāties: <strong className="text-[#4d4a87]">{role === "gp" ? "Ģimenes ārsta prakse" : "Endokrinologa prakse"}</strong>. Izvēlieties savu praksi, lai redzētu tieši jums svarīgāko.</p></div>
+           <div className="mx-auto mt-8 flex max-w-[440px] justify-center"><RoleSelector compact /></div>
           <div key={role} className="mt-12 animate-[rise_.45s_ease_both]">
             <div className="grid gap-4 md:grid-cols-3">
               {content.features.map((feature, index) => { const Icon = feature.icon; const isOpen = expanded === index; return <div key={feature.title} className={`group rounded-2xl border p-6 transition-all duration-300 ${isOpen ? "border-[#bab7e4] bg-[#f9f8ff] shadow-[0_14px_35px_rgba(64,62,125,.09)]" : "border-[#e4e3eb] bg-white hover:-translate-y-1 hover:border-[#c8c6e4] hover:shadow-[0_12px_30px_rgba(64,62,125,.07)]"}`}><div className="mb-7 flex items-start justify-between"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#efeeff] text-[#716dc2]"><Icon size={19} /></div><span className="text-[11px] font-bold text-[#b1aec2]">0{index + 1}</span></div><h3 className="font-['DM_Serif_Display'] text-[24px] leading-tight tracking-[-0.035em] text-[#29285e]">{feature.title}</h3><p className="mt-3 text-[13px] leading-6 text-[#777588]">{feature.text}</p><button onClick={() => setExpanded(isOpen ? null : index)} className="mt-5 flex items-center gap-2 text-[11px] font-bold text-[#6561a8] transition hover:text-[#17175b]">{isOpen ? "Paslēpt detaļas" : "Uzzināt vairāk"} <ChevronDown size={14} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} /></button>{isOpen && <p className="mt-3 border-t border-[#e6e4f2] pt-3 text-[12px] leading-5 text-[#66647b]">{feature.detail}</p>}</div> })}
             </div>
-            <div className="mt-5 rounded-2xl border border-[#dedde9] bg-[#fbfbfe] p-7 sm:p-9">
-              <div className="mb-7 text-center"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#7975bd]">{content.eyebrow}</p><h3 className="mt-3 font-['DM_Serif_Display'] text-3xl tracking-[-0.045em] text-[#202052] sm:text-4xl">{content.valueTitle}</h3><p className="mx-auto mt-3 max-w-2xl text-[13px] leading-6 text-[#777588]">{content.valueText}</p></div>
+             <div className="mt-5 rounded-2xl border border-[#dedde9] bg-[#fbfbfe] p-7 sm:p-9">
+               <div className="mb-7 text-center"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#7975bd]">{role === "gp" ? "Ko tas nozīmē jūsu ikdienai" : content.eyebrow}</p><h3 className="mt-3 font-['DM_Serif_Display'] text-3xl tracking-[-0.045em] text-[#202052] sm:text-4xl">{content.valueTitle}</h3><p className="mx-auto mt-3 max-w-2xl text-[13px] leading-6 text-[#777588]">{content.valueText}</p></div>
               <div className="grid gap-3 md:grid-cols-3">{content.proof.map(([big, label, text]) => <div key={label} className="rounded-xl border border-[#e8e7ef] bg-white p-5"><p className="text-[26px] font-semibold tracking-[-0.05em] text-[#29286b]">{big}</p><p className="mt-1 text-[12px] font-bold text-[#39375e]">{label}</p><p className="mt-3 text-[11px] leading-5 text-[#858396]">{text}</p></div>)}</div>
             </div>
           </div>
