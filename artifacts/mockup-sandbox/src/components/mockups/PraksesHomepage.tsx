@@ -154,15 +154,12 @@ export function PraksesHomepage() {
   };
 
   const roleOptions: readonly [Role, string][] = [
-    ["gp", "Ģimenes ārsta prakse"],
-    ["endo", "Endokrinologa prakse"],
+    ["gp", "Ģimenes ārsti"],
+    ["endo", "Endokrinologi"],
   ];
 
-  const RoleSelector = ({ compact = false }: { compact?: boolean }) => (
-    <div className={`rounded-2xl border border-[#dfdee8] bg-white/90 p-1.5 shadow-[0_8px_24px_rgba(47,45,100,.07)] ${compact ? "max-w-[440px]" : "max-w-[390px]"}`}>
-      <p className="px-3 pb-1.5 pt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[#7773b5]">
-        Izvēlieties savu praksi
-      </p>
+  const RoleSelector = () => (
+    <div className="inline-flex rounded-full border border-[#dfdee8] bg-white/90 p-1.5 shadow-[0_8px_24px_rgba(47,45,100,.07)]">
       <div className="flex gap-1">
         {roleOptions.map(([id, label]) => (
           <button
@@ -170,7 +167,7 @@ export function PraksesHomepage() {
             type="button"
             aria-pressed={role === id}
             onClick={() => changeRole(id)}
-            className={`relative flex-1 rounded-xl px-2.5 py-2.5 text-[11px] font-semibold transition-all duration-300 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497] hover:bg-[#f5f4ff] hover:text-[#3f3d67]"}`}
+            className={`relative rounded-full px-4 py-2.5 text-[11px] font-semibold transition-all duration-300 sm:px-5 sm:text-[12px] ${role === id ? "bg-[#17175b] text-white shadow-[0_5px_14px_rgba(23,23,91,.2)]" : "text-[#868497] hover:bg-[#f5f4ff] hover:text-[#3f3d67]"}`}
           >
             {label}
           </button>
@@ -227,7 +224,7 @@ export function PraksesHomepage() {
 
         <section id="funkcionalitate" className="mx-auto max-w-6xl px-5 py-24 lg:px-8 lg:py-32">
            <div className="mx-auto max-w-2xl text-center"><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7975bd]">Viena platforma, dažādi darba ritmi</p><h2 className="mt-4 font-['DM_Serif_Display'] text-4xl tracking-[-0.045em] text-[#202052] sm:text-5xl">Funkcionalitāte, kas pielāgojas jums.</h2><p className="mt-4 text-[15px] leading-7 text-[#777589]">Jūs skatāties: <strong className="text-[#4d4a87]">{role === "gp" ? "Ģimenes ārsta prakse" : "Endokrinologa prakse"}</strong>. Izvēlieties savu praksi, lai redzētu tieši jums svarīgāko.</p></div>
-           <div className="mx-auto mt-8 flex max-w-[440px] justify-center"><RoleSelector compact /></div>
+            <div className="mx-auto mt-8 flex justify-center"><RoleSelector /></div>
           <div key={role} className="mt-12 animate-[rise_.45s_ease_both]">
             <div className="grid gap-4 md:grid-cols-3">
               {content.features.map((feature, index) => { const Icon = feature.icon; const isOpen = expanded === index; return <div key={feature.title} className={`group rounded-2xl border p-6 transition-all duration-300 ${isOpen ? "border-[#bab7e4] bg-[#f9f8ff] shadow-[0_14px_35px_rgba(64,62,125,.09)]" : "border-[#e4e3eb] bg-white hover:-translate-y-1 hover:border-[#c8c6e4] hover:shadow-[0_12px_30px_rgba(64,62,125,.07)]"}`}><div className="mb-7 flex items-start justify-between"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#efeeff] text-[#716dc2]"><Icon size={19} /></div><span className="text-[11px] font-bold text-[#b1aec2]">0{index + 1}</span></div><h3 className="font-['DM_Serif_Display'] text-[24px] leading-tight tracking-[-0.035em] text-[#29285e]">{feature.title}</h3><p className="mt-3 text-[13px] leading-6 text-[#777588]">{feature.text}</p><button onClick={() => setExpanded(isOpen ? null : index)} className="mt-5 flex items-center gap-2 text-[11px] font-bold text-[#6561a8] transition hover:text-[#17175b]">{isOpen ? "Paslēpt detaļas" : "Uzzināt vairāk"} <ChevronDown size={14} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} /></button>{isOpen && <p className="mt-3 border-t border-[#e6e4f2] pt-3 text-[12px] leading-5 text-[#66647b]">{feature.detail}</p>}</div> })}
