@@ -472,3 +472,40 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
   .functionality-impact{padding:56px 0 0}
   .impact-points article+article{border-left:0;border-top:1px solid var(--line)}
 }
+
+/* Services hierarchy: core work first, practical benefits second. */
+.functionality{padding-top:88px;padding-bottom:88px}
+.functionality .section-head{margin-bottom:40px}
+.primary-services{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.primary-services--endo{grid-template-columns:1fr}
+.primary-services article{min-height:190px;padding:32px;display:grid;grid-template-columns:48px 1fr;align-content:center;gap:22px;background:var(--navy);color:#fff;border-radius:12px}
+.primary-services--endo article{grid-template-columns:52px minmax(0,680px);justify-content:center}
+.primary-services .icon{width:48px;height:48px;display:grid;place-items:center;border-radius:10px;background:rgba(255,255,255,.12);color:#d9d7ff}
+.primary-services h3{font-family:"DM Sans",sans-serif;font-size:21px;font-weight:700;letter-spacing:0;line-height:1.25}
+.primary-services p{margin:8px 0 0;color:#cfcee2;font-size:14px;line-height:1.6}
+.practice-benefits{margin-top:40px}
+.practice-benefits-label{margin:0 0 16px;color:#5f5c78;font-size:13px;font-weight:800}
+.practice-benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.practice-benefits-grid article{padding:26px 22px}
+.practice-benefits-grid article+article{border-left:1px solid var(--line)}
+.practice-benefits-grid svg{color:#716dc2;margin-bottom:18px}
+.practice-benefits-grid h3{font-family:"DM Sans",sans-serif;font-size:16px;font-weight:700;letter-spacing:0;line-height:1.3}
+.practice-benefits-grid p{margin:7px 0 0;font-size:13px;line-height:1.5}
+.functionality .proof{margin-top:40px;padding:30px 32px;border-radius:12px;align-items:center}
+.functionality .proof h2{font-family:"DM Sans",sans-serif;font-size:20px;font-weight:700;letter-spacing:0;line-height:1.3;max-width:22ch}
+@media(max-width:900px){
+  .functionality{padding-top:72px;padding-bottom:72px}
+  .practice-benefits-grid{grid-template-columns:repeat(2,1fr)}
+  .practice-benefits-grid article:nth-child(3){border-left:0;border-top:1px solid var(--line)}
+  .practice-benefits-grid article:nth-child(4){border-top:1px solid var(--line)}
+}
+@media(max-width:620px){
+  .functionality{padding-top:64px;padding-bottom:64px}
+  .primary-services{grid-template-columns:1fr}
+  .primary-services article,.primary-services--endo article{min-height:0;padding:26px 22px;grid-template-columns:44px 1fr;gap:16px}
+  .primary-services .icon{width:44px;height:44px}
+  .practice-benefits{margin-top:32px}
+  .practice-benefits-grid{grid-template-columns:1fr}
+  .practice-benefits-grid article+article,.practice-benefits-grid article:nth-child(3),.practice-benefits-grid article:nth-child(4){border-left:0;border-top:1px solid var(--line)}
+  .functionality .proof{margin-top:32px;padding:28px 24px}
+}

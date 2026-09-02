@@ -223,7 +223,8 @@ function Home() {
     </section>
     <section className="section functionality" id="funkcionalitate">
       <div className="section-head"><h2>Pakalpojumi</h2><RoleSwitch role={role} setRole={setRole}/></div>
-      <div className={`feature-grid feature-grid--${c.features.length}`}>{c.features.map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={20}/></span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+      <div className="practice-benefits"><p className="practice-benefits-label">Ko iegūst prakse</p><div className="practice-benefits-grid">{c.features.slice(role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><Icon size={18}/><h3>{title}</h3><p>{text}</p></article>)}</div></div>
       <div className="proof"><div><h2>Kāpēc {role==="gp"?"ģimenes ārsti":"endokrinologi"} izvēlas Prakses Asistentu?</h2></div>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div>
     </section>
     <section className="home-pricing" id="cenas">
