@@ -430,16 +430,22 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 /* Functionality: one continuous section instead of nested panels. */
 .functionality{max-width:1180px;margin:0 auto;padding:96px var(--gutter);background:transparent;border:0;border-radius:0}
 .functionality .section-head{display:block;max-width:760px;margin:0 auto 48px;padding:0;border:0;text-align:center}
-.functionality .section-head h2{font-size:clamp(2.5rem,4vw,4rem)}
+.functionality .section-head h2{font-size:clamp(2.25rem,3.2vw,3rem)}
 .functionality .role-switch{display:flex;width:100%;max-width:680px;margin:28px auto 0}
 .functionality .role-switch button{flex:1}
 .functionality .feature-grid{padding:0;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .functionality .feature-grid{grid-template-columns:repeat(2,1fr)}
-.functionality .feature-grid article{padding:32px 24px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.functionality .feature-grid article{padding:28px 24px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.functionality .feature-grid h3{font-size:20px;line-height:1.25}
+.functionality .feature-grid p{font-size:14px;line-height:1.55}
+.functionality .feature-grid .icon{width:42px;height:42px}
 .functionality .feature-grid article:nth-child(even){border-left:1px solid var(--line)}
 .functionality .feature-grid article:nth-child(n+3){border-top:1px solid var(--line)}
 .functionality .feature-grid article:hover{transform:none;border-color:var(--line);box-shadow:none}
 .functionality .proof{margin:0;padding:44px 24px;grid-template-columns:1.35fr repeat(3,.65fr);background:var(--lav);border:0;border-radius:0}
+.functionality .proof h2{font-size:28px;line-height:1.15}
+.functionality .proof strong{font-size:22px}
+.functionality .proof span{font-size:12px}
 .functionality .proof>div:not(:first-child){padding:12px 20px;background:transparent;border:0;border-left:1px solid #d7d5e8;border-radius:0}
 .functionality-impact{margin:0;padding:72px 24px 0;border:0;gap:64px}
 .functionality-impact .bars{padding:0;background:transparent;border:0;border-radius:0}
