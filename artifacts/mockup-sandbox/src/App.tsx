@@ -275,7 +275,35 @@ const plans = [
 
 function Pricing() {
   const [annual,setAnnual]=useState(false);
-  return <main id="main"><PageHero eyebrow="Cenas" title="Viena cena visai praksei." text="Neatkarīgi no lietotāju skaita. Izvēlieties apjomu, kas atbilst jūsu ikdienai."/><div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div><section className="pricing-grid">{plans.map(([name,price,text,items],i)=><article className={`${i===1?"featured ":""}${annual?"annual-tier":""}`} key={name}>{annual&&<span className="annual-ribbon"><span>2 mēneši<br/>bez maksas</span></span>}<p className="eyebrow">Ģimenes ārstiem</p><h2>{name}</h2>{i===1&&<span className="popular">Populārākā izvēle</span>}<p>{text}</p><PriceBlock price={price} annual={annual}/><ul className="check-list">{items.map(x=><li key={x}>{x}</li>)}</ul><Link href="/#klut-par-klientu" className="btn ghost">Izvēlēties plānu</Link></article>)}</section><FAQ items={priceFaq}/><PlanHelp/></main>;
+  return <main id="main" className="pricing-page">
+    <section className="pricing90" aria-labelledby="pricing-title">
+      <header className="pricing90-head">
+        <p className="eyebrow">Cenas</p>
+        <h1 id="pricing-title">Izvēlieties plānu savai praksei</h1>
+        <p>Viena cena visai praksei — neatkarīgi no lietotāju skaita.</p>
+        <div className="pricing90-toggle" role="group" aria-label="Izvēlieties abonēšanas periodu">
+          <button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button>
+          <button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button>
+        </div>
+      </header>
+      <div className="pricing90-grid">
+        {plans.map(([name,price,text,items],i)=><article className={`pricing90-card${i===1?" pricing90-card--featured":""}`} key={name}>
+          <div className="pricing90-card-top">
+            <div className="pricing90-specialties">
+              <span className="specialty-pill specialty-pill--gp">Ģimenes ārstiem</span>
+              {i===2&&<span className="specialty-pill specialty-pill--endo">Endokrinologiem</span>}
+            </div>
+            {i===1&&<span className="pricing90-badge">Populārākā izvēle</span>}
+          </div>
+          <div className="pricing90-summary"><h2>{name}</h2><p>{text}</p></div>
+          <PriceBlock price={price} annual={annual}/>
+          <Link href="/#klut-par-klientu" className={`btn pricing90-button${i===1?"":" ghost"}`}>Izvēlēties plānu <ArrowRight size={16}/></Link>
+          <div className="pricing90-features"><p>Plānā iekļauts</p><ul>{items.map(x=><li key={x}><Check size={17}/><span>{x}</span></li>)}</ul></div>
+        </article>)}
+      </div>
+    </section>
+    <FAQ items={priceFaq}/><PlanHelp/>
+  </main>;
 }
 
 const posts = [

@@ -511,6 +511,44 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 }
 
 /* Editorial FAQ / BUJ layout. */
+.pricing90{max-width:1280px;margin:0 auto;padding:96px var(--gutter) 72px}
+.pricing90-head{max-width:780px;margin:0 auto 52px;text-align:center}
+.pricing90-head .eyebrow{justify-content:center;margin-bottom:14px}
+.pricing90-head h1{font-size:clamp(3rem,5vw,4.75rem);line-height:1.02}
+.pricing90-head>p:last-of-type{margin:18px auto 0;font-size:17px;line-height:1.6}
+.pricing90-toggle{width:max-content;max-width:100%;margin:32px auto 0;padding:5px;display:flex;gap:4px;border:1px solid #dcdbe8;border-radius:14px;background:#fff}
+.pricing90-toggle button{min-height:48px;padding:10px 22px;border:0;border-radius:10px;background:transparent;color:#656379;font-weight:700;cursor:pointer;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.pricing90-toggle button span{display:block;margin-top:1px;font-size:10px;font-weight:600;opacity:.78}
+.pricing90-toggle button.selected{background:var(--navy);color:#fff;box-shadow:0 6px 16px rgba(23,23,91,.16)}
+.pricing90-toggle button:focus-visible{outline:3px solid #aaa6f2;outline-offset:2px}
+.pricing90-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.pricing90-card{min-height:660px;padding:30px;display:flex;flex-direction:column;border:1px solid #dedde8;border-radius:16px;background:#fff}
+.pricing90-card--featured{border-color:#7772d6;background:#f7f6ff;box-shadow:0 24px 54px rgba(35,32,95,.1)}
+.pricing90-card-top{min-height:34px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pricing90-specialties{display:flex;flex-wrap:wrap;gap:6px}
+.pricing90-specialties .specialty-pill{margin:0;padding:7px 10px;border:1px solid;border-radius:999px;font-size:10px;font-weight:800;line-height:1.2}
+.pricing90-specialties .specialty-pill--gp{color:#4f4b9b;background:#f0efff;border-color:#cbc8f4}
+.pricing90-specialties .specialty-pill--endo{color:#27715e;background:#eaf7f2;border-color:#b8dfd2}
+.pricing90-badge{flex:0 0 auto;padding:7px 10px;border-radius:999px;background:var(--navy);color:#fff;font-size:10px;font-weight:800;line-height:1.2}
+.pricing90-summary{min-height:150px;padding:26px 0 22px;border-bottom:1px solid var(--line)}
+.pricing90-summary h2{font-size:clamp(2.2rem,3vw,3rem);line-height:1}
+.pricing90-summary p{margin:13px 0 0;font-size:14px;line-height:1.6}
+.pricing90-card .price-block{min-height:152px;padding:24px 0 18px}
+.pricing90-card .annual-label{margin:0 0 4px;color:#656379;font-size:13px;font-weight:700}
+.pricing90-card .price{margin:0;gap:9px}
+.pricing90-card .price strong{font-size:clamp(3.6rem,5vw,4.65rem);line-height:1}
+.pricing90-card .price span{padding-bottom:8px;font-size:12px;line-height:1.35}
+.pricing90-card .price-with-vat,.pricing90-card .annual-payment{margin:10px 0 0;font-size:12px;line-height:1.45}
+.pricing90-button{width:100%;min-height:52px;margin:0 0 26px;border-radius:10px;box-shadow:none}
+.pricing90-features{padding-top:24px;border-top:1px solid var(--line)}
+.pricing90-features>p{margin:0 0 14px;color:var(--ink);font-size:13px;font-weight:800;line-height:1.3}
+.pricing90-features ul{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.pricing90-features li{display:flex;align-items:flex-start;gap:10px;color:#5f5d72;font-size:14px;line-height:1.45}
+.pricing90-features li svg{flex:0 0 20px;width:20px;height:20px;padding:3px;border-radius:50%;background:#e6f1eb;color:#4f8468;stroke-width:2.5}
+@media(max-width:1050px){.pricing90-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing90-card:last-child{grid-column:1/-1;max-width:calc(50% - 9px);width:100%;justify-self:center}}
+@media(max-width:700px){.pricing90{padding:64px 24px 56px}.pricing90-head{margin-bottom:38px}.pricing90-head h1{font-size:2.8rem}.pricing90-head>p:last-of-type{font-size:15px}.pricing90-toggle{width:100%}.pricing90-toggle button{flex:1;padding-inline:12px}.pricing90-grid{grid-template-columns:1fr}.pricing90-card,.pricing90-card:last-child{grid-column:auto;max-width:none;min-height:0;padding:24px}.pricing90-summary{min-height:0}.pricing90-card .price-block{min-height:0}.pricing90-card-top{min-height:0}.pricing90-badge{font-size:9px}}
+
+/* Editorial FAQ / BUJ layout. */
 .faq{display:block;max-width:980px;padding:96px var(--gutter)}
 .faq>div:first-child{max-width:none;margin:0 auto 40px;text-align:center}
 .faq>div:first-child h2{font-size:clamp(2.75rem,5vw,4.5rem);line-height:1.04}
