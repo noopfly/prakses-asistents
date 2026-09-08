@@ -717,9 +717,16 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page .functionality .proof strong{font-size:24px}
 .home-page .functionality .proof span{font-size:13px}
 .home-page .home-pricing{background:#fff;border-top:1px solid var(--line);border-bottom:0}
+.home-page .home-pricing{padding-bottom:40px}
+.home-page>.plan-help--compact{max-width:1120px;margin:0 auto 64px;padding:0 var(--gutter);grid-template-columns:minmax(0,1fr) auto;gap:32px;background:transparent;border:0;border-radius:0}
+.home-page>.plan-help--compact .plan-help-icon{display:none}
+.home-page>.plan-help--compact .plan-help-title{font-size:17px}
+.home-page>.plan-help--compact p{font-size:14px}
 @media(max-width:620px){
   .home-page .primary-services article+article{border-left:0;border-top:1px solid var(--line)}
   .home-page .primary-services article,.home-page .primary-services--endo article{padding:24px 4px}
   .home-page .practice-benefits-grid article{padding-inline:4px}
   .home-page .functionality .proof{padding-inline:4px}
+  .home-page>.plan-help--compact{margin:0 0 48px;padding:0 24px;grid-template-columns:1fr;gap:16px}
+  .home-page>.plan-help--compact a{grid-column:auto}
 }
