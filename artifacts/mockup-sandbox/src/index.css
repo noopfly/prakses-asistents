@@ -751,6 +751,10 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page .home-form .consent-group{gap:8px;margin:14px 0 18px}
 .home-page .home-form .consent{font-size:12px;line-height:1.4}
 .home-page .home-form .btn{min-height:44px;padding:11px 16px;font-size:14px;box-shadow:none}
+
+/* Keep the contact-page canvas continuous as the form edge scrolls past */
+.contact-layout{background:#fff}
+.contact-layout .contact-form{box-shadow:none}
 @media(max-width:620px){
   .home-page .primary-services article+article{border-left:0;border-top:1px solid var(--line)}
   .home-page .primary-services article,.home-page .primary-services--endo article{padding:24px 4px}
