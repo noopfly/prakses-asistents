@@ -722,6 +722,35 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page>.plan-help--compact .plan-help-icon{display:none}
 .home-page>.plan-help--compact .plan-help-title{font-size:17px}
 .home-page>.plan-help--compact p{font-size:14px}
+
+/* Compact, scan-friendly registration form with a persistent desktop panel */
+@media(min-width:901px){
+  .home-page .home-form{grid-template-columns:minmax(300px,390px) minmax(0,560px);gap:72px;padding-block:72px}
+  .home-page .home-form>div:first-child{position:static;padding-top:16px}
+  .home-page .home-form form{position:sticky;top:96px;max-width:560px;max-height:calc(100svh - 112px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:28px 30px;border-radius:12px}
+  .home-page .home-form form::-webkit-scrollbar{width:8px}
+  .home-page .home-form form::-webkit-scrollbar-thumb{background:#d9d8e5;border:2px solid #fff;border-radius:999px}
+}
+.home-page .home-form label,.home-page .home-form legend{font-size:13px;line-height:1.35}
+.home-page .home-form form>label{margin-bottom:12px}
+.home-page .home-form fieldset{margin-bottom:14px}
+.home-page .home-form .field-grid{gap:12px 14px}
+.home-page .home-form :where(input,textarea,select){min-height:44px;margin-top:5px;padding:10px 12px;font-size:14px;line-height:1.35}
+.home-page .home-form :where(input,textarea)::placeholder{font-size:14px;font-weight:400}
+.home-page .home-form textarea{min-height:88px}
+.home-page .home-form .choice-grid{gap:10px}
+.home-page .home-form .choice{min-height:72px;padding:11px 12px;gap:9px;align-items:center}
+.home-page .home-form .choice input{margin-top:0}
+.home-page .home-form .choice b,.home-page .home-form .inline-choices label{font-size:14px}
+.home-page .home-form .choice small{font-size:12px;line-height:1.35;margin-top:2px}
+.home-page .home-form .inline-choices{gap:20px}
+.home-page .home-form .service-options{gap:8px;padding:14px 0!important}
+.home-page .home-form .service-options legend{padding-top:14px}
+.home-page .home-form .service-options label{gap:9px;font-size:13px}
+.home-page .home-form .service-options input,.home-page .home-form .consent input{width:17px!important;height:17px;flex-basis:17px}
+.home-page .home-form .consent-group{gap:8px;margin:14px 0 18px}
+.home-page .home-form .consent{font-size:12px;line-height:1.4}
+.home-page .home-form .btn{min-height:44px;padding:11px 16px;font-size:14px;box-shadow:none}
 @media(max-width:620px){
   .home-page .primary-services article+article{border-left:0;border-top:1px solid var(--line)}
   .home-page .primary-services article,.home-page .primary-services--endo article{padding:24px 4px}
