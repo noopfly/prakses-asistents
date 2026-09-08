@@ -94,16 +94,23 @@ function Header() {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
-    let previousY = window.scrollY;
+    let previousY = Math.max(0, window.scrollY);
+    let frame = 0;
     const handleScroll = () => {
-      const currentY = window.scrollY;
-      if (currentY < 96) setHidden(false);
-      else if (currentY > previousY + 4) setHidden(true);
-      else if (currentY < previousY - 4) setHidden(false);
-      previousY = currentY;
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        const currentY = Math.max(0, window.scrollY);
+        if (currentY < 96 || currentY < previousY) setHidden(false);
+        else if (currentY > previousY) setHidden(true);
+        previousY = currentY;
+        frame = 0;
+      });
     };
     window.addEventListener("scroll", handleScroll, {passive:true});
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
   const currentPath = routePath();
   const mobileNav = currentPath === "/" ? nav : [["/", "Sākums"], ...nav];
@@ -112,7 +119,7 @@ function Header() {
   return <>
     <a className="skip" href="#main">Pāriet uz saturu</a>
     <div className="announcement">Jaunums endokrinologiem — Pacienta pārskats <Link href="/#pakalpojumi">Uzzināt vairāk <ArrowRight size={14}/></Link></div>
-    <header className={`header${hidden&&!open?" header--hidden":""}`}>
+    <header className={`header${hidden&&!open?" header--hidden":""}`} onFocusCapture={()=>setHidden(false)}>
       <Link href="/" className="brand"><span className="brandmark"><HeartPulse size={17}/></span><span>Prakses Asistents</span></Link>
       <nav className="desktop-nav" aria-label="Galvenā navigācija">
         {headerNav.map(([href, label]) => <Link key={href} href={href} className={`${activeHref === href || currentPath === href ? "active" : ""}${href==="/#klut-par-klientu"?" nav-cta":""}`}>{label}</Link>)}
