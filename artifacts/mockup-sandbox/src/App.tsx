@@ -208,7 +208,7 @@ function Home() {
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
   const c = roleContent[role];
-  return <main id="main">
+  return <main id="main" className="home-page">
     <section className="hero">
       <div className="hero-copy reveal">
         <div className="static-pills" aria-label="Paredzēts specialitātēm"><span className="specialty-pill specialty-pill--gp">Ģimenes ārsti</span><span className="specialty-pill specialty-pill--endo">Endokrinologi</span></div>
