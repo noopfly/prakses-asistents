@@ -695,3 +695,31 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
   .home-page .home-journal .post-grid article:first-child{grid-column:auto}
   .home-page .home-journal .post-grid article:not(:first-child){padding-bottom:28px}
 }
+
+/* Quieter services composition: one surface, one accent, one reading flow. */
+.home-page .functionality .section-head{align-items:center;margin-bottom:32px}
+.home-page .functionality .section-head h2{font-size:clamp(2.4rem,3.6vw,3.25rem)}
+.home-page .functionality .role-switch{border-color:#dedde8;background:#fafafd;box-shadow:none}
+.home-page .functionality .role-switch button{color:#68667a}
+.home-page .functionality .role-switch .selected{background:var(--navy);color:#fff;box-shadow:none}
+.home-page .primary-services{gap:0;border-block:1px solid var(--line)}
+.home-page .primary-services article,.home-page .primary-services--endo article{min-height:156px;padding:28px 32px;align-content:center;background:transparent;color:var(--ink);border:0;border-radius:0}
+.home-page .primary-services article+article{border-left:1px solid var(--line)}
+.home-page .primary-services .icon{background:var(--lav);color:#6d68bd}
+.home-page .primary-services p{color:var(--muted)}
+.home-page .practice-benefits{margin-top:0;padding-top:34px}
+.home-page .practice-benefits-label{margin-bottom:10px;color:var(--muted);font-weight:600}
+.home-page .practice-benefits-grid{border-top:0}
+.home-page .practice-benefits-grid article{padding:22px 22px 28px}
+.home-page .practice-benefits-grid svg{margin-bottom:14px;color:#7772c5}
+.home-page .functionality .proof{margin-top:0;padding:28px 22px;border-block:1px solid var(--line);border-radius:0;background:transparent}
+.home-page .functionality .proof>div:not(:first-child){background:transparent;border-top:0;border-right:0;border-bottom:0;box-shadow:none}
+.home-page .functionality .proof strong{font-size:24px}
+.home-page .functionality .proof span{font-size:13px}
+.home-page .home-pricing{background:#fff;border-top:1px solid var(--line);border-bottom:0}
+@media(max-width:620px){
+  .home-page .primary-services article+article{border-left:0;border-top:1px solid var(--line)}
+  .home-page .primary-services article,.home-page .primary-services--endo article{padding:24px 4px}
+  .home-page .practice-benefits-grid article{padding-inline:4px}
+  .home-page .functionality .proof{padding-inline:4px}
+}
