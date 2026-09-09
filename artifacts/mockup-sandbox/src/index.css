@@ -544,7 +544,20 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .pricing90-features>p{margin:0 0 14px;color:var(--ink);font-size:13px;font-weight:800;line-height:1.3}
 .pricing90-features ul{display:grid;gap:12px;margin:0;padding:0;list-style:none}
 .pricing90-features li{display:flex;align-items:flex-start;gap:10px;color:#5f5d72;font-size:14px;line-height:1.45}
-.pricing90-features li svg{flex:0 0 20px;width:20px;height:20px;padding:3px;border-radius:50%;background:#e6f1eb;color:#4f8468;stroke-width:2.5}
+.pricing90-features li svg{flex:0 0 20px;width:20px;height:20px;padding:3px;border:1px solid #d9dee8;border-radius:5px;background:#eef0f5;color:#29344a;stroke-width:2.5}
+
+.home-pricing-grid .check-list li::before{border:1px solid #d9dee8;border-radius:5px;background:#eef0f5;color:#29344a}
+.required-mark{margin-left:2px;color:#d92d20;font-weight:800}
+.signup-benefits{display:grid;gap:0;margin:30px 0 0;padding:0;list-style:none}
+.signup-benefits li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center;padding:14px 0;border-top:1px solid rgba(255,255,255,.18);color:#fff;font-size:15px;line-height:1.45}
+.signup-benefits li:last-child{border-bottom:1px solid rgba(255,255,255,.18)}
+.signup-benefits li span{color:#c4ccda;font-size:11px;font-weight:800;letter-spacing:.08em}
+.home-page .home-form .consent-group{gap:2px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.home-page .home-form .consent{align-items:flex-start;padding:10px 0;line-height:1.45}
+.home-page .home-form .consent a{display:inline-flex;gap:3px;align-items:center;color:var(--navy);font-weight:750;text-decoration-thickness:1px;text-underline-offset:3px}
+.home-page .home-form .consent a svg{flex:0 0 auto}
+.home-page .home-form .signup-submit{width:100%}
+.home-page .home-form .signup-submit:disabled{cursor:not-allowed;background:#a8afba;box-shadow:none;color:#fff;transform:none}
 @media(max-width:1050px){.pricing90-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing90-card:last-child{grid-column:1/-1;max-width:calc(50% - 9px);width:100%;justify-self:center}}
 @media(max-width:700px){.pricing90{padding:64px 24px 56px}.pricing90-head{margin-bottom:38px}.pricing90-head h1{font-size:2.8rem}.pricing90-head>p:last-of-type{font-size:15px}.pricing90-toggle{width:100%}.pricing90-toggle button{flex:1;padding-inline:12px}.pricing90-grid{grid-template-columns:1fr}.pricing90-card,.pricing90-card:last-child{grid-column:auto;max-width:none;min-height:0;padding:24px}.pricing90-summary{min-height:0}.pricing90-card .price-block{min-height:0}.pricing90-card-top{min-height:0}.pricing90-badge{font-size:9px}}
 
@@ -886,7 +899,10 @@ input,select,textarea{border-color:#dde2e9;border-radius:6px;background:#fff}inp
 .choice{border-color:#dde2e9;border-radius:8px}.choice:has(input:checked){border-color:#5583be;background:#f5f7fa}
 .post-art{border-radius:12px}.post-tag{border-radius:4px}
 .cta{border-radius:12px;background:#1d283e}.back-to-top{border-radius:6px;background:#1d283e;border-color:#1d283e}
-footer{background:#1d283e}
+footer{background:#1d283e;color:#fff}
+.footer-grid b,.footer-grid a{color:#fff}
+.footer-grid p,.footer-grid small,.footer-bottom{color:#d9dee8}
+.footer-bottom{border-color:rgba(255,255,255,.16)}
 @media(max-width:760px){.mobile-nav{background:#fff}}
 
 /* Homepage service story refinements. */
@@ -907,3 +923,19 @@ footer{background:#1d283e}
 .home-page .service-flow .proof span{font-size:14px;line-height:1.45}
 .home-page .service-step--result .proof>div{background:#fff!important}
 @media(max-width:760px){.home-page .functionality .section-head{gap:22px}.home-page .functionality .role-switch button{padding:.58rem .7rem}.home-page .service-progress{display:flex}.home-page .service-track{height:auto}.home-page .service-step,.home-page .service-step--result{padding:24px 20px;gap:18px}.home-page .service-flow--gp .service-step:first-child{min-height:780px}.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:start}}
+
+/* Registration and contact form clarity. */
+@media(min-width:1100px){
+  .home-page .home-form{grid-template-columns:minmax(410px,460px) minmax(0,560px);gap:56px;justify-content:center}
+  .home-page .home-form>div:first-child{padding-top:12px}
+  .home-page .home-form h2{max-width:15ch;font-size:clamp(2.55rem,3.8vw,3.55rem)}
+  .home-page .home-form form{position:sticky;top:92px;max-height:calc(100vh - 108px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+}
+@media(min-width:901px){
+  .contact-layout{min-height:calc(100vh - 114px);padding-top:52px;padding-bottom:52px;align-items:center}
+  .contact-form{max-height:none;overflow:visible;padding:24px!important}
+  .contact-form label{margin-bottom:10px;font-size:13px}
+  .contact-form input,.contact-form textarea{min-height:42px;margin-top:5px;padding:10px 12px;font-size:15px}
+  .contact-form textarea{min-height:100px}
+  .contact-form .btn{min-height:44px}
+}

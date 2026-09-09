@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ClipboardList, Clock3,
   HeartPulse, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
-  FileText, Stethoscope, Syringe, X
+  ExternalLink, FileText, Stethoscope, Syringe, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
 
@@ -149,10 +149,14 @@ function BackToTop() {
   return <button type="button" className={`back-to-top${visible?" is-visible":""}`} aria-label="Atgriezties lapas augšā" onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}><span className="back-to-top-label" aria-hidden="true">Uz augšu</span><ChevronUp size={20}/></button>;
 }
 
+function RequiredMark() {
+  return <span className="required-mark" aria-hidden="true">*</span>;
+}
+
 function Footer() {
   return <footer>
     <div className="footer-grid">
-      <div className="footer-about"><b>Prakses Asistents</b><p>Palīdzam ārstiem efektīvāk rūpēties par pacientiem, automatizējot datu apstrādi un atbalstot savlaicīgu veselības aprūpi.</p><p>SIA Prakses Asistents<br/>Reģ. Nr. 50203532261</p><a className="footer-social" href="https://www.linkedin.com" aria-label="Prakses Asistents LinkedIn"><Linkedin size={24}/></a></div>
+      <div className="footer-about"><b>Prakses Asistents</b><p>Palīdzam ārstiem efektīvāk atlasīt pacientus, automatizējot datu apstrādi un apkopojot būtiskāko informāciju vienā skatā.</p><p>SIA Prakses Asistents<br/>Reģ. Nr. 50203532261</p><a className="footer-social" href="https://www.linkedin.com" aria-label="Prakses Asistents LinkedIn"><Linkedin size={24}/></a></div>
       <div><b>Saites</b><Link href="/">Sākums</Link><Link href="/prakses-dienasgramata">Prakses dienasgrāmata</Link><Link href="/#pakalpojumi">Pakalpojumi</Link><Link href="/kontakti">Kontakti</Link></div>
       <div><b>Dokumenti</b><a href="https://www.praksesasistents.lv/privatuma-politika">Privātuma politika</a><a href="https://www.praksesasistents.lv/lietosanas-noteikumi">Lietošanas noteikumi</a><a href="https://www.praksesasistents.lv/datu-apstrades-noteikumi">Datu apstrādes noteikumi</a></div>
       <div className="footer-support"><b>Atbalsts</b><div className="support-marks" aria-label="Eiropas Savienības un Nacionālā attīstības plāna 2027 atbalsts"><span className="eu-mark">✦ ✦ ✦<small>Līdzfinansē<br/>Eiropas Savienība</small></span><span className="nap-mark"><i></i><strong>2027</strong><small>Nacionālais<br/>attīstības plāns</small></span></div><p>Prakses Asistents saņem Latvijas Investīciju un attīstības aģentūras atbalstu, saskaņā ar līgumu DTM/2025/235/LG/1, kas noslēgts 20.06.2026.</p></div>
@@ -221,6 +225,7 @@ function Home() {
   const [signupRole, setSignupRole] = useState<Role>("gp");
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
+  const [signupValid, setSignupValid] = useState(false);
   const [serviceProgress, setServiceProgress] = useState(0);
   const serviceSection = useRef<HTMLElement>(null);
   const c = roleContent[role];
@@ -283,22 +288,22 @@ function Home() {
       </div>
     </section>
     <section className="home-pricing" id="cenas">
-      <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2><p>Viena cena visai praksei — neatkarīgi no lietotāju skaita.</p></div>
+      <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
       <div className="pricing-grid home-pricing-grid">{plans.map(([name,price,text,items],i)=><article className={`${i===1?"featured ":""}${annual?"annual-tier":""}`} key={name}>{annual&&<span className="annual-ribbon"><span>2 mēneši<br/>bez maksas</span></span>}<h3>{name}</h3>{i===1&&<span className="popular">Populārākā izvēle</span>}<p>{text}</p><PriceBlock price={price} annual={annual}/><ul className="check-list">{items.map(x=><li key={x}>{x}</li>)}</ul><Link href="/#klut-par-klientu" className="btn ghost">Izvēlēties plānu</Link></article>)}</div>
     </section>
     <PlanHelp compact/>
     <FAQ title="Par cenām un plāniem" items={priceFaq}/>
-    <section className="form-section home-form" id="klut-par-klientu"><div><h2>Sāciet izmantot Prakses Asistentu</h2><p>Aizpildiet formu. Pēc pieteikuma saņemšanas uz jūsu norādīto e-pastu nosūtīsim nākamos soļus un sazināsimies ar jums.</p><ul className="check-list"><li>Ģimenes ārstiem un endokrinologiem</li><li>Specialitātei atbilstošs piedāvājums</li><li>Skaidri sadarbības nākamie soļi</li></ul></div><form onSubmit={(e)=>{e.preventDefault();setSent(true)}}>
-      <fieldset><legend>Es esmu:</legend><div className="choice-grid"><label className="choice"><input type="radio" name="speciality" checked={signupRole==="gp"} onChange={()=>setSignupRole("gp")}/><span><b>Ģimenes ārsts</b><small>Skrīningi, SCORE un profilakse</small></span></label><label className="choice"><input type="radio" name="speciality" checked={signupRole==="endo"} onChange={()=>setSignupRole("endo")}/><span><b>Endokrinologs</b><small>Pacienta pārskats</small></span></label></div></fieldset>
-      <div className="field-grid"><label>Vārds *<input name="firstName" autoComplete="given-name" required placeholder="Jānis"/></label><label>Uzvārds *<input name="lastName" autoComplete="family-name" required placeholder="Bērziņš"/></label><label>E-pasta adrese *<input name="email" autoComplete="email" required type="email" placeholder="epasts@prakse.lv"/></label><label>Telefona numurs *<input name="phone" autoComplete="tel" required placeholder="+371 20000000"/></label></div>
-      <fieldset><legend>Klienta veids *</legend><div className="inline-choices"><label><input type="radio" name="clientType" defaultChecked/> Juridiska persona</label><label><input type="radio" name="clientType"/> Privātpersona</label></div></fieldset>
-      <label>Prakses vai ārstniecības iestādes nosaukums *<input name="practiceName" autoComplete="organization" required placeholder="Prakses nosaukums"/></label>
-      <label>Uzņēmējdarbības forma *<select name="businessType" required defaultValue=""><option value="" disabled>Izvēlieties uzņēmējdarbības formu</option><option>Sabiedrība ar ierobežotu atbildību (SIA)</option><option>Individuālais komersants / pašnodarbinātais</option><option>Cits</option></select></label>
+    <section className="form-section home-form" id="klut-par-klientu"><div><h2>Sāciet izmantot Prakses Asistentu</h2><p>Aizpildiet īso pieteikumu. Sazināsimies ar jums 1–2 darba dienu laikā, lai pārrunātu prakses vajadzības un piemērotāko risinājumu.</p><ol className="signup-benefits"><li><span>01</span>Risinājumi ģimenes ārstiem un endokrinologiem.</li><li><span>02</span>Jūsu specialitātei pielāgots piedāvājums.</li><li><span>03</span>Skaidri ieviešanas un sadarbības soļi.</li></ol></div><form onInput={(e)=>setSignupValid(e.currentTarget.checkValidity())} onChange={(e)=>setSignupValid(e.currentTarget.checkValidity())} onSubmit={(e)=>{e.preventDefault();setSent(true)}}>
+      <fieldset><legend>Es esmu:</legend><div className="choice-grid"><label className="choice"><input type="radio" name="speciality" checked={signupRole==="gp"} onChange={()=>setSignupRole("gp")}/><span><b>Ģimenes ārsts</b><small>Skrīningi, SCORE, vakcinācijas un profilakse</small></span></label><label className="choice"><input type="radio" name="speciality" checked={signupRole==="endo"} onChange={()=>setSignupRole("endo")}/><span><b>Endokrinologs</b><small>Pacienta pārskats</small></span></label></div></fieldset>
+      <div className="field-grid"><label>Vārds <RequiredMark/><input name="firstName" autoComplete="given-name" required placeholder="Jānis"/></label><label>Uzvārds <RequiredMark/><input name="lastName" autoComplete="family-name" required placeholder="Bērziņš"/></label><label>E-pasta adrese <RequiredMark/><input name="email" autoComplete="email" required type="email" placeholder="epasts@prakse.lv"/></label><label>Telefona numurs <RequiredMark/><input name="phone" autoComplete="tel" required placeholder="+371 20000000"/></label></div>
+      <fieldset><legend>Klienta veids <RequiredMark/></legend><div className="inline-choices"><label><input type="radio" name="clientType" defaultChecked/> Juridiska persona</label><label><input type="radio" name="clientType"/> Privātpersona</label></div></fieldset>
+      <label>Prakses vai ārstniecības iestādes nosaukums <RequiredMark/><input name="practiceName" autoComplete="organization" required placeholder="Prakses nosaukums"/></label>
+      <label>Uzņēmējdarbības forma <RequiredMark/><select name="businessType" required defaultValue=""><option value="" disabled>Izvēlieties uzņēmējdarbības formu</option><option>Sabiedrība ar ierobežotu atbildību (SIA)</option><option>Individuālais komersants / pašnodarbinātais</option><option>Cits</option></select></label>
       <label>Papildu informācija<textarea name="message" placeholder="Jūsu jautājums vai komentārs"/></label>
       <fieldset className="service-options"><legend>Interesējošie pakalpojumi:</legend>{signupRole==="gp"?<><label><input type="checkbox" name="services" value="patient-overview"/> Pacienta pārskats</label><label><input type="checkbox" name="services" value="screening"/> Vēža skrīningi</label><label><input type="checkbox" name="services" value="score"/> Sirds un asinsvadu slimību risks</label><label><input type="checkbox" name="services" value="prevention"/> Profilaktiskās apskates</label><label><input type="checkbox" name="services" value="vaccination"/> Vakcinācijas</label></>:<label><input type="checkbox" name="services" value="patient-overview" defaultChecked/> Pacienta pārskats</label>}</fieldset>
-      <div className="consent-group"><label className="consent"><input type="checkbox" required/> <span>Es piekrītu <a href="https://www.praksesasistents.lv/privatuma-politika">privātuma politikai</a>.</span></label><label className="consent"><input type="checkbox" required/> <span>Es esmu izlasījis un piekrītu <a href="https://www.praksesasistents.lv/lietosanas-noteikumi">lietošanas noteikumiem</a>.</span></label></div>
-      <button className="btn" type="submit">{sent ? "Pieteikums sagatavots" : "Kļūt par klientu"} <ArrowRight size={16}/></button>
+      <div className="consent-group"><label className="consent"><input type="checkbox" required/> <span>Es piekrītu <a href="https://www.praksesasistents.lv/privatuma-politika">Privātuma politikai <ExternalLink size={12}/></a>.</span></label><label className="consent"><input type="checkbox" required/> <span>Esmu iepazinies ar <a href="https://www.praksesasistents.lv/lietosanas-noteikumi">Lietošanas noteikumiem <ExternalLink size={12}/></a> un <a href="https://www.praksesasistents.lv/datu-apstrades-noteikumi">Datu apstrādes noteikumiem <ExternalLink size={12}/></a> un tiem piekrītu.</span></label></div>
+      <button className="btn signup-submit" type="submit" disabled={!signupValid}>{sent ? "Pieteikums sagatavots" : "Kļūt par klientu"} <ArrowRight size={16}/></button>
       {sent && <p className="form-status" role="status">Demonstrācijas versijā dati netiek nosūtīti.</p>}
     </form></section>
     <FAQ title="Biežāk uzdotie jautājumi" items={serviceFaq}/>
@@ -324,8 +329,8 @@ function Services() {
 
 const plans = [
   ["Pamata","30","Svarīgākais vēža skrīningu savlaicīgai uzraudzībai.",["Vēža skrīningu pārvaldība","Ceturkšņa pārskati"]],
-  ["Standarta","45","Pilnvērtīgs profilaktiskā darba komplekts ģimenes ārsta praksei.",["Viss, kas iekļauts Pamata plānā","SCORE riska novērtēšana","Vakcinācijas un profilaktiskās apskates"]],
-  ["Pilnais","75","Pilnīgāks pacienta veselības pārskats un prioritārs atbalsts.",["Viss, kas iekļauts Standarta plānā","Pacienta veselības kopsavilkums","SMS atgādinājumi","Prioritārs atbalsts"]],
+  ["Standarta","45","Pilnvērtīgs profilaktiskā darba komplekts ģimenes ārsta praksei.",["Viss, kas iekļauts Pamata plānā","SCORE riska novērtēšana","Vakcinācijas un profilaktiskās apskates","Izrakstu kopsavilkumi"]],
+  ["Pilnais","75","Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.",["Viss, kas iekļauts Standarta plānā","Pacienta veselības kopsavilkums","SMS atgādinājumi","Prioritārs klientu atbalsts"]],
 ] as const;
 
 function Pricing() {
@@ -335,7 +340,6 @@ function Pricing() {
       <header className="pricing90-head">
         <p className="eyebrow">Cenas</p>
         <h1 id="pricing-title">Izvēlieties plānu savai praksei</h1>
-        <p>Viena cena visai praksei — neatkarīgi no lietotāju skaita.</p>
         <div className="pricing90-toggle" role="group" aria-label="Izvēlieties abonēšanas periodu">
           <button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button>
           <button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button>
@@ -380,7 +384,7 @@ function Journal() {
 
 function Contact() {
   const [sent,setSent]=useState(false);
-  return <main id="main"><section className="contact-layout"><div className="contact-copy"><p className="eyebrow">Kontakti</p><h1>Sazinies ar mums</h1><p className="lead">Ja jums ir jautājumi par pakalpojumu vai nepieciešama palīdzība, droši rakstiet mums, un mēs palīdzēsim! Mūsu komanda sazināsies ar jums 1–2 darba dienu laikā.</p><p className="contact-client-link">Ja vēlaties kļūt par Prakses Asistents klientu, aizpildiet anketu, kas pieejama <Link href="/#klut-par-klientu">šeit</Link>.</p><div className="contact-detail"><span><Mail/></span><div><b>E-pasts</b><p><a href="mailto:sveiki@praksesasistents.lv">sveiki@praksesasistents.lv</a></p></div></div><div className="contact-detail"><span><MessageCircle/></span><div><b>Tālrunis</b><p><a href="tel:+37122002839">+371 22002839</a></p></div></div></div><form className="contact-form" onSubmit={(e)=>{e.preventDefault();setSent(true)}}><div className="form-heading"><h2>Uzrakstiet mums</h2><p>Aizpildiet formu, un mēs ar jums sazināsimies.</p></div><label>Vārds *<input name="firstName" autoComplete="given-name" required placeholder="Jānis"/></label><label>Uzvārds *<input name="lastName" autoComplete="family-name" required placeholder="Bērziņš"/></label><label>E-pasta adrese *<input name="email" autoComplete="email" required type="email" placeholder="epasts@epasts.lv"/></label><label>Jūsu ziņa *<textarea name="message" required placeholder="Lūdzu, ievadiet savu ziņu šeit"/></label><button className="btn" type="submit">{sent?"Paldies — ziņa sagatavota":"Sūtīt ziņu"} <ArrowRight size={16}/></button>{sent&&<p className="form-status" role="status">Demonstrācijas versijā dati netiek nosūtīti.</p>}</form></section><FAQ items={["Cik ātri saņemšu atbildi?","Kur pieteikties pakalpojumam?","Vai varu uzdot jautājumu par datu drošību?"]}/></main>;
+  return <main id="main"><section className="contact-layout"><div className="contact-copy"><p className="eyebrow">Kontakti</p><h1>Sazinies ar mums</h1><p className="lead">Ja jums ir jautājumi par pakalpojumu vai nepieciešama palīdzība, droši rakstiet mums, un mēs palīdzēsim! Mūsu komanda sazināsies ar jums 1–2 darba dienu laikā.</p><p className="contact-client-link">Ja vēlaties kļūt par Prakses Asistents klientu, aizpildiet anketu, kas pieejama <Link href="/#klut-par-klientu">šeit</Link>.</p><div className="contact-detail"><span><Mail/></span><div><b>E-pasts</b><p><a href="mailto:sveiki@praksesasistents.lv">sveiki@praksesasistents.lv</a></p></div></div><div className="contact-detail"><span><MessageCircle/></span><div><b>Tālrunis</b><p><a href="tel:+37122002839">+371 22002839</a></p></div></div></div><form className="contact-form" onSubmit={(e)=>{e.preventDefault();setSent(true)}}><label>Vārds <RequiredMark/><input name="firstName" autoComplete="given-name" required placeholder="Jānis"/></label><label>Uzvārds <RequiredMark/><input name="lastName" autoComplete="family-name" required placeholder="Bērziņš"/></label><label>E-pasta adrese <RequiredMark/><input name="email" autoComplete="email" required type="email" placeholder="epasts@epasts.lv"/></label><label>Jūsu ziņa <RequiredMark/><textarea name="message" required placeholder="Lūdzu, ievadiet savu ziņu šeit"/></label><button className="btn" type="submit">{sent?"Paldies — ziņa sagatavota":"Sūtīt ziņu"} <ArrowRight size={16}/></button>{sent&&<p className="form-status" role="status">Demonstrācijas versijā dati netiek nosūtīti.</p>}</form></section><FAQ items={["Cik ātri saņemšu atbildi?","Kur pieteikties pakalpojumam?","Vai varu uzdot jautājumu par datu drošību?"]}/></main>;
 }
 
 function FAQ({items,title="Skaidras atbildes."}:{items:ReadonlyArray<string | readonly [string,string]>;title?:string}) {
@@ -389,7 +393,7 @@ function FAQ({items,title="Skaidras atbildes."}:{items:ReadonlyArray<string | re
   const uid=useId();
   const hasMore=items.length>4;
   const visibleItems=showAll?items:items.slice(0,4);
-  return <section className="faq"><div><h2>{title}</h2>{hasMore&&<p className="faq-intro">Sākumā parādām biežāk meklētās atbildes.</p>}</div><div>{visibleItems.map((item,i)=>{const q=typeof item==="string"?item:item[0];const answer=typeof item==="string"?(i===0?"Risinājumu un sadarbības ritmu pielāgojam jūsu prakses vajadzībām.":"Sazinieties ar mums — izskaidrosim konkrēto procesu un vienosimies par drošāko nākamo soli."):item[1];const panelId=`${uid}-answer-${i}`;return <article key={q}><button type="button" aria-expanded={open===i} aria-controls={panelId} onClick={()=>setOpen(open===i?-1:i)}>{q}<ChevronDown aria-hidden="true" className={open===i?"rotate":""}/></button>{open===i&&<p id={panelId}>{answer}</p>}</article>})}{hasMore&&<button type="button" className="faq-more" aria-expanded={showAll} onClick={()=>{setShowAll(!showAll);if(showAll&&open>3)setOpen(-1)}}>{showAll?"Rādīt mazāk":"Rādīt visus jautājumus"}<ArrowRight aria-hidden="true"/></button>}</div></section>;
+  return <section className="faq"><div><h2>{title}</h2></div><div>{visibleItems.map((item,i)=>{const q=typeof item==="string"?item:item[0];const answer=typeof item==="string"?(i===0?"Risinājumu un sadarbības ritmu pielāgojam jūsu prakses vajadzībām.":"Sazinieties ar mums — izskaidrosim konkrēto procesu un vienosimies par drošāko nākamo soli."):item[1];const panelId=`${uid}-answer-${i}`;return <article key={q}><button type="button" aria-expanded={open===i} aria-controls={panelId} onClick={()=>setOpen(open===i?-1:i)}>{q}<ChevronDown aria-hidden="true" className={open===i?"rotate":""}/></button>{open===i&&<p id={panelId}>{answer}</p>}</article>})}{hasMore&&<button type="button" className="faq-more" aria-expanded={showAll} onClick={()=>{setShowAll(!showAll);if(showAll&&open>3)setOpen(-1)}}>{showAll?"Rādīt mazāk":"Rādīt visus jautājumus"}<ArrowRight aria-hidden="true"/></button>}</div></section>;
 }
 
 function CTA({title,text}:{title:string;text:string}) {
