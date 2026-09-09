@@ -262,15 +262,15 @@ function Home() {
         <div className="service-progress"><span aria-live="polite">{activeServiceStep+1} / 3</span><i aria-hidden="true"><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i><div className="service-arrows"><button type="button" onClick={()=>goToServiceStep(activeServiceStep-1)} disabled={activeServiceStep===0} aria-label="Iepriekšējais solis"><ChevronLeft size={19}/></button><button type="button" onClick={()=>goToServiceStep(activeServiceStep+1)} disabled={activeServiceStep===2} aria-label="Nākamais solis"><ChevronRight size={19}/></button></div></div>
         <div className="service-track" style={{transform:`translate3d(${-serviceProgress*(100/3)}%,0,0)`}}>
         <div className="service-step">
-          <div className="step-heading"><span>1</span><div><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3><p>{role==="gp"?"Prakses Asistents palīdz savlaicīgi pamanīt pacientus, kuriem jārīkojas.":"Pacienta informācija tiek sakārtota vienā pārskatāmā skatā."}</p></div></div>
+          <div className="step-heading"><span>1</span><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3></div>
           <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
         </div>
         <div className="service-step">
-          <div className="step-heading"><span>2</span><div><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3><p>{role==="gp"?"Skaidri nākamie soļi palīdz organizēt profilakses darbu bez liekas manuālas apkopošanas.":"Mazāk pārslēgšanās starp avotiem, vairāk laika sarunai ar pacientu."}</p></div></div>
+          <div className="step-heading"><span>2</span><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3></div>
           <div className="practice-benefits-grid">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="benefit-icon"><Icon size={18}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
         </div>
         <div className="service-step service-step--result">
-          <div className="step-heading"><span>3</span><div><h3>Redziet ieguvumu ikdienas darbā</h3><p>{role==="gp"?"Mazāk administratīva darba un mērķtiecīgāka pacientu uzraudzība.":"Skaidrāka pacienta kopaina un pārliecinošāk sagatavota konsultācija."}</p></div></div>
+          <div className="step-heading"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div>
           <div className="proof" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l],i)=><div key={l}>{i===0?<BarChart3 size={19}/>:i===1?<Clock3 size={19}/>:<ShieldCheck size={19}/>}<strong>{n}</strong><span>{l}</span></div>)}</div>
         </div>
         </div>

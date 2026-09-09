@@ -842,3 +842,10 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page .service-arrows button:focus-visible{outline:3px solid #dcd9ff;outline-offset:2px}
 .home-page .service-arrows button:disabled{opacity:.3;cursor:not-allowed}
 @media(max-width:760px){.home-page .functionality .section-head{gap:16px}.home-page .functionality .role-switch{width:100%}}
+
+.home-page .step-heading{align-items:center}
+.home-page .service-step--result{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:24px}
+.home-page .service-step--result .step-heading{width:100%}
+.home-page .service-step--result .proof{width:100%;gap:14px}
+.home-page .service-step--result .proof>div{padding:22px;border:1px solid #dedced!important;border-radius:12px;background:#fff}
+@media(max-width:640px){.home-page .service-step--result .proof>div{padding:18px}.home-page .service-step--result{gap:18px}}
