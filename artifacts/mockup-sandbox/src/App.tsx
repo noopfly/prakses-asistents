@@ -2,7 +2,7 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
-  Stethoscope, X
+  FileText, Stethoscope, Syringe, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
 
@@ -16,6 +16,8 @@ const roleContent = {
     features: [
       ["Vēža skrīningi", "Atlasām pacientus, kuriem nepieciešami dzemdes kakla, krūts, zarnu un prostatas vēža skrīningi.", ClipboardList],
       ["Sirds un asinsvadu slimību risks", "Atlasām pacientus, kuriem nepieciešams sirds un asinsvadu slimību skrīnings, izmantojot SCORE metodi.", HeartPulse],
+      ["Vakcinācijas", "Palīdzam atrast pacientus, kuriem nepieciešama vakcinācija vai tās aktualizēšana.", Syringe],
+      ["Izrakstu kopsavilkumi", "Apkopojam būtiskāko no izrakstiem, lai informācija būtu ātri pārskatāma.", FileText],
       ["Vairāk laika pacientam", "Automatizējam atkārtojošos datu apkopošanas uzdevumus, lai ārsts varētu vairāk laika veltīt pacientiem.", Clock3],
       ["Atbilstība prasībām", "Palīdzam praksēm pārskatāmi izpildīt ar profilaksi, skrīningiem un datu apstrādi saistītās prasības.", ShieldCheck],
       ["Proaktīva uzraudzība", "Savlaicīgi atgādinājumi palīdz uzturēt pacientu veselības stāvokļa proaktīvu uzraudzību.", HeartPulse],
@@ -215,6 +217,7 @@ function Home() {
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
   const c = roleContent[role];
+  const primaryServiceCount = role === "gp" ? 4 : 1;
   return <main id="main" className="home-page">
     <section className="hero">
       <div className="hero-copy reveal">
@@ -233,11 +236,11 @@ function Home() {
       <div className={`service-flow service-flow--${role}`}>
         <div className="service-step">
           <div className="step-heading"><span>1</span><div><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3><p>{role==="gp"?"Prakses Asistents palīdz savlaicīgi pamanīt pacientus, kuriem jārīkojas.":"Pacienta informācija tiek sakārtota vienā pārskatāmā skatā."}</p></div></div>
-          <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+          <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
         </div>
         <div className="service-step">
           <div className="step-heading"><span>2</span><div><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3><p>{role==="gp"?"Skaidri nākamie soļi palīdz organizēt profilakses darbu bez liekas manuālas apkopošanas.":"Mazāk pārslēgšanās starp avotiem, vairāk laika sarunai ar pacientu."}</p></div></div>
-          <div className="practice-benefits-grid">{c.features.slice(role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="benefit-icon"><Icon size={18}/></span><h3>{title}</h3><p>{text}</p></article>)}</div>
+          <div className="practice-benefits-grid">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="benefit-icon"><Icon size={18}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
         </div>
         <div className="service-step service-step--result">
           <div className="step-heading"><span>3</span><div><h3>Redziet ieguvumu ikdienas darbā</h3><p>{role==="gp"?"Mazāk administratīva darba un mērķtiecīgāka pacientu uzraudzība.":"Skaidrāka pacienta kopaina un pārliecinošāk sagatavota konsultācija."}</p></div></div>
