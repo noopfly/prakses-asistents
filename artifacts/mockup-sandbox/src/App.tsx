@@ -230,9 +230,20 @@ function Home() {
     </section>
     <section className="section functionality" id="funkcionalitate">
       <div className="section-head"><h2>Pakalpojumi</h2><RoleSwitch role={role} setRole={setRole}/></div>
-      <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-      <div className="practice-benefits"><p className="practice-benefits-label">Ko iegūst prakse</p><div className="practice-benefits-grid">{c.features.slice(role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><Icon size={18}/><h3>{title}</h3><p>{text}</p></article>)}</div></div>
-      <div className="proof"><div><h2>Kāpēc {role==="gp"?"ģimenes ārsti":"endokrinologi"} izvēlas Prakses Asistentu?</h2></div>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div>
+      <div className={`service-flow service-flow--${role}`}>
+        <div className="service-step">
+          <div className="step-heading"><span>1</span><div><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3><p>{role==="gp"?"Prakses Asistents palīdz savlaicīgi pamanīt pacientus, kuriem jārīkojas.":"Pacienta informācija tiek sakārtota vienā pārskatāmā skatā."}</p></div></div>
+          <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+        </div>
+        <div className="service-step">
+          <div className="step-heading"><span>2</span><div><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3><p>{role==="gp"?"Skaidri nākamie soļi palīdz organizēt profilakses darbu bez liekas manuālas apkopošanas.":"Mazāk pārslēgšanās starp avotiem, vairāk laika sarunai ar pacientu."}</p></div></div>
+          <div className="practice-benefits-grid">{c.features.slice(role==="gp"?2:1).map(([title,text,Icon])=><article key={title}><span className="benefit-icon"><Icon size={18}/></span><h3>{title}</h3><p>{text}</p></article>)}</div>
+        </div>
+        <div className="service-step service-step--result">
+          <div className="step-heading"><span>3</span><div><h3>Redziet ieguvumu ikdienas darbā</h3><p>{role==="gp"?"Mazāk administratīva darba un mērķtiecīgāka pacientu uzraudzība.":"Skaidrāka pacienta kopaina un pārliecinošāk sagatavota konsultācija."}</p></div></div>
+          <div className="proof" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l],i)=><div key={l}>{i===0?<BarChart3 size={19}/>:i===1?<Clock3 size={19}/>:<ShieldCheck size={19}/>}<strong>{n}</strong><span>{l}</span></div>)}</div>
+        </div>
+      </div>
     </section>
     <section className="home-pricing" id="cenas">
       <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2><p>Viena cena visai praksei — neatkarīgi no lietotāju skaita.</p></div>

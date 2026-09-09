@@ -768,3 +768,30 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
   .home-page>.plan-help--compact{margin:0 0 48px;padding:0 24px;grid-template-columns:1fr;gap:16px}
   .home-page>.plan-help--compact a{grid-column:auto}
 }
+/* Pakalpojumi: cohesive three-step flow */
+.home-page .service-flow{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+.home-page .service-step{padding:30px 32px}
+.home-page .service-step+.service-step{border-top:1px solid var(--line)}
+.home-page .step-heading{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}
+.home-page .step-heading>span{flex:0 0 32px;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--lav);color:var(--navy);font-weight:800;font-size:14px}
+.home-page .step-heading h3{font-family:"DM Sans",sans-serif;font-size:19px;font-weight:700;letter-spacing:0;line-height:1.3}
+.home-page .step-heading p{margin:4px 0 0;color:var(--muted);font-size:14px;line-height:1.5}
+.home-page .service-flow .primary-services{border:0;gap:12px}
+.home-page .service-flow .primary-services article,.home-page .service-flow .primary-services--endo article{min-height:142px;padding:24px 26px;background:var(--navy);color:#fff;border:0;border-radius:12px}
+.home-page .service-flow .primary-services--endo article{grid-template-columns:48px minmax(0,700px);justify-content:start}
+.home-page .service-flow .primary-services article+article{border:0}
+.home-page .service-flow .primary-services .icon{background:rgba(255,255,255,.11);color:#fff}
+.home-page .service-flow .primary-services p{color:#d8d7e8}
+.home-page .service-flow .practice-benefits-grid{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.home-page .service-flow .practice-benefits-grid article{padding:22px;background:#fff}
+.home-page .service-flow .benefit-icon{width:34px;height:34px;display:grid;place-items:center;margin-bottom:14px;border-radius:9px;background:var(--lav);color:#6965be}
+.home-page .service-flow .practice-benefits-grid svg{margin:0}
+.home-page .service-step--result{display:grid;grid-template-columns:minmax(240px,.8fr) 1.4fr;align-items:center;gap:36px;background:#f5f4ff}
+.home-page .service-step--result .step-heading{margin:0}
+.home-page .service-flow .proof{margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border:0;background:transparent}
+.home-page .service-flow .proof>div{min-width:0;padding:8px 24px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:2px 12px;background:transparent;border:0;border-left:1px solid #d8d6eb}
+.home-page .service-flow .proof svg{grid-row:1/3;color:#6f6ac2}
+.home-page .service-flow .proof strong{font-size:22px;line-height:1.15}
+.home-page .service-flow .proof span{font-size:12px;color:var(--muted)}
+@media(max-width:900px){.home-page .service-step--result{grid-template-columns:1fr}.home-page .service-flow .proof>div{border-top:0!important;border-left:1px solid #d8d6eb!important}}
+@media(max-width:640px){.home-page .service-flow{border-radius:14px}.home-page .service-step{padding:24px 18px}.home-page .service-flow .primary-services article,.home-page .service-flow .primary-services--endo article{padding:22px 18px}.home-page .service-flow .practice-benefits-grid article{padding:20px 4px}.home-page .service-flow .proof{grid-template-columns:1fr}.home-page .service-flow .proof>div{padding:15px 0;border-left:0!important;border-top:1px solid #d8d6eb!important}.home-page .service-flow .proof>div:first-child{border-top:0!important}}
