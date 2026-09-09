@@ -890,7 +890,8 @@ footer{background:#1d283e}
 @media(max-width:760px){.mobile-nav{background:#fff}}
 
 /* Homepage service story refinements. */
-.home-page .functionality .section-head{gap:12px;margin-bottom:16px}
+.home-page .hero h1{font-size:clamp(2.75rem,4.8vw,4.5rem)}
+.home-page .functionality .section-head{gap:28px;margin-bottom:20px}
 .home-page .functionality .section-head>div>p{display:none}
 .home-page .functionality .role-switch{width:min(100%,520px);padding:4px}
 .home-page .functionality .role-switch button{padding:.62rem 1rem;font-size:.78rem}
@@ -898,8 +899,11 @@ footer{background:#1d283e}
 .home-page .service-arrows{gap:10px}
 .home-page .service-arrows button{width:44px;height:44px}
 .home-page .service-track{height:calc(100% - 56px)}
-.home-page .service-step,.home-page .service-step--result{display:grid;grid-template-rows:auto minmax(0,1fr);align-items:stretch;justify-content:stretch;gap:20px;padding:28px 36px}
+.home-page .service-step,.home-page .service-step--result{display:grid;grid-template-rows:auto auto;align-content:start;align-items:stretch;justify-content:stretch;gap:20px;padding:28px 36px}
+.home-page .service-step--result{grid-template-columns:1fr}
 .home-page .service-step .step-heading,.home-page .service-step--result .step-heading{width:100%;align-self:start;margin:0}
-.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:center}
-.home-page .service-step--result .proof>div{background:#fff}
-@media(max-width:760px){.home-page .functionality .role-switch button{padding:.58rem .7rem}.home-page .service-progress{display:flex}.home-page .service-track{height:auto}.home-page .service-step,.home-page .service-step--result{padding:24px 20px;gap:18px}.home-page .service-flow--gp .service-step:first-child{min-height:720px}.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:start}}
+.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:start}
+.home-page .service-flow .primary-services p,.home-page .service-flow .practice-benefits-grid p{font-size:14px;line-height:1.55}
+.home-page .service-flow .proof span{font-size:14px;line-height:1.45}
+.home-page .service-step--result .proof>div{background:#fff!important}
+@media(max-width:760px){.home-page .functionality .section-head{gap:22px}.home-page .functionality .role-switch button{padding:.58rem .7rem}.home-page .service-progress{display:flex}.home-page .service-track{height:auto}.home-page .service-step,.home-page .service-step--result{padding:24px 20px;gap:18px}.home-page .service-flow--gp .service-step:first-child{min-height:780px}.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:start}}
