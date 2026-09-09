@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
-  ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
+  ArrowRight, BarChart3, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ClipboardList, Clock3,
   HeartPulse, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
   FileText, Stethoscope, Syringe, X
 } from "lucide-react";
@@ -233,6 +233,15 @@ function Home() {
     window.addEventListener("resize",update);
     return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update)};
   },[]);
+  const activeServiceStep=Math.min(2,Math.max(0,Math.round(serviceProgress)));
+  const goToServiceStep=(step:number)=>{
+    const section=serviceSection.current;
+    if(!section)return;
+    const target=Math.min(2,Math.max(0,step));
+    const sectionTop=window.scrollY+section.getBoundingClientRect().top;
+    const distance=Math.max(1,section.offsetHeight-window.innerHeight);
+    window.scrollTo({top:sectionTop+(target/2)*distance,behavior:"smooth"});
+  };
   return <main id="main" className="home-page">
     <section className="hero">
       <div className="hero-copy reveal">
@@ -250,7 +259,7 @@ function Home() {
       <div className="service-sticky">
       <div className="section-head"><div><h2>Pakalpojumi</h2><p>Trīs soļi no pacientu atlases līdz skaidram rezultātam.</p></div><RoleSwitch role={role} setRole={setRole}/></div>
       <div className={`service-flow service-flow--${role}`}>
-        <div className="service-progress" aria-hidden="true"><span>{Math.min(3,Math.floor(serviceProgress+1))} / 3</span><i><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i></div>
+        <div className="service-progress"><span aria-live="polite">{activeServiceStep+1} / 3</span><i aria-hidden="true"><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i><div className="service-arrows"><button type="button" onClick={()=>goToServiceStep(activeServiceStep-1)} disabled={activeServiceStep===0} aria-label="Iepriekšējais solis"><ChevronLeft size={19}/></button><button type="button" onClick={()=>goToServiceStep(activeServiceStep+1)} disabled={activeServiceStep===2} aria-label="Nākamais solis"><ChevronRight size={19}/></button></div></div>
         <div className="service-track" style={{transform:`translate3d(${-serviceProgress*(100/3)}%,0,0)`}}>
         <div className="service-step">
           <div className="step-heading"><span>1</span><div><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3><p>{role==="gp"?"Prakses Asistents palīdz savlaicīgi pamanīt pacientus, kuriem jārīkojas.":"Pacienta informācija tiek sakārtota vienā pārskatāmā skatā."}</p></div></div>
