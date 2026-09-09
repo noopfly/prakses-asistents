@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
@@ -216,8 +216,23 @@ function Home() {
   const [signupRole, setSignupRole] = useState<Role>("gp");
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
+  const [serviceProgress, setServiceProgress] = useState(0);
+  const serviceSection = useRef<HTMLElement>(null);
   const c = roleContent[role];
   const primaryServiceCount = role === "gp" ? 4 : 1;
+  useEffect(()=>{
+    const update=()=>{
+      const section=serviceSection.current;
+      if(!section)return;
+      const rect=section.getBoundingClientRect();
+      const distance=Math.max(1,rect.height-window.innerHeight);
+      setServiceProgress(Math.min(2,Math.max(0,(-rect.top/distance)*2)));
+    };
+    update();
+    window.addEventListener("scroll",update,{passive:true});
+    window.addEventListener("resize",update);
+    return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update)};
+  },[]);
   return <main id="main" className="home-page">
     <section className="hero">
       <div className="hero-copy reveal">
@@ -231,9 +246,12 @@ function Home() {
       <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Strukturēts kopsavilkums palīdz pirms konsultācijas ātri ieraudzīt pacienta būtiskākos datus, analīžu dinamiku un aktuālos medikamentus.</p><Link href="/#funkcionalitate" className="text-link">Uzzināt vairāk <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
-    <section className="section functionality" id="funkcionalitate">
-      <div className="section-head"><h2>Pakalpojumi</h2><RoleSwitch role={role} setRole={setRole}/></div>
+    <section className="section functionality" id="funkcionalitate" ref={serviceSection}>
+      <div className="service-sticky">
+      <div className="section-head"><div><h2>Pakalpojumi</h2><p>Trīs soļi no pacientu atlases līdz skaidram rezultātam.</p></div><RoleSwitch role={role} setRole={setRole}/></div>
       <div className={`service-flow service-flow--${role}`}>
+        <div className="service-progress" aria-hidden="true"><span>{Math.min(3,Math.floor(serviceProgress+1))} / 3</span><i><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i></div>
+        <div className="service-track" style={{transform:`translate3d(${-serviceProgress*(100/3)}%,0,0)`}}>
         <div className="service-step">
           <div className="step-heading"><span>1</span><div><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3><p>{role==="gp"?"Prakses Asistents palīdz savlaicīgi pamanīt pacientus, kuriem jārīkojas.":"Pacienta informācija tiek sakārtota vienā pārskatāmā skatā."}</p></div></div>
           <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
@@ -246,6 +264,9 @@ function Home() {
           <div className="step-heading"><span>3</span><div><h3>Redziet ieguvumu ikdienas darbā</h3><p>{role==="gp"?"Mazāk administratīva darba un mērķtiecīgāka pacientu uzraudzība.":"Skaidrāka pacienta kopaina un pārliecinošāk sagatavota konsultācija."}</p></div></div>
           <div className="proof" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l],i)=><div key={l}>{i===0?<BarChart3 size={19}/>:i===1?<Clock3 size={19}/>:<ShieldCheck size={19}/>}<strong>{n}</strong><span>{l}</span></div>)}</div>
         </div>
+        </div>
+      </div>
+      <p className="service-scroll-hint" aria-hidden="true">Ritiniet, lai apskatītu nākamo soli <ArrowRight size={15}/></p>
       </div>
     </section>
     <section className="home-pricing" id="cenas">
