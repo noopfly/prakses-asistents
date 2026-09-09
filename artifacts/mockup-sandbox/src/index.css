@@ -824,7 +824,7 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page .service-flow{position:relative;flex:0 1 530px;min-height:430px;overflow:hidden;border-radius:20px;background:#f8f8fc}
 .home-page .service-progress{height:48px;padding:0 28px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:700}
 .home-page .service-progress i{height:3px;max-width:180px;flex:1;overflow:hidden;border-radius:9px;background:#e5e4ee}
-.home-page .service-progress b{display:block;height:100%;border-radius:inherit;background:var(--navy);transition:width .12s linear}
+.home-page .service-progress b{display:block;height:100%;border-radius:inherit;background:var(--navy)}
 .home-page .service-track{width:300%;height:calc(100% - 48px);display:flex;will-change:transform}
 .home-page .service-step{flex:0 0 33.3333%;width:33.3333%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:32px 42px;border:0!important;background:#fff}
 .home-page .service-step--result{display:grid;grid-template-columns:.75fr 1.25fr;background:#f5f4ff}
@@ -888,3 +888,18 @@ input,select,textarea{border-color:#dde2e9;border-radius:6px;background:#fff}inp
 .cta{border-radius:12px;background:#1d283e}.back-to-top{border-radius:6px;background:#1d283e;border-color:#1d283e}
 footer{background:#1d283e}
 @media(max-width:760px){.mobile-nav{background:#fff}}
+
+/* Homepage service story refinements. */
+.home-page .functionality .section-head{gap:12px;margin-bottom:16px}
+.home-page .functionality .section-head>div>p{display:none}
+.home-page .functionality .role-switch{width:min(100%,520px);padding:4px}
+.home-page .functionality .role-switch button{padding:.62rem 1rem;font-size:.78rem}
+.home-page .service-progress{height:56px}
+.home-page .service-arrows{gap:10px}
+.home-page .service-arrows button{width:44px;height:44px}
+.home-page .service-track{height:calc(100% - 56px)}
+.home-page .service-step,.home-page .service-step--result{display:grid;grid-template-rows:auto minmax(0,1fr);align-items:stretch;justify-content:stretch;gap:20px;padding:28px 36px}
+.home-page .service-step .step-heading,.home-page .service-step--result .step-heading{width:100%;align-self:start;margin:0}
+.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:center}
+.home-page .service-step--result .proof>div{background:#fff}
+@media(max-width:760px){.home-page .functionality .role-switch button{padding:.58rem .7rem}.home-page .service-progress{display:flex}.home-page .service-track{height:auto}.home-page .service-step,.home-page .service-step--result{padding:24px 20px;gap:18px}.home-page .service-flow--gp .service-step:first-child{min-height:720px}.home-page .service-step .primary-services,.home-page .service-step .practice-benefits-grid,.home-page .service-step--result .proof{align-self:start}}

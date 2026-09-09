@@ -12,7 +12,7 @@ const roleContent = {
   gp: {
     label: "Ģimenes ārstiem",
     title: "Prakses Asistents",
-    body: "Palīdzam ārstiem efektīvāk rūpēties par pacientiem, automatizējot datu apstrādi un izceļot būtiskāko ikdienas darbam.",
+    body: "Palīdzam ārstiem efektīvāk atlasīt pacientus, automatizējot datu apstrādi un apkopojot būtiskāko informāciju vienā skatā.",
     features: [
       ["Vēža skrīningi", "Atlasām pacientus, kuriem nepieciešami dzemdes kakla, krūts, zarnu un prostatas vēža skrīningi.", ClipboardList],
       ["Sirds un asinsvadu slimību risks", "Atlasām pacientus, kuriem nepieciešams sirds un asinsvadu slimību skrīnings, izmantojot SCORE metodi.", HeartPulse],
@@ -23,19 +23,20 @@ const roleContent = {
       ["Proaktīva uzraudzība", "Savlaicīgi atgādinājumi palīdz uzturēt pacientu veselības stāvokļa proaktīvu uzraudzību.", HeartPulse],
       ["Vienkārša lietošana", "Risinājums veidots ārsta darba ritmam — ar būtisko informāciju priekšplānā.", Check],
     ],
-    stats: [["+32%", "Lielāka atsaucība"], ["6", "Mērķēti algoritmi"], ["100%", "Datu drošība"]],
+    stats: [["+32%", "augstāka pacientu atsaucība"], ["6+", "algoritmi mērķētai pacientu atlasei"], ["100%", "datu drošība, atbilstoša GDPR datu apstrādes prasībām"]],
   },
   endo: {
     label: "Endokrinologiem",
     title: "Prakses Asistents",
     body: "Palīdzam ārstiem ātrāk ieraudzīt būtisko par pacientu, automatizējot datu apstrādi un veidojot pārskatāmu kopainu.",
     features: [
-      ["Pacienta pārskats", "Būtiskākie pacienta dati, analīžu dinamika un medikamenti vienuviet — īpaši endokrinologa konsultācijai.", BarChart3],
-      ["Vairāk laika pacientam", "Samazinām manuālu datu apkopošanu, lai konsultācijā vairāk laika paliktu pacientam.", Clock3],
-      ["Vienkārša lietošana", "Būtiskā informācija ir priekšplānā un pielāgota ārsta darba ritmam.", Check],
-      ["Droša datu apstrāde", "Pacienta informācija tiek apstrādāta pārskatāmi un ar uzmanību datu drošībai.", ShieldCheck],
+      ["Pacienta pārskats", "Analīžu dinamika, aktuālā terapija, medikamenti un būtiskākais veselības konteksts vienā pārskatāmā skatā.", BarChart3],
+      ["Mazāk informācijas meklēšanas", "Būtiskākā informācija ir apkopota vienuviet, nevis jāmeklē vairākos avotos.", Clock3],
+      ["Skaidri redzama dinamika", "Analīžu izmaiņas laika gaitā ir vieglāk pamanīt un izvērtēt.", BarChart3],
+      ["Aktuālā terapija vienuviet", "Medikamenti un ārstēšanas konteksts ir pieejams vienā pārskatā.", FileText],
+      ["Vairāk laika pacientam", "Mazāk laika datu apkopošanai nozīmē vairāk laika sarunai un klīniskajam darbam.", Clock3],
     ],
-    stats: [["1 skats", "Mazāk pārslēgšanās"], ["Jūsu ritms", "Pielāgojams pārskats"], ["Skaidri", "Pārbaudāma informācija"]],
+    stats: [["1 skats", "analīzes, terapija un veselības konteksts vienviet"], ["Jūsu ritms", "pielāgojams pārskats un izkārtojums Jūsu vajadzībām"], ["Ātrāk", "pārskatāma sagatavošanās konsultācijai"]],
   },
 } as const;
 
@@ -62,6 +63,7 @@ const priceFaq = [
 ] as const;
 
 const nav = [
+  ["/", "Sākums"],
   ["/#pakalpojumi", "Pakalpojumi"], ["/#cenas", "Cenas"],
   ["/#klut-par-klientu", "Kļūt par klientu"],
   ["/prakses-dienasgramata", "Prakses dienasgrāmata"], ["/kontakti", "Kontakti"],
@@ -115,7 +117,7 @@ function Header() {
     };
   }, []);
   const currentPath = routePath();
-  const mobileNav = currentPath === "/" ? nav : [["/", "Sākums"], ...nav];
+  const mobileNav = nav;
   const headerNav = mobileNav.filter(([href])=>href!=="/#klut-par-klientu");
   const activeHref = `${currentPath}${location.hash}`;
   return <>
@@ -124,7 +126,10 @@ function Header() {
     <header className={`header${hidden&&!open?" header--hidden":""}`} onFocusCapture={()=>setHidden(false)}>
       <Link href="/" className="brand"><span className="brandmark"><HeartPulse size={17}/></span><span>Prakses Asistents</span></Link>
       <nav className="desktop-nav" aria-label="Galvenā navigācija">
-        {headerNav.map(([href, label]) => <Link key={href} href={href} className={`${activeHref === href || currentPath === href ? "active" : ""}${href==="/#klut-par-klientu"?" nav-cta":""}`}>{label}</Link>)}
+        {headerNav.map(([href, label]) => {
+          const isActive = href === "/" ? currentPath === "/" && !location.hash : activeHref === href || currentPath === href;
+          return <Link key={href} href={href} className={`${isActive ? "active" : ""}${href==="/#klut-par-klientu"?" nav-cta":""}`}>{label}</Link>;
+        })}
       </nav>
       <Link href="/#klut-par-klientu" className="btn small desktop-cta">Kļūt par klientu</Link>
       <button className="menu" aria-label={open ? "Aizvērt izvēlni" : "Atvērt izvēlni"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
@@ -247,22 +252,22 @@ function Home() {
       <div className="hero-copy reveal">
         <div className="static-pills" aria-label="Paredzēts specialitātēm"><span className="specialty-pill specialty-pill--gp">Ģimenes ārsti</span><span className="specialty-pill specialty-pill--endo">Endokrinologi</span></div>
         <h1>{c.title}</h1><p className="lead">{c.body}</p>
-        <div className="actions"><Link href="/#klut-par-klientu" className="btn">Kļūt par klientu</Link><Link href="/#pakalpojumi" className="btn ghost">Uzzināt vairāk</Link></div>
+        <div className="actions"><Link href="/#klut-par-klientu" className="btn">Kļūt par klientu</Link><Link href="/#pakalpojumi" className="btn ghost">Apskatīt pakalpojumus</Link></div>
       </div>
       <OriginalPatientOverview/>
     </section>
     <section className="feature-band" id="pakalpojumi">
-      <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Strukturēts kopsavilkums palīdz pirms konsultācijas ātri ieraudzīt pacienta būtiskākos datus, analīžu dinamiku un aktuālos medikamentus.</p><Link href="/#funkcionalitate" className="text-link">Uzzināt vairāk <ArrowRight size={15}/></Link></div>
+      <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
     <section className="section functionality" id="funkcionalitate" ref={serviceSection}>
       <div className="service-sticky">
-      <div className="section-head"><div><h2>Pakalpojumi</h2><p>Trīs soļi no pacientu atlases līdz skaidram rezultātam.</p></div><RoleSwitch role={role} setRole={setRole}/></div>
+      <div className="section-head"><div><h2>Pakalpojumi</h2></div><RoleSwitch role={role} setRole={setRole}/></div>
       <div className={`service-flow service-flow--${role}`}>
-        <div className="service-progress"><span aria-live="polite">{activeServiceStep+1} / 3</span><i aria-hidden="true"><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i><div className="service-arrows"><button type="button" onClick={()=>goToServiceStep(activeServiceStep-1)} disabled={activeServiceStep===0} aria-label="Iepriekšējais solis"><ChevronLeft size={19}/></button><button type="button" onClick={()=>goToServiceStep(activeServiceStep+1)} disabled={activeServiceStep===2} aria-label="Nākamais solis"><ChevronRight size={19}/></button></div></div>
+        <div className="service-progress"><span aria-live="polite">{activeServiceStep+1} / 3</span><i aria-hidden="true"><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i><div className="service-arrows"><button type="button" onClick={()=>goToServiceStep(activeServiceStep-1)} disabled={activeServiceStep===0} aria-label="Iepriekšējais solis"><ChevronLeft size={23}/></button><button type="button" onClick={()=>goToServiceStep(activeServiceStep+1)} disabled={activeServiceStep===2} aria-label="Nākamais solis"><ChevronRight size={23}/></button></div></div>
         <div className="service-track" style={{transform:`translate3d(${-serviceProgress*(100/3)}%,0,0)`}}>
         <div className="service-step">
-          <div className="step-heading"><span>1</span><h3>{role==="gp"?"Atlasiet pacientus, kuriem nepieciešama uzmanība":"Apkopojiet būtiskāko pirms konsultācijas"}</h3></div>
+          <div className="step-heading"><span>1</span><h3>{role==="gp"?"Atlasīti pacienti, kuriem nepieciešama profilakse":"Apkopojiet būtiskāko pirms konsultācijas"}</h3></div>
           <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
         </div>
         <div className="service-step">
