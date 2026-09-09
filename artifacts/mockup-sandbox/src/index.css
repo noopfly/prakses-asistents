@@ -933,8 +933,8 @@ footer{background:#1d283e;color:#fff}
   .home-page .home-form form{position:sticky;top:92px;max-width:650px;max-height:none;overflow:visible;scrollbar-gutter:auto}
 }
 @media(min-width:901px){
-  .contact-layout{min-height:calc(100vh - 114px);padding-top:52px;padding-bottom:52px;align-items:center}
-  .contact-form{max-height:none;overflow:visible;padding:24px!important}
+  .contact-layout{grid-template-columns:minmax(300px,380px) minmax(0,660px);gap:48px;justify-content:center;min-height:calc(100vh - 114px);padding-top:52px;padding-bottom:52px;align-items:center}
+  .contact-form{width:100%;max-width:660px;max-height:none;overflow:visible;padding:24px!important}
   .contact-form label{margin-bottom:10px;font-size:13px}
   .contact-form input,.contact-form textarea{min-height:42px;margin-top:5px;padding:10px 12px;font-size:15px}
   .contact-form textarea{min-height:100px}
