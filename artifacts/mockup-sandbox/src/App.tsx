@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ClipboardList, Clock3,
-  HeartPulse, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
+  HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
   ExternalLink, FileText, Stethoscope, Syringe, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
@@ -307,7 +307,7 @@ function Home() {
       {sent && <p className="form-status" role="status">Demonstrācijas versijā dati netiek nosūtīti.</p>}
     </form></section>
     <FAQ title="Biežāk uzdotie jautājumi" items={serviceFaq}/>
-    <section className="section home-journal" id="dienasgramatas-ieskats"><div className="home-section-title"><div><h2>Prakses dienasgrāmata</h2><p>Sarunas ar ārstiem un veselības aprūpes ekspertiem par ikdienas prakses realitāti Latvijā.</p></div><Link href="/prakses-dienasgramata" className="text-link">Apskatīt visus rakstus <ArrowRight size={15}/></Link></div><div className="post-grid">{posts.slice(0,3).map(([date,title,text,tags],i)=><article key={title}><div className={`post-art art-${i%3}`}><HeartPulse/></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p><Link href="/prakses-dienasgramata">Lasīt rakstu <ArrowRight size={14}/></Link></article>)}</div></section>
+    <section className="section home-journal" id="dienasgramatas-ieskats"><div className="home-section-title"><div><h2>Prakses dienasgrāmata</h2><p>Sarunas ar ārstiem un veselības aprūpes ekspertiem par ikdienas prakses realitāti Latvijā.</p></div><Link href="/prakses-dienasgramata" className="text-link">Apskatīt visus rakstus <ArrowRight size={15}/></Link></div><div className="post-grid">{posts.slice(0,3).map(([date,title,text,tags],i)=><article key={title}><div className="post-art photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p><Link href="/prakses-dienasgramata">Lasīt rakstu <ArrowRight size={14}/></Link></article>)}</div></section>
   </main>;
 }
 
@@ -379,7 +379,7 @@ function PostTags({tags}:{tags:readonly ("gp"|"endo")[]}) {
 }
 
 function Journal() {
-  return <main id="main"><PageHero eyebrow="Prakses dienasgrāmata" title="Sarunas no prakses. Nevis teorija." text="Sarunas starp ģimenes ārstiem par ikdienas prakses realitāti Latvijā — praktiska pieredze un pārdomas, nevis teorija."/><section className="journal-intro"><div><MessageCircle/><b>Profesionāla saruna</b></div><div><Clock3/><b>Reizi nedēļā</b></div><div><Stethoscope/><b>Latvijā</b></div></section><section className="section"><div className="section-head left"><p className="eyebrow">Jaunākie ieraksti</p><h2>Rakstu arhīvs</h2></div><div className="post-grid">{posts.map(([date,title,text,tags],i)=><article key={title}><div className={`post-art art-${i%3}`}><HeartPulse/></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p>{i===3?<a href="https://praksesasistents.lv/prakses-dienasgramata/andris-baumanis-atklati-par-e-veselibu">Lasīt rakstu <ArrowRight size={14}/></a>:<span className="post-status">Raksts drīzumā</span>}</article>)}</div></section><CTA title="Ir pieredze, ar ko dalīties?" text="Piedalieties sarunā un palīdziet veidot Latvijas prakses kopienas zināšanas."/></main>;
+  return <main id="main"><PageHero eyebrow="Prakses dienasgrāmata" title="Sarunas no prakses. Nevis teorija." text="Sarunas starp ģimenes ārstiem par ikdienas prakses realitāti Latvijā — praktiska pieredze un pārdomas, nevis teorija."/><section className="journal-intro"><div><MessageCircle/><b>Profesionāla saruna</b></div><div><Clock3/><b>Reizi nedēļā</b></div><div><Stethoscope/><b>Latvijā</b></div></section><section className="section"><div className="section-head left"><p className="eyebrow">Jaunākie ieraksti</p><h2>Rakstu arhīvs</h2></div><div className="post-grid">{posts.map(([date,title,text,tags],i)=><article key={title}><div className="post-art photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p>{i===3?<a href="https://praksesasistents.lv/prakses-dienasgramata/andris-baumanis-atklati-par-e-veselibu">Lasīt rakstu <ArrowRight size={14}/></a>:<span className="post-status">Raksts drīzumā</span>}</article>)}</div></section><CTA title="Ir pieredze, ar ko dalīties?" text="Piedalieties sarunā un palīdziet veidot Latvijas prakses kopienas zināšanas."/></main>;
 }
 
 function Contact() {
