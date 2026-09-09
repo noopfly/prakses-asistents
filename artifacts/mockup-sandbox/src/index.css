@@ -926,10 +926,11 @@ footer{background:#1d283e;color:#fff}
 
 /* Registration and contact form clarity. */
 @media(min-width:1100px){
-  .home-page .home-form{grid-template-columns:minmax(410px,460px) minmax(0,560px);gap:56px;justify-content:center}
+  .home-page .home-form{grid-template-columns:minmax(390px,430px) minmax(0,650px);gap:48px;justify-content:center}
   .home-page .home-form>div:first-child{padding-top:12px}
   .home-page .home-form h2{max-width:15ch;font-size:clamp(2.55rem,3.8vw,3.55rem)}
-  .home-page .home-form form{position:sticky;top:92px;max-height:calc(100vh - 108px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+  .home-page .home-form>div:first-child>p{margin-top:28px}
+  .home-page .home-form form{position:sticky;top:92px;max-width:650px;max-height:none;overflow:visible;scrollbar-gutter:auto}
 }
 @media(min-width:901px){
   .contact-layout{min-height:calc(100vh - 114px);padding-top:52px;padding-bottom:52px;align-items:center}
