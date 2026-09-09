@@ -275,7 +275,6 @@ function Home() {
         </div>
         </div>
       </div>
-      <p className="service-scroll-hint" aria-hidden="true">Ritiniet, lai apskatītu nākamo soli <ArrowRight size={15}/></p>
       </div>
     </section>
     <section className="home-pricing" id="cenas">

@@ -828,7 +828,6 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .home-page .service-track{width:300%;height:calc(100% - 48px);display:flex;will-change:transform}
 .home-page .service-step{flex:0 0 33.3333%;width:33.3333%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:32px 42px;border:0!important;background:#fff}
 .home-page .service-step--result{display:grid;grid-template-columns:.75fr 1.25fr;background:#f5f4ff}
-.home-page .service-scroll-hint{margin:14px 4px 0;display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}
 @media(prefers-reduced-motion:reduce){.home-page .functionality{height:auto;padding:72px 0!important}.home-page .service-sticky{position:static;height:auto;padding:0}.home-page .service-flow{overflow-x:auto}.home-page .service-track{transform:none!important}.home-page .service-step{min-height:480px}.home-page .service-scroll-hint{display:none}}
 @media(max-width:760px){.home-page .functionality{height:auto;padding:64px 0!important}.home-page .service-sticky{position:static;height:auto;padding:0}.home-page .functionality .section-head{grid-template-columns:1fr}.home-page .service-flow{min-height:0;overflow-x:auto;scroll-snap-type:x mandatory}.home-page .service-progress{display:none}.home-page .service-track{width:max-content;height:auto;transform:none!important}.home-page .service-step{flex:0 0 86vw;width:86vw;min-height:560px;scroll-snap-align:center;padding:28px 22px}.home-page .service-step--result{display:flex}.home-page .service-scroll-hint{display:none}}
 
