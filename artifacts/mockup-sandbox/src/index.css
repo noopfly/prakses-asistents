@@ -160,18 +160,18 @@ footer{padding:64px var(--gutter)}
 
 /* Contact page: compact editorial split inspired by clean contact-form references. */
 .contact-page{background:#fff}
-.contact-shell{max-width:1120px;margin:0 auto;padding:80px var(--gutter) 88px}
-.contact-intro{max-width:760px;margin-bottom:56px}
-.contact-intro h1{font-size:clamp(3rem,6vw,5.25rem);line-height:.98}
-.contact-intro p{max-width:620px;margin:24px 0 0;color:var(--muted);font-size:17px;line-height:1.65}
-.contact-body{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:72px;align-items:start;padding-top:48px;border-top:1px solid var(--line)}
+.contact-shell{max-width:1080px;margin:0 auto;padding:56px var(--gutter) 64px}
+.contact-intro{max-width:680px;margin-bottom:36px}
+.contact-intro h1{font-size:clamp(2.75rem,5vw,4.25rem);line-height:1}
+.contact-intro p{max-width:590px;margin:18px 0 0;color:var(--muted);font-size:16px;line-height:1.6}
+.contact-body{display:grid;grid-template-columns:minmax(280px,.78fr) minmax(0,1.22fr);gap:56px;align-items:start;padding-top:36px;border-top:1px solid var(--line)}
 .contact-page .contact-copy{position:static;padding:0}
-.contact-page .contact-client-link{max-width:34ch;margin:0;color:var(--muted);font-size:15px;line-height:1.65}
-.contact-page .contact-client-link a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}
-.contact-methods{margin-top:40px;border-top:1px solid var(--line)}
+.contact-client-note{max-width:36ch;margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.contact-methods{margin-top:28px;border-top:1px solid var(--line)}
 .contact-page .contact-detail{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;align-items:center;margin:0;padding:22px 0;border-bottom:1px solid var(--line);color:var(--ink)}
 .contact-page .contact-detail>svg{color:#4b617e}
-.contact-page .contact-detail span,.contact-page .contact-detail small,.contact-page .contact-detail strong{display:block}
+.contact-page .contact-detail>div{display:block;width:auto;height:auto;padding:0;background:none;border-radius:0;color:inherit}
+.contact-page .contact-detail small,.contact-page .contact-detail strong{display:block}
 .contact-page .contact-detail small{margin-bottom:4px;color:var(--muted);font-size:12px}
 .contact-page .contact-detail strong{font-size:14px;line-height:1.4;overflow-wrap:anywhere}
 .contact-page .contact-form{width:100%;max-width:none;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
@@ -182,8 +182,8 @@ footer{padding:64px var(--gutter)}
 .contact-page .contact-form textarea{min-height:160px}
 .contact-page .contact-form .btn{width:100%;min-height:52px;margin-top:4px;border-radius:8px;box-shadow:none}
 .contact-page>.faq{padding-top:72px}
-@media(max-width:900px){.contact-shell{padding-block:64px}.contact-intro{margin-bottom:44px}.contact-body{grid-template-columns:1fr;gap:48px}.contact-page .contact-client-link{max-width:56ch}.contact-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:0}.contact-page .contact-detail{border-top:1px solid var(--line)}}
-@media(max-width:620px){.contact-shell{padding:48px 24px 56px}.contact-intro{margin-bottom:36px}.contact-intro p{font-size:16px}.contact-body{padding-top:32px;gap:40px}.contact-methods,.contact-name-fields{grid-template-columns:1fr;gap:0}.contact-page .contact-form label{margin-bottom:16px}}
+@media(max-width:900px){.contact-shell{padding-block:48px}.contact-intro{margin-bottom:32px}.contact-body{grid-template-columns:1fr;gap:36px;padding-top:32px}.contact-client-note{max-width:56ch}.contact-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:0}.contact-page .contact-detail{border-top:1px solid var(--line)}}
+@media(max-width:620px){.contact-shell{padding:40px 24px 48px}.contact-intro{margin-bottom:28px}.contact-intro p{font-size:15px}.contact-body{padding-top:28px;gap:32px}.contact-methods,.contact-name-fields{grid-template-columns:1fr;gap:0}.contact-page .contact-form label{margin-bottom:16px}}
 
 /* Clarity and navigation refinement */
 #funkcionalitate,#kontakti{scroll-margin-top:112px}
