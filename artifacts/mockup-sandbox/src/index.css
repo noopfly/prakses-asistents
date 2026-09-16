@@ -82,16 +82,17 @@ p{line-height:1.65}
 footer{padding:64px var(--gutter)}
 .footer-grid{max-width:var(--container)}
 .desktop-cta{display:inline-flex;margin-left:8px;padding:13px 20px!important;font-size:15px!important;white-space:nowrap}
-.profile-login{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 12px;border:1px solid #d8dde5;border-radius:8px;background:#fff;color:#26344a;font-size:13px;font-weight:700;white-space:nowrap;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.profile-login{display:inline-flex;width:42px;height:42px;flex:0 0 42px;align-items:center;justify-content:center;padding:0;border:1px solid #d8dde5;border-radius:50%;background:#fff;color:#26344a;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.profile-login:not(.profile-login--mobile) span{display:none}
 .profile-login:hover{border-color:#bfc7d2;background:#f5f7fa;color:var(--navy)}
 .profile-login:focus-visible{outline:3px solid #e4e6ff;outline-offset:2px}
 .profile-login svg{flex:0 0 auto}
 .profile-login--mobile{display:none}
-@media(min-width:901px) and (max-width:1180px){.desktop-nav{gap:1rem}.profile-login{width:42px;padding:0}.profile-login span{display:none}}
+@media(min-width:901px) and (max-width:1180px){.desktop-nav{gap:1rem}}
 .desktop-nav{align-items:center;font-size:14px}
 .desktop-nav a.nav-cta{padding:12px 18px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;box-shadow:0 8px 20px rgba(23,23,91,.16)}
 .desktop-nav a.nav-cta:hover,.desktop-nav a.nav-cta.active{border:0;background:#292976;color:#fff;transform:translateY(-1px)}
-@media(max-width:900px){.desktop-cta,.profile-login:not(.profile-login--mobile){display:none}.profile-login--mobile{display:flex;justify-content:flex-start;width:100%;margin-top:8px;padding:12px 0;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent}.profile-login--mobile svg:last-child{margin-left:auto}}
+@media(max-width:900px){.desktop-cta,.profile-login:not(.profile-login--mobile){display:none}.profile-login--mobile{display:flex;justify-content:flex-start;gap:8px;width:100%;height:auto;margin-top:8px;padding:12px 0;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;font-size:13px;font-weight:700}.profile-login--mobile svg:last-child{margin-left:auto}}
 #pakalpojumi,#cenas,#klut-par-klientu{scroll-margin-top:112px}
 .home-pricing{max-width:var(--container);margin:auto;padding:96px var(--gutter);border-top:1px solid var(--line)}
 .home-pricing-grid{padding:0;max-width:none}
