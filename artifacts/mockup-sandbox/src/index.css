@@ -1125,7 +1125,7 @@ footer{background:#1d283e;color:#fff}
 .home-page .home-form .signup-submit{min-height:48px;border-radius:8px}
 
 /* Patient overview: balanced two-line heading and a lightly angled product view. */
-.home-page .feature-band{grid-template-columns:minmax(410px,.96fr) minmax(0,1.04fr);gap:clamp(36px,4vw,56px)}
+.home-page .feature-band{grid-template-columns:minmax(410px,.96fr) minmax(0,1.04fr);gap:clamp(64px,7vw,96px)}
 .home-page .feature-band>div:first-child{max-width:520px}
 .home-page .feature-band h2{max-width:none;font-size:clamp(2.5rem,3.6vw,3.25rem);line-height:1.02}
 .home-page .feature-band h2 span{display:block;white-space:nowrap}
