@@ -1139,6 +1139,27 @@ footer{background:#1d283e;color:#fff}
 @supports(animation-timeline:view()){.product-feature{animation:product-feature-reveal linear both;animation-timeline:view();animation-range:entry 8% cover 32%}@keyframes product-feature-reveal{from{opacity:.2;transform:translateY(24px)}to{opacity:1;transform:none}}}
 .home-page .home-pricing-grid--single{grid-template-columns:minmax(0,520px);justify-content:center}
 .home-page .home-pricing-grid--single article{width:100%;min-height:560px}
+.home-pricing--endo{--endo-rule:#d9dee6}
+.home-page .home-pricing--endo .section-head{max-width:820px;margin-bottom:34px}
+.home-page .home-pricing--endo .section-head h2{font-size:clamp(2.7rem,5vw,4.5rem);line-height:1.02}
+.home-page .home-pricing--endo .section-head p{max-width:700px;font-size:18px;line-height:1.55}
+.home-page .home-pricing--endo .billing{margin-bottom:64px}
+.endo-pricing-card{width:min(100%,980px);margin:0 auto;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);border:0;background:transparent}
+.endo-pricing-summary{padding:28px 64px 28px 0;border-right:1px solid var(--endo-rule)}
+.endo-pricing-summary h3,.endo-pricing-features h3{font-family:"DM Sans",sans-serif;font-size:28px;font-weight:750;letter-spacing:-.025em}
+.endo-pricing-summary>p{max-width:39ch;margin:18px 0 34px;font-size:16px;line-height:1.65}
+.endo-pricing-summary .price-block{margin:0 0 30px}
+.endo-pricing-summary .price{align-items:flex-end;gap:12px;margin:0}
+.endo-pricing-summary .price strong{font-family:"DM Sans",sans-serif;font-size:clamp(3.25rem,5vw,4.75rem);font-weight:750;letter-spacing:-.045em;line-height:.95}
+.endo-pricing-summary .price span{padding-bottom:6px;color:#687287;font-size:14px;line-height:1.4}
+.endo-pricing-summary .btn{width:100%;min-height:52px;border-radius:8px;box-shadow:none}
+.endo-pricing-features{padding:34px 0 28px 64px}
+.endo-pricing-features h3{font-size:20px}
+.endo-pricing-features ul{margin:26px 0 0;padding:0;list-style:none}
+.endo-pricing-features li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;align-items:center;padding:12px 0;color:#626c80;font-size:16px}
+.endo-pricing-features li svg{width:34px;height:34px;padding:8px;border:1px solid #d5dbe4;border-radius:7px;background:#f3f5f7;color:#26364c}
+.endo-pricing-note{width:min(100%,980px);margin:60px auto 0;padding:34px 0 0;display:flex;align-items:center;justify-content:center;gap:12px;border-top:1px solid var(--endo-rule);color:#687287;font-size:14px}
+@media(max-width:760px){.home-page .home-pricing--endo .section-head p{font-size:16px}.home-page .home-pricing--endo .billing{margin-bottom:42px}.endo-pricing-card{grid-template-columns:1fr}.endo-pricing-summary{padding:0 0 38px;border-right:0;border-bottom:1px solid var(--endo-rule)}.endo-pricing-features{padding:38px 0 0}.endo-pricing-note{margin-top:44px;padding-top:26px;align-items:flex-start;justify-content:flex-start}.endo-pricing-summary .price strong{font-size:3.4rem}}
 
 /* Registration: three clear groups with one consistent spacing rhythm. */
 .home-page .home-form{align-items:start}

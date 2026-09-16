@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
-  HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
+  HeartPulse, ImageIcon, Info, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
   ExternalLink, FileText, LockKeyhole, Stethoscope, Syringe, UserRound, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
@@ -330,9 +330,15 @@ function Home() {
       </ol>}
     </section>
     <section className={`home-pricing home-pricing--${role}`} id="cenas">
-      <div className="section-head"><h2>{role==="gp"?"Plāni ģimenes ārsta praksei":"Plāni endokrinologiem"}</h2>{role==="gp"&&<p>Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem.</p>}</div>
+      <div className="section-head"><h2>{role==="gp"?"Plāni ģimenes ārsta praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem.":"Svarīgākā pacienta informācija vienuviet ērtākai sagatavošanās vizītei un ātrākai lēmumu pieņemšanai."}</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
-      <div className={`pricing-grid home-pricing-grid${role==="endo"?" home-pricing-grid--single":""}`}>{visiblePlans.map(([name,price,text,items])=>{const planIndex=plans.findIndex(plan=>plan[0]===name);const displayItems=role==="endo"?["Pacienta pārskats","Analīžu dinamika un aktuālā terapija","Automātiski SMS atgādinājumi pacientiem","Prioritārs klientu atbalsts"]:items;return <article className={planIndex===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{planIndex===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${planIndex===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{displayItems.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>})}</div>
+      {role==="gp"?<div className="pricing-grid home-pricing-grid">{visiblePlans.map(([name,price,text,items])=>{const planIndex=plans.findIndex(plan=>plan[0]===name);return <article className={planIndex===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{planIndex===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${planIndex===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{items.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>})}</div>:<>
+        <article className="endo-pricing-card">
+          <div className="endo-pricing-summary"><h3>Pacienta pārskats</h3><p>Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.</p><PriceBlock price="110" annual={annual}/><Link href="/#klut-par-klientu" className="btn">Izvēlēties</Link></div>
+          <div className="endo-pricing-features"><h3>Iekļauts</h3><ul>{["Pacienta pārskats","Analīžu dinamika un aktuālā terapija","Svarīgākie dati vienuviet","Prioritārs klientu atbalsts"].map(item=><li key={item}><Check size={17}/><span>{item}</span></li>)}</ul></div>
+        </article>
+        <p className="endo-pricing-note"><Info size={19}/> Šobrīd endokrinologiem pieejama šī funkcionalitāte.</p>
+      </>}
     </section>
     {role==="gp"&&<PlanHelp compact/>}
     {role==="gp"&&<FAQ title="Par cenām un plāniem" items={gpPriceFaq}/>}
