@@ -181,8 +181,12 @@ footer{padding:64px var(--gutter)}
 .contact-page .contact-form input{min-height:50px}
 .contact-page .contact-form textarea{min-height:160px}
 .contact-page .contact-form .btn{width:100%;min-height:52px;margin-top:4px;border-radius:8px;box-shadow:none}
-.contact-page>.faq{padding-top:72px}
-@media(max-width:900px){.contact-shell{padding-block:48px}.contact-intro{margin-bottom:32px}.contact-body{grid-template-columns:1fr;gap:36px;padding-top:32px}.contact-client-note{max-width:56ch}.contact-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:0}.contact-page .contact-detail{border-top:1px solid var(--line)}}
+.contact-page>.faq{max-width:1080px;padding:56px var(--gutter) 72px;display:grid;grid-template-columns:minmax(280px,.78fr) minmax(0,1.22fr);gap:56px;border-top:1px solid var(--line)}
+.contact-page>.faq>div:first-child{margin:0;text-align:left}
+.contact-page>.faq>div:first-child h2{font-size:clamp(1.9rem,3vw,2.6rem);line-height:1.12}
+.contact-page>.faq>div:last-child{width:100%;max-width:none;margin:0}
+.contact-page>.faq article button{min-height:60px;padding:17px 0;font-size:15px}
+@media(max-width:900px){.contact-shell{padding-block:48px}.contact-intro{margin-bottom:32px}.contact-body{grid-template-columns:1fr;gap:36px;padding-top:32px}.contact-client-note{max-width:56ch}.contact-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:0}.contact-page .contact-detail{border-top:1px solid var(--line)}.contact-page>.faq{grid-template-columns:1fr;gap:24px;padding-block:48px}.contact-page>.faq>div:first-child{margin:0}}
 @media(max-width:620px){.contact-shell{padding:40px 24px 48px}.contact-intro{margin-bottom:28px}.contact-intro p{font-size:15px}.contact-body{padding-top:28px;gap:32px}.contact-methods,.contact-name-fields{grid-template-columns:1fr;gap:0}.contact-page .contact-form label{margin-bottom:16px}}
 
 /* Clarity and navigation refinement */
