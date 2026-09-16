@@ -196,6 +196,7 @@ function RoleSwitch({ role, setRole }: { role: Role; setRole: (r: Role)=>void })
 function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
   const monthlyPrice = Number(price);
   const annualPrice = monthlyPrice * 10;
+  const annualMonthlyWithVat = annualPrice * 1.21 / 12;
   const formatPrice = (value:number, minimumFractionDigits=0) => value.toLocaleString("lv-LV", {
     minimumFractionDigits,
     maximumFractionDigits: 2,
@@ -206,9 +207,9 @@ function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
   });
 
   return <div className="price-block">
-    {annual&&<p className="annual-label">Maksa gadā</p>}
-    <div className={`price${annual?" price--annual":""}`}><strong>€{annual?formatPrice(annualPrice):formatPrice(monthlyPrice)}</strong><span>{annual?"+ PVN":<><span>/ mēnesī</span><br/>+ PVN</>}</span></div>
-    {annual?<p className="annual-payment">Apmaksai <strong>€{priceWithVat}</strong> gadā ar PVN</p>:<p className="price-with-vat"><strong>€{priceWithVat}</strong> mēnesī ar 21% PVN</p>}
+    {annual&&<p className="annual-label">Efektīvā mēneša cena</p>}
+    <div className={`price${annual?" price--annual":""}`}><strong>€{annual?formatPrice(annualMonthlyWithVat,2):formatPrice(monthlyPrice)}</strong><span>{annual?"/ mēnesī ar PVN":<><span>/ mēnesī</span><br/>+ PVN</>}</span></div>
+    {annual?<p className="annual-payment">Gada priekšapmaksa: <strong>€{priceWithVat}</strong> ar PVN</p>:<p className="price-with-vat"><strong>€{priceWithVat}</strong> mēnesī ar 21% PVN</p>}
   </div>;
 }
 
@@ -324,8 +325,8 @@ function Services() {
 
 const plans = [
   ["Pamata","30","Svarīgākais vēža skrīningu savlaicīgai uzraudzībai.",["Vēža skrīningu pārvaldība","Ceturkšņa pārskati"]],
-  ["Standarta","45","Pilnvērtīgs profilaktiskā darba komplekts ģimenes ārsta praksei.",["Viss, kas iekļauts Pamata plānā","SCORE riska novērtēšana","Vakcinācijas un profilaktiskās apskates","Izrakstu kopsavilkumi"]],
-  ["Pilnais","75","Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.",["Viss, kas iekļauts Standarta plānā","Pacienta veselības kopsavilkums","SMS atgādinājumi","Prioritārs klientu atbalsts"]],
+  ["Standarta","45","Pilnvērtīgs profilaktiskā darba komplekts ģimenes ārsta praksei.",["Viss, kas iekļauts Pamata plānā","SCORE2 riska novērtēšana","Vakcinācijas un profilaktiskās apskates","Izrakstu kopsavilkumi"]],
+  ["Pilnais","110","Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.",["Viss, kas iekļauts Standarta plānā","Pacienta pārskats","Automātiski SMS atgādinājumi pacientiem","Prioritārs klientu atbalsts"]],
 ] as const;
 
 function Pricing() {
@@ -335,6 +336,7 @@ function Pricing() {
       <header className="pricing90-head">
         <p className="eyebrow">Cenas</p>
         <h1 id="pricing-title">Izvēlieties plānu savai praksei</h1>
+        <p className="pricing90-intro">Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem. Cena ir par praksi, nevis par ārstu.</p>
         <div className="pricing90-toggle" role="group" aria-label="Izvēlieties abonēšanas periodu">
           <button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button>
           <button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button>
@@ -355,6 +357,10 @@ function Pricing() {
           <div className="pricing90-features"><p>Plānā iekļauts</p><ul>{items.map(x=><li key={x}><Check size={17}/><span>{x}</span></li>)}</ul></div>
         </article>)}
       </div>
+      <section className="pricing-conditions" aria-labelledby="pricing-conditions-title">
+        <h2 id="pricing-conditions-title">Cenu nosacījumi</h2>
+        <div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div>
+      </section>
     </section>
     <FAQ items={priceFaq}/><PlanHelp/>
   </main>;
