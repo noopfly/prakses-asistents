@@ -1102,6 +1102,36 @@ footer{background:#1d283e;color:#fff}
 .home-page .home-pricing-grid--single{grid-template-columns:minmax(0,520px);justify-content:center}
 .home-page .home-pricing-grid--single article{width:100%;min-height:560px}
 
+/* Registration: three clear groups with one consistent spacing rhythm. */
+.home-page .home-form{align-items:start}
+.home-page .home-form>div:first-child{padding-top:18px}
+.home-page .home-form h2{max-width:14ch;font-size:clamp(2.35rem,3.4vw,3rem);line-height:1.02}
+.home-page .home-form>div:first-child>p{max-width:40ch;margin:24px 0 0;font-size:16px;line-height:1.65}
+.home-page .signup-benefits{margin-top:32px}
+.home-page .signup-benefits li{grid-template-columns:30px 1fr;padding:15px 0;font-size:14px}
+.home-page .home-form form{width:100%;max-width:680px;padding:32px 36px;border-radius:12px}
+.signup-form-heading{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.signup-form-heading h3{font-family:"DM Sans",sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em}
+.signup-form-heading p{margin:0;color:var(--muted);font-size:12px;line-height:1.4;white-space:nowrap}
+.home-page .home-form .signup-contact-fields{gap:18px 16px}
+.home-page .home-form label,.home-page .home-form legend{font-size:13px;font-weight:700;color:#34334d}
+.home-page .home-form :where(input,textarea,select){min-height:48px;margin-top:7px;padding:12px 14px;border-color:#d9dce3;background:#fff;font-size:15px}
+.home-page .home-form :where(input,textarea,select):hover{border-color:#b8bec9}
+.signup-practice-fields{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+.home-page .home-form .signup-practice-fields>label,.home-page .home-form .client-type{margin:0}
+.home-page .home-form .client-type .inline-choices{min-height:48px;align-items:center;gap:28px;margin-top:7px;padding:0 14px;border:1px solid #d9dce3;border-radius:8px;background:#fff}
+.home-page .home-form .client-type label{gap:7px;font-size:13px;font-weight:500;white-space:nowrap}
+.home-page .home-form .client-type input{width:16px;height:16px;margin:0}
+.home-page .home-form .consent-group{gap:0;margin:22px 0 20px;padding:14px 0 0;border-top:1px solid var(--line)}
+.home-page .home-form .consent{min-height:38px;padding:7px 0;font-size:12px;line-height:1.5}
+.home-page .home-form .consent input{margin-top:2px!important}
+.home-page .home-form .signup-submit{min-height:48px;border-radius:8px}
+
+@media(min-width:1100px){
+  .home-page .home-form{grid-template-columns:minmax(360px,420px) minmax(0,680px);gap:64px}
+  .home-page .home-form form{max-width:680px}
+}
+
 @media(max-width:900px){
   .specialty-choice{grid-template-columns:1fr;gap:36px;padding-block:56px}
   .specialty-choice h2{max-width:none}
@@ -1130,6 +1160,12 @@ footer{background:#1d283e;color:#fff}
   .media-lightbox{padding:12px}
   .media-lightbox>img{max-width:calc(100vw - 24px);max-height:calc(100vh - 80px)}
   .media-lightbox-close{top:12px;right:12px}
+  .home-page .home-form>div:first-child{padding-top:0}
+  .home-page .home-form form{padding:24px 20px}
+  .signup-form-heading{display:block;margin-bottom:20px;padding-bottom:16px}
+  .signup-form-heading p{margin-top:6px;white-space:normal}
+  .signup-practice-fields{grid-template-columns:1fr;gap:18px;margin-top:20px;padding-top:20px}
+  .home-page .home-form .client-type .inline-choices{min-height:0;align-items:flex-start;padding:13px 14px;gap:12px}
   .specialty-gate--locked{min-height:calc(100svh - 68px)}
   .specialty-gate--locked .specialty-choice{width:calc(100% - 32px);margin-block:24px;padding:24px 20px}
   .specialty-gate--locked .specialty-options{grid-template-columns:1fr}
