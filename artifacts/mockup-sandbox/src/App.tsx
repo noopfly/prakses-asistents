@@ -306,7 +306,7 @@ function Home() {
       <OriginalPatientOverview/>
     </section>
     <section className="feature-band" id="pacienta-parskats">
-      <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
+      <div><h2><span>Pacienta pārskats</span><span>— būtiskais vienuviet</span></h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
     <section ref={gateRef} className={`specialty-gate${role?" specialty-gate--selected":" specialty-gate--locked"}`} id="specialitate" aria-labelledby="specialty-title">
