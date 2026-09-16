@@ -1,6 +1,6 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import {
-  ArrowRight, BarChart3, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ClipboardList, Clock3,
+  ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
   ExternalLink, FileText, Stethoscope, Syringe, X
 } from "lucide-react";
@@ -70,6 +70,14 @@ const nav = [
 ];
 
 const basePrefix = import.meta.env.BASE_URL.replace(/\/$/, "");
+const specialtyKey = "prakses-asistents-specialty";
+const specialtyTargetKey = "prakses-asistents-specialty-target";
+const specialtyTargets = new Set(["/#pakalpojumi", "/#funkcionalitate", "/#cenas"]);
+
+function storedSpecialty(): Role | null {
+  const value = window.localStorage.getItem(specialtyKey);
+  return value === "gp" || value === "endo" ? value : null;
+}
 
 function withBase(path: string) {
   return `${basePrefix}${path}` || "/";
@@ -91,7 +99,17 @@ function go(path: string) {
 }
 
 function Link({ href, children, className = "", onClick }: { href: string; children: ReactNode; className?: string; onClick?: () => void }) {
-  return <a href={href.startsWith("/")?withBase(href):href} className={className} onClick={(e) => { onClick?.(); if (href.startsWith("/")) { e.preventDefault(); go(href); } }}>{children}</a>;
+  return <a href={href.startsWith("/")?withBase(href):href} className={className} onClick={(e) => {
+    onClick?.();
+    if (!href.startsWith("/")) return;
+    e.preventDefault();
+    if (specialtyTargets.has(href) && !storedSpecialty()) {
+      window.sessionStorage.setItem(specialtyTargetKey, href);
+      go("/#specialitate");
+      return;
+    }
+    go(href);
+  }}>{children}</a>;
 }
 
 function Header() {
@@ -223,76 +241,57 @@ function PlanHelp({compact=false}:{compact?:boolean}) {
 }
 
 function Home() {
-  const [role, setRole] = useState<Role>("gp");
+  const [role, setRole] = useState<Role | null>(()=>storedSpecialty());
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
   const [signupValid, setSignupValid] = useState(false);
-  const [serviceProgress, setServiceProgress] = useState(0);
-  const serviceSection = useRef<HTMLElement>(null);
-  const c = roleContent[role];
-  const primaryServiceCount = role === "gp" ? 4 : 1;
-  useEffect(()=>{
-    const update=()=>{
-      const section=serviceSection.current;
-      if(!section)return;
-      const rect=section.getBoundingClientRect();
-      const distance=Math.max(1,rect.height-window.innerHeight);
-      setServiceProgress(Math.min(2,Math.max(0,(-rect.top/distance)*2)));
-    };
-    update();
-    window.addEventListener("scroll",update,{passive:true});
-    window.addEventListener("resize",update);
-    return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update)};
-  },[]);
-  const activeServiceStep=Math.min(2,Math.max(0,Math.round(serviceProgress)));
-  const goToServiceStep=(step:number)=>{
-    const section=serviceSection.current;
-    if(!section)return;
-    const target=Math.min(2,Math.max(0,step));
-    const sectionTop=window.scrollY+section.getBoundingClientRect().top;
-    const distance=Math.max(1,section.offsetHeight-window.innerHeight);
-    window.scrollTo({top:sectionTop+(target/2)*distance,behavior:"smooth"});
+  const activeRole: Role = role ?? "gp";
+  const c = roleContent[activeRole];
+  const primaryServiceCount = activeRole === "gp" ? 4 : 1;
+  const visiblePlans = activeRole === "gp" ? plans : [plans[2]];
+  const chooseSpecialty=(nextRole:Role)=>{
+    window.localStorage.setItem(specialtyKey,nextRole);
+    setRole(nextRole);
+    const target=window.sessionStorage.getItem(specialtyTargetKey) || "/#pakalpojumi";
+    window.sessionStorage.removeItem(specialtyTargetKey);
+    window.setTimeout(()=>go(target),50);
+  };
+  const changeSpecialty=()=>{
+    window.localStorage.removeItem(specialtyKey);
+    window.sessionStorage.setItem(specialtyTargetKey,"/#pakalpojumi");
+    setRole(null);
+    window.setTimeout(()=>document.querySelector("#specialitate")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
   };
   return <main id="main" className="home-page">
     <section className="hero">
       <div className="hero-copy reveal">
         <div className="static-pills" aria-label="Paredzēts specialitātēm"><span className="specialty-pill specialty-pill--gp">Ģimenes ārsti</span><span className="specialty-pill specialty-pill--endo">Endokrinologi</span></div>
-        <h1>{c.title}</h1><p className="lead">{c.body}</p>
+        <h1>Prakses Asistents</h1><p className="lead">{roleContent.gp.body}</p>
         <div className="actions"><Link href="/#klut-par-klientu" className="btn">Kļūt par klientu</Link><Link href="/#pakalpojumi" className="btn ghost">Apskatīt pakalpojumus</Link></div>
       </div>
       <OriginalPatientOverview/>
     </section>
-    <section className="feature-band" id="pakalpojumi">
+    <section className="feature-band" id="pacienta-parskats">
       <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
-    <section className="section functionality" id="funkcionalitate" ref={serviceSection}>
-      <div className="service-sticky">
-      <div className="section-head"><div><h2>Pakalpojumi</h2></div><RoleSwitch role={role} setRole={setRole}/></div>
-      <div className={`service-flow service-flow--${role}`}>
-        <div className="service-progress"><span aria-live="polite">{activeServiceStep+1} / 3</span><i aria-hidden="true"><b style={{width:`${((serviceProgress+1)/3)*100}%`}}/></i><div className="service-arrows"><button type="button" onClick={()=>goToServiceStep(activeServiceStep-1)} disabled={activeServiceStep===0} aria-label="Iepriekšējais solis"><ChevronLeft size={23}/></button><button type="button" onClick={()=>goToServiceStep(activeServiceStep+1)} disabled={activeServiceStep===2} aria-label="Nākamais solis"><ChevronRight size={23}/></button></div></div>
-        <div className="service-track" style={{transform:`translate3d(${-serviceProgress*(100/3)}%,0,0)`}}>
-        <div className="service-step">
-          <div className="step-heading"><span>1</span><h3>{role==="gp"?"Atlasīti pacienti, kuriem nepieciešama profilakse":"Apkopojiet būtiskāko pirms konsultācijas"}</h3></div>
-          <div className={`primary-services primary-services--${role}`}>{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="icon"><Icon size={22}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-        </div>
-        <div className="service-step">
-          <div className="step-heading"><span>2</span><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3></div>
-          <div className="practice-benefits-grid">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><span className="benefit-icon"><Icon size={18}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-        </div>
-        <div className="service-step service-step--result">
-          <div className="step-heading"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div>
-          <div className="proof" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l],i)=><div key={l}>{i===0?<BarChart3 size={19}/>:i===1?<Clock3 size={19}/>:<ShieldCheck size={19}/>}<strong>{n}</strong><span>{l}</span></div>)}</div>
-        </div>
-        </div>
-      </div>
-      </div>
+    <section className={`specialty-gate${role?" specialty-gate--selected":""}`} id="specialitate" aria-labelledby="specialty-title">
+      {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<div className="specialty-choice"><div><h2 id="specialty-title">Izvēlieties savu specialitāti</h2><p>Parādīsim tieši jūsu darbam paredzētos pakalpojumus un cenas. Izvēli saglabāsim šajā pārlūkā.</p></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={24}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={18}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={24}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={18}/></button></div></div>}
     </section>
-    <section className="home-pricing" id="cenas">
-      <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2><p>Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem. PVN ir iekļauts.</p></div>
+    {role&&<>
+    <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
+      <div className="specialty-section-head"><div><h2>Pakalpojumi {role==="gp"?"ģimenes ārstiem":"endokrinologiem"}</h2><p>{role==="gp"?"Mērķēta pacientu atlase un pārskatāms profilakses darbs vienā secīgā procesā.":"Būtiskākā informācija pirms konsultācijas — apkopota vienā pārskatāmā skatā."}</p></div></div>
+      <ol className="service-sequence">
+        <li><div className="sequence-title"><span>1</span><h3>{role==="gp"?"Atlasīti pacienti, kuriem nepieciešama profilakse":"Apkopojiet būtiskāko pirms konsultācijas"}</h3></div><div className="service-list">{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
+        <li><div className="sequence-title"><span>2</span><h3>{role==="gp"?"Saņemiet pārskatāmu darba sarakstu":"Sagatavojieties konsultācijai ātrāk"}</h3></div><div className="service-list service-list--benefits">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
+        <li><div className="sequence-title"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div><div className="service-results" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div></li>
+      </ol>
+    </section>
+    <section className={`home-pricing home-pricing--${role}`} id="cenas">
+      <div className="section-head"><h2>Cenas {role==="gp"?"ģimenes ārsta praksei":"endokrinologa praksei"}</h2><p>{role==="gp"?"Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem. PVN ir iekļauts.":"Pacienta pārskata plāns endokrinologa praksei. PVN ir iekļauts."}</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
-      <div className="pricing-grid home-pricing-grid">{plans.map(([name,price,text,items],i)=><article className={i===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{i===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${i===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{items.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>)}</div>
-      <section className="pricing-conditions" aria-labelledby="pricing-conditions-title"><h2 id="pricing-conditions-title">Cenu nosacījumi</h2><div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div></section>
+      <div className={`pricing-grid home-pricing-grid${role==="endo"?" home-pricing-grid--single":""}`}>{visiblePlans.map(([name,price,text,items])=>{const planIndex=plans.findIndex(plan=>plan[0]===name);const displayItems=role==="endo"?["Pacienta pārskats","Analīžu dinamika un aktuālā terapija","Automātiski SMS atgādinājumi pacientiem","Prioritārs klientu atbalsts"]:items;return <article className={planIndex===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{planIndex===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${planIndex===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{displayItems.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>})}</div>
+      {role==="gp"&&<section className="pricing-conditions" aria-labelledby="pricing-conditions-title"><h2 id="pricing-conditions-title">Cenu nosacījumi</h2><div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div></section>}
     </section>
     <PlanHelp compact/>
     <FAQ title="Par cenām un plāniem" items={priceFaq}/>
@@ -306,6 +305,7 @@ function Home() {
     </form></section>
     <FAQ title="Biežāk uzdotie jautājumi" items={serviceFaq}/>
     <section className="section home-journal" id="dienasgramatas-ieskats"><div className="home-section-title"><div><h2>Prakses dienasgrāmata</h2><p>Sarunas ar ārstiem un veselības aprūpes ekspertiem par ikdienas prakses realitāti Latvijā.</p></div><Link href="/prakses-dienasgramata" className="text-link">Apskatīt visus rakstus <ArrowRight size={15}/></Link></div><div className="post-grid">{posts.slice(0,3).map(([date,title,text,tags],i)=><article key={title}><div className="post-art photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p><Link href="/prakses-dienasgramata">Lasīt rakstu <ArrowRight size={14}/></Link></article>)}</div></section>
+    </>}
   </main>;
 }
 
