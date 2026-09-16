@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
-  ExternalLink, FileText, LockKeyhole, Stethoscope, Syringe, X
+  ExternalLink, FileText, LockKeyhole, Stethoscope, Syringe, UserRound, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
 import brandLogo from "../../../attached_assets/prakses-asistents-logo.png";
@@ -166,9 +166,17 @@ function Header() {
           return <Link key={href} href={href} className={`${isActive ? "active" : ""}${href==="/#klut-par-klientu"?" nav-cta":""}`}>{label}</Link>;
         })}
       </nav>
+      <a className="profile-login" href="https://mans.praksesasistents.lv" target="_blank" rel="noreferrer" aria-label="Pieslēgties Prakses Asistenta profilam">
+        <UserRound size={18}/><span>Pieslēgties</span>
+      </a>
       <Link href="/#klut-par-klientu" className="btn small desktop-cta">Kļūt par klientu</Link>
       <button className="menu" aria-label={open ? "Aizvērt izvēlni" : "Atvērt izvēlni"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
-      {open && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobilā navigācija">{mobileNav.map(([href, label]) => <Link key={href} href={href} onClick={()=>setOpen(false)} className={currentPath === href ? "active" : ""}>{label}</Link>)}</nav>}
+      {open && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobilā navigācija">
+        {mobileNav.map(([href, label]) => <Link key={href} href={href} onClick={()=>setOpen(false)} className={currentPath === href ? "active" : ""}>{label}</Link>)}
+        <a className="profile-login profile-login--mobile" href="https://mans.praksesasistents.lv" target="_blank" rel="noreferrer" onClick={()=>setOpen(false)}>
+          <UserRound size={18}/><span>Pieslēgties profilā</span><ExternalLink size={14}/>
+        </a>
+      </nav>}
     </header>
   </>;
 }
