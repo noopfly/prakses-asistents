@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
@@ -246,10 +246,20 @@ function Home() {
   const [annual, setAnnual] = useState(false);
   const [sent, setSent] = useState(false);
   const [signupValid, setSignupValid] = useState(false);
+  const [gateVisible,setGateVisible]=useState(false);
+  const gateRef=useRef<HTMLElement>(null);
   const activeRole: Role = role ?? "gp";
   const c = roleContent[activeRole];
   const primaryServiceCount = activeRole === "gp" ? 4 : 1;
   const visiblePlans = activeRole === "gp" ? plans : [plans[2]];
+  useEffect(()=>{
+    if(role||gateVisible)return;
+    const gate=gateRef.current;
+    if(!gate)return;
+    const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setGateVisible(true);observer.disconnect()}},{threshold:.32});
+    observer.observe(gate);
+    return()=>observer.disconnect();
+  },[role,gateVisible]);
   const chooseSpecialty=(nextRole:Role)=>{
     window.localStorage.setItem(specialtyKey,nextRole);
     setRole(nextRole);
@@ -278,8 +288,8 @@ function Home() {
       <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
-    <section className={`specialty-gate${role?" specialty-gate--selected":" specialty-gate--locked"}`} id="specialitate" aria-labelledby="specialty-title">
-      {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<><div className="specialty-lock-preview" aria-hidden="true"><h2>Pakalpojumi</h2><div><article><span>01</span><strong>Pacientu atlase</strong></article><article><span>02</span><strong>Pārskatāms darba saraksts</strong></article><article><span>03</span><strong>Rezultāti ikdienas darbā</strong></article></div></div><div className="specialty-choice" role="group" aria-describedby="specialty-description"><div className="specialty-choice-copy"><span className="specialty-lock-icon"><LockKeyhole size={20}/></span><h2 id="specialty-title">Izvēlieties savu specialitāti</h2></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={24}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={18}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={24}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={18}/></button></div><p id="specialty-description" className="specialty-choice-note">Lai turpinātu, izvēlieties savu specialitāti. Parādīsim tieši jūsu darbam paredzētos pakalpojumus un cenas.</p></div></>}
+    <section ref={gateRef} className={`specialty-gate${role?" specialty-gate--selected":" specialty-gate--locked"}`} id="specialitate" aria-labelledby="specialty-title">
+      {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<><div className="specialty-lock-preview" aria-hidden="true"><h2>Pakalpojumi</h2><div><article><span>01</span><strong>Pacientu atlase</strong></article><article><span>02</span><strong>Pārskatāms darba saraksts</strong></article><article><span>03</span><strong>Rezultāti ikdienas darbā</strong></article></div></div><div className={`specialty-choice${gateVisible?" specialty-choice--visible":""}`} role="group" aria-describedby="specialty-description"><div className="specialty-choice-copy"><span className="specialty-lock-icon"><LockKeyhole size={20}/></span><h2 id="specialty-title">Izvēlieties savu specialitāti</h2></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={26}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={19}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={26}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={19}/></button></div><p id="specialty-description" className="specialty-choice-note">Lai turpinātu, izvēlieties savu specialitāti.</p></div></>}
     </section>
     {role&&<>
     <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
