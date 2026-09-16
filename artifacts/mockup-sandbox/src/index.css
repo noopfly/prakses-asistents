@@ -281,7 +281,6 @@ footer{padding:64px var(--gutter)}
 .annual-tier>h2,.annual-tier>h3,.annual-tier>.eyebrow{padding-right:72px}
 .annual-tier .popular{position:static;display:inline-flex;width:max-content;margin:10px 0 14px;padding:6px 10px}
 .annual-tier .popular+p{margin-top:0}
-.annual-label{margin:26px 0 4px!important;color:var(--muted);font-size:15px!important;line-height:1.4!important}
 .price.price--annual{align-items:end;gap:14px}
 .price.price--annual span{padding-bottom:10px;font-size:13px}
 .annual-payment{margin:6px 0 0!important;color:var(--muted);font-size:13px!important;line-height:1.45!important}
@@ -417,7 +416,6 @@ select{width:100%;min-height:48px;border:1px solid #dcdbe6;background:#fdfdff;bo
 .home-page .popular{position:static;flex:0 0 auto;margin-top:1px;padding:7px 9px;border-radius:6px;background:var(--navy);font-size:10px;line-height:1.15}
 .home-page .home-pricing-grid article>p{min-height:66px;margin:16px 0 0;color:#616a7d;font-size:14px;line-height:1.55}
 .home-page .home-pricing-grid .price-block{min-height:128px;margin:22px 0 18px}
-.home-page .home-pricing-grid .annual-label{margin:0 0 7px!important;color:#626a78;font-size:12px!important;font-weight:700}
 .home-page .home-pricing-grid .price{align-items:flex-end;gap:10px;margin:0}
 .home-page .home-pricing-grid .price strong{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(2.45rem,3.4vw,3.2rem);font-weight:650;line-height:1;letter-spacing:-.04em;color:var(--ink)}
 .home-page .home-pricing-grid .price span{padding-bottom:5px;color:#667085;font-size:11px;line-height:1.35}
@@ -603,7 +601,6 @@ footer{background:#fff;color:var(--ink);padding:72px var(--gutter) 0;border-top:
 .pricing90-summary h2{font-size:clamp(2.2rem,3vw,3rem);line-height:1}
 .pricing90-summary p{margin:13px 0 0;font-size:14px;line-height:1.6}
 .pricing90-card .price-block{min-height:152px;padding:24px 0 18px}
-.pricing90-card .annual-label{margin:0 0 4px;color:#656379;font-size:13px;font-weight:700}
 .pricing90-card .price{margin:0;gap:9px}
 .pricing90-card .price strong{font-size:clamp(3.6rem,5vw,4.65rem);line-height:1}
 .pricing90-card .price span{padding-bottom:8px;font-size:12px;line-height:1.35}

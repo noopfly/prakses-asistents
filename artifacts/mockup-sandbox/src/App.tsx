@@ -238,7 +238,6 @@ function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
     maximumFractionDigits: 2,
   });
   return <div className="price-block">
-    {annual&&<p className="annual-label">Efektīvā mēneša cena</p>}
     <div className={`price${annual?" price--annual":""}`}><strong>€{formatPrice(annual?annualMonthlyWithVat:monthlyWithVat,2)}</strong><span>/ mēnesī<br/>ar PVN</span></div>
   </div>;
 }
