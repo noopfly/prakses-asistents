@@ -8,7 +8,6 @@ import originalPatientOverview from "../../../attached_assets/original-patient-o
 import brandLogo from "../../../attached_assets/prakses-asistents-logo.png";
 import dischargeSummaryDemo from "../../../attached_assets/discharge-summary.gif";
 import score2Demo from "../../../attached_assets/score2.gif";
-import screeningChart from "../../../attached_assets/screening-chart.png";
 import screeningList from "../../../attached_assets/screening-list.png";
 import vaccinationsDemo from "../../../attached_assets/vaccinations.gif";
 
@@ -47,7 +46,7 @@ const roleContent = {
 } as const;
 
 const gpProductFeatures = [
-  {title:"Vēža skrīningu pārskats",text:"Automātiski atlasīti pacienti, kuriem nepieciešams dzemdes kakla, krūts, zarnu vai prostatas vēža skrīnings. Saraksts ir gatavs ikdienas darbam un ērti pārskatāms.",image:screeningList,alt:"Vēža skrīningu pacientu saraksts Prakses Asistentā",chart:screeningChart},
+  {title:"Vēža skrīningu pārskats",text:"Automātiski atlasīti pacienti, kuriem nepieciešams dzemdes kakla, krūts, zarnu vai prostatas vēža skrīnings. Saraksts ir gatavs ikdienas darbam un ērti pārskatāms.",image:screeningList,alt:"Vēža skrīningu pacientu saraksts Prakses Asistentā"},
   {title:"SCORE2 riska novērtēšana",text:"Vienuviet redzami pacienti, kuriem jāizvērtē sirds un asinsvadu slimību risks, kā arī iepriekšējie rezultāti un kalkulators nākamajam solim.",image:score2Demo,alt:"SCORE2 skrīninga pārskats Prakses Asistentā"},
   {title:"Vakcināciju pārvaldība",text:"Pārskatāmi pacientu saraksti valsts imunizācijas programmām, vecuma grupām un nākamajām devām — bez manuālas datu apkopošanas.",image:vaccinationsDemo,alt:"Vakcināciju pārskats Prakses Asistentā"},
   {title:"Izrakstu kopsavilkumi",text:"Svarīgākā informācija no stacionāra izraksta ir sakārtota vienā skatā: veiktie izmeklējumi, terapija un turpmākā uzraudzība.",image:dischargeSummaryDemo,alt:"Stacionāra izraksta kopsavilkums Prakses Asistentā"},
@@ -300,7 +299,7 @@ function Home() {
     {role&&<>
     <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
       <div className="specialty-section-head"><div><h2>Pakalpojumi {role==="gp"?"ģimenes ārstiem":"endokrinologiem"}</h2><p>{role==="gp"?"Mērķēta pacientu atlase un pārskatāms profilakses darbs vienā secīgā procesā.":"Būtiskākā informācija pirms konsultācijas — apkopota vienā pārskatāmā skatā."}</p></div></div>
-      {role==="gp"?<div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><div className="product-media"><img src={feature.image} alt={feature.alt}/>{"chart" in feature&&<img className="product-chart" src={feature.chart} alt="Prakses Asistenta klientu skrīninga atsaucības salīdzinājums ar valsts vidējo rādītāju"/>}</div></article>)}</div>:<ol className="service-sequence">
+      {role==="gp"?<div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><div className="product-media"><img src={feature.image} alt={feature.alt}/></div></article>)}</div>:<ol className="service-sequence">
         <li><div className="sequence-title"><span>1</span><h3>Apkopojiet būtiskāko pirms konsultācijas</h3></div><div className="service-list">{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
         <li><div className="sequence-title"><span>2</span><h3>Sagatavojieties konsultācijai ātrāk</h3></div><div className="service-list service-list--benefits">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
         <li><div className="sequence-title"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div><div className="service-results" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div></li>
