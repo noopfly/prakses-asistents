@@ -419,7 +419,7 @@ select{width:100%;min-height:48px;border:1px solid #dcdbe6;background:#fdfdff;bo
 .home-page .home-pricing-grid .price-block{min-height:128px;margin:22px 0 18px}
 .home-page .home-pricing-grid .annual-label{margin:0 0 7px!important;color:#626a78;font-size:12px!important;font-weight:700}
 .home-page .home-pricing-grid .price{align-items:flex-end;gap:10px;margin:0}
-.home-page .home-pricing-grid .price strong{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(2.85rem,4vw,3.7rem);font-weight:650;line-height:1;letter-spacing:-.04em;color:var(--ink)}
+.home-page .home-pricing-grid .price strong{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(2.45rem,3.4vw,3.2rem);font-weight:650;line-height:1;letter-spacing:-.04em;color:var(--ink)}
 .home-page .home-pricing-grid .price span{padding-bottom:5px;color:#667085;font-size:11px;line-height:1.35}
 .home-page .home-pricing-grid .annual-payment{margin-top:10px!important;font-size:12px!important}
 .home-page .home-pricing-grid .btn{min-height:46px;margin:0 0 24px;border-radius:8px;box-shadow:none}

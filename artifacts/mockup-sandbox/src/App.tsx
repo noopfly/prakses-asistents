@@ -233,15 +233,9 @@ function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
     minimumFractionDigits,
     maximumFractionDigits: 2,
   });
-  const priceWithVat = ((annual ? annualPrice : monthlyPrice) * 1.21).toLocaleString("lv-LV", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   return <div className="price-block">
     {annual&&<p className="annual-label">Efektīvā mēneša cena</p>}
     <div className={`price${annual?" price--annual":""}`}><strong>€{formatPrice(annual?annualMonthlyWithVat:monthlyWithVat,2)}</strong><span>/ mēnesī<br/>ar PVN</span></div>
-    {annual&&<p className="annual-payment">Gada priekšapmaksa: <strong>€{priceWithVat}</strong> ar PVN</p>}
   </div>;
 }
 
@@ -316,7 +310,7 @@ function Home() {
       <div className="section-head"><h2>{role==="gp"?"Plāni ģimenes ārsta praksei":"Cenas endokrinologa praksei"}</h2><p>{role==="gp"?"Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem.":"Pacienta pārskata plāns endokrinologa praksei. PVN ir iekļauts."}</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
       <div className={`pricing-grid home-pricing-grid${role==="endo"?" home-pricing-grid--single":""}`}>{visiblePlans.map(([name,price,text,items])=>{const planIndex=plans.findIndex(plan=>plan[0]===name);const displayItems=role==="endo"?["Pacienta pārskats","Analīžu dinamika un aktuālā terapija","Automātiski SMS atgādinājumi pacientiem","Prioritārs klientu atbalsts"]:items;return <article className={planIndex===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{planIndex===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${planIndex===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{displayItems.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>})}</div>
-      {role==="gp"&&<section className="pricing-conditions" aria-labelledby="pricing-conditions-title"><h2 id="pricing-conditions-title">Cenu nosacījumi</h2><div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div></section>}
+      {role==="gp"&&<section className="pricing-conditions" aria-labelledby="pricing-conditions-title"><h2 id="pricing-conditions-title">Cenu nosacījumi</h2><div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada maksājumu.</p></div></section>}
     </section>
     <PlanHelp compact/>
     <FAQ title="Par cenām un plāniem" items={priceFaq}/>
