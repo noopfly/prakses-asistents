@@ -158,6 +158,33 @@ footer{padding:64px var(--gutter)}
   .home-contact .btn{width:100%}
 }
 
+/* Contact page: compact editorial split inspired by clean contact-form references. */
+.contact-page{background:#fff}
+.contact-shell{max-width:1120px;margin:0 auto;padding:80px var(--gutter) 88px}
+.contact-intro{max-width:760px;margin-bottom:56px}
+.contact-intro h1{font-size:clamp(3rem,6vw,5.25rem);line-height:.98}
+.contact-intro p{max-width:620px;margin:24px 0 0;color:var(--muted);font-size:17px;line-height:1.65}
+.contact-body{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:72px;align-items:start;padding-top:48px;border-top:1px solid var(--line)}
+.contact-page .contact-copy{position:static;padding:0}
+.contact-page .contact-client-link{max-width:34ch;margin:0;color:var(--muted);font-size:15px;line-height:1.65}
+.contact-page .contact-client-link a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.contact-methods{margin-top:40px;border-top:1px solid var(--line)}
+.contact-page .contact-detail{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;align-items:center;margin:0;padding:22px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.contact-page .contact-detail>svg{color:#4b617e}
+.contact-page .contact-detail span,.contact-page .contact-detail small,.contact-page .contact-detail strong{display:block}
+.contact-page .contact-detail small{margin-bottom:4px;color:var(--muted);font-size:12px}
+.contact-page .contact-detail strong{font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.contact-page .contact-form{width:100%;max-width:none;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.contact-name-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.contact-page .contact-form label{margin-bottom:20px;color:var(--ink);font-size:13px}
+.contact-page .contact-form input,.contact-page .contact-form textarea{margin-top:8px;border-color:#cfd6e0;background:#fff;font-size:15px}
+.contact-page .contact-form input{min-height:50px}
+.contact-page .contact-form textarea{min-height:160px}
+.contact-page .contact-form .btn{width:100%;min-height:52px;margin-top:4px;border-radius:8px;box-shadow:none}
+.contact-page>.faq{padding-top:72px}
+@media(max-width:900px){.contact-shell{padding-block:64px}.contact-intro{margin-bottom:44px}.contact-body{grid-template-columns:1fr;gap:48px}.contact-page .contact-client-link{max-width:56ch}.contact-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:0}.contact-page .contact-detail{border-top:1px solid var(--line)}}
+@media(max-width:620px){.contact-shell{padding:48px 24px 56px}.contact-intro{margin-bottom:36px}.contact-intro p{font-size:16px}.contact-body{padding-top:32px;gap:40px}.contact-methods,.contact-name-fields{grid-template-columns:1fr;gap:0}.contact-page .contact-form label{margin-bottom:16px}}
+
 /* Clarity and navigation refinement */
 #funkcionalitate,#kontakti{scroll-margin-top:112px}
 .static-pills .specialty-pill{font-weight:650;border-width:1px}
