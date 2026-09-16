@@ -2,7 +2,7 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import {
   ArrowRight, BarChart3, Check, ChevronDown, ChevronUp, ClipboardList, Clock3,
   HeartPulse, ImageIcon, Linkedin, Mail, Menu, MessageCircle, ShieldCheck,
-  ExternalLink, FileText, Stethoscope, Syringe, X
+  ExternalLink, FileText, LockKeyhole, Stethoscope, Syringe, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
 import brandLogo from "../../../attached_assets/prakses-asistents-logo.png";
@@ -253,6 +253,7 @@ function Home() {
   const chooseSpecialty=(nextRole:Role)=>{
     window.localStorage.setItem(specialtyKey,nextRole);
     setRole(nextRole);
+    window.dispatchEvent(new CustomEvent("specialtychange",{detail:nextRole}));
     const target=window.sessionStorage.getItem(specialtyTargetKey) || "/#pakalpojumi";
     window.sessionStorage.removeItem(specialtyTargetKey);
     window.setTimeout(()=>go(target),50);
@@ -261,6 +262,7 @@ function Home() {
     window.localStorage.removeItem(specialtyKey);
     window.sessionStorage.setItem(specialtyTargetKey,"/#pakalpojumi");
     setRole(null);
+    window.dispatchEvent(new CustomEvent("specialtychange",{detail:null}));
     window.setTimeout(()=>document.querySelector("#specialitate")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
   };
   return <main id="main" className="home-page">
@@ -276,8 +278,8 @@ function Home() {
       <div><h2>Pacienta pārskats — būtiskais vienuviet</h2><p>Analīžu dinamika, aktuālie medikamenti un būtiskākais veselības kopsavilkums vienuviet, lai konsultācijai varētu sagatavoties ātrāk un pārliecinošāk.</p><Link href="/#funkcionalitate" className="text-link">Apskatīt, kā tas darbojas <ArrowRight size={15}/></Link></div>
       <OriginalPatientOverview/>
     </section>
-    <section className={`specialty-gate${role?" specialty-gate--selected":""}`} id="specialitate" aria-labelledby="specialty-title">
-      {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<div className="specialty-choice"><div><h2 id="specialty-title">Izvēlieties savu specialitāti</h2><p>Parādīsim tieši jūsu darbam paredzētos pakalpojumus un cenas. Izvēli saglabāsim šajā pārlūkā.</p></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={24}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={18}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={24}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={18}/></button></div></div>}
+    <section className={`specialty-gate${role?" specialty-gate--selected":" specialty-gate--locked"}`} id="specialitate" aria-labelledby="specialty-title">
+      {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<><div className="specialty-lock-preview" aria-hidden="true"><h2>Pakalpojumi</h2><div><article><span>01</span><strong>Pacientu atlase</strong></article><article><span>02</span><strong>Pārskatāms darba saraksts</strong></article><article><span>03</span><strong>Rezultāti ikdienas darbā</strong></article></div></div><div className="specialty-choice" role="group" aria-describedby="specialty-description"><div className="specialty-choice-copy"><span className="specialty-lock-icon"><LockKeyhole size={20}/></span><h2 id="specialty-title">Izvēlieties savu specialitāti</h2><p id="specialty-description">Lai turpinātu, izvēlieties savu specialitāti. Parādīsim tieši jūsu darbam paredzētos pakalpojumus un cenas.</p></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={24}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={18}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={24}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={18}/></button></div></div></>}
     </section>
     {role&&<>
     <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
@@ -369,11 +371,14 @@ function CTA({title,text}:{title:string;text:string}) {
 
 function App() {
   const [path,setPath]=useState(routePath());
+  const [specialtySelected,setSpecialtySelected]=useState(()=>storedSpecialty()!==null);
   useEffect(()=>{const fn=()=>setPath(routePath());addEventListener("popstate",fn);return()=>removeEventListener("popstate",fn)},[]);
+  useEffect(()=>{const fn=(event:Event)=>setSpecialtySelected((event as CustomEvent<Role|null>).detail!==null);addEventListener("specialtychange",fn);return()=>removeEventListener("specialtychange",fn)},[]);
   useEffect(()=>{if(path==="/cenas"){window.history.replaceState({},"",withBase("/#cenas"));setPath("/")}},[path]);
   useEffect(()=>{if(location.hash)setTimeout(()=>document.querySelector(location.hash)?.scrollIntoView({behavior:"smooth"}),80)},[path]);
   let page = path==="/pakalpojumi"?<Services/>:path==="/prakses-dienasgramata"?<Journal/>:path==="/kontakti"?<Contact/>:<Home/>;
-  return <><Header/>{page}<Footer/><BackToTop/></>;
+  const homeLocked=path==="/"&&!specialtySelected;
+  return <><Header/>{page}{!homeLocked&&<Footer/>}<BackToTop/></>;
 }
 
 export default App;
