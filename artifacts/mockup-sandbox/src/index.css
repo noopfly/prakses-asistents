@@ -369,6 +369,45 @@ select{width:100%;min-height:48px;border:1px solid #dcdbe6;background:#fdfdff;bo
 @media(max-width:620px){.back-to-top{right:16px;bottom:16px;width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.header,.back-to-top{transition:none}.back-to-top:hover{transform:none}}
 
+/* Homepage pricing: one route, one visual language, VAT-inclusive prices. */
+.home-page .home-pricing{padding-top:88px;padding-bottom:72px;background:#f8f9fb;border-block:1px solid #e1e5eb}
+.home-page .home-pricing .section-head{max-width:760px;margin-bottom:28px}
+.home-page .home-pricing .section-head h2{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(2.5rem,4.2vw,3.8rem);font-weight:650;line-height:1.04;letter-spacing:-.035em}
+.home-page .home-pricing .section-head p{max-width:620px;margin:16px auto 0;color:#616a7d;font-size:15px;line-height:1.6}
+.home-page .billing{margin-bottom:38px;border-color:#d9dee7;background:#fff;box-shadow:0 1px 2px rgba(15,16,17,.04)}
+.home-page .billing button{min-height:46px;padding-inline:22px;color:#626a78;font-size:14px;font-weight:650}
+.home-page .billing button.selected{background:var(--navy);color:#fff}
+.home-page .home-pricing-grid{gap:16px}
+.home-page .home-pricing-grid article{min-height:600px;padding:30px;overflow:hidden;border:1px solid #dce1e8;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(15,16,17,.04)}
+.home-page .home-pricing-grid article.featured{border-color:#8f9db3;background:#fff;box-shadow:0 12px 30px rgba(29,40,62,.09)}
+.home-page .plan-card-heading{min-height:38px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.home-page .plan-card-heading h3{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:31px;font-weight:650;line-height:1.08;letter-spacing:-.03em}
+.home-page .popular{position:static;flex:0 0 auto;margin-top:1px;padding:7px 9px;border-radius:6px;background:var(--navy);font-size:10px;line-height:1.15}
+.home-page .home-pricing-grid article>p{min-height:66px;margin:16px 0 0;color:#616a7d;font-size:14px;line-height:1.55}
+.home-page .home-pricing-grid .price-block{min-height:128px;margin:22px 0 18px}
+.home-page .home-pricing-grid .annual-label{margin:0 0 7px!important;color:#626a78;font-size:12px!important;font-weight:700}
+.home-page .home-pricing-grid .price{align-items:flex-end;gap:10px;margin:0}
+.home-page .home-pricing-grid .price strong{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(2.85rem,4vw,3.7rem);font-weight:650;line-height:1;letter-spacing:-.04em;color:var(--ink)}
+.home-page .home-pricing-grid .price span{padding-bottom:5px;color:#667085;font-size:11px;line-height:1.35}
+.home-page .home-pricing-grid .annual-payment{margin-top:10px!important;font-size:12px!important}
+.home-page .home-pricing-grid .btn{min-height:46px;margin:0 0 24px;border-radius:8px;box-shadow:none}
+.home-page .home-pricing-grid article.featured .btn{background:var(--navy);color:#fff;border-color:var(--navy)}
+.home-page .plan-features{margin-top:auto;padding-top:22px;border-top:1px solid #e3e7ed}
+.home-page .plan-features>span{display:block;margin-bottom:12px;color:var(--ink);font-size:12px;font-weight:750}
+.home-page .plan-features .check-list{display:grid;gap:10px;margin:0}
+.home-page .plan-features .check-list li{display:flex;align-items:flex-start;gap:9px;padding:0;color:#566071;font-size:13px;line-height:1.45}
+.home-page .plan-features .check-list li::before{content:none}
+.home-page .plan-features .check-list svg{flex:0 0 19px;width:19px;height:19px;padding:3px;border:1px solid #d4dae4;border-radius:5px;background:#eef1f5;color:#26344a;stroke-width:2.5}
+.home-page .pricing-conditions{width:min(100%,var(--content));margin:28px auto 0;background:#fff}
+.home-page .pricing-conditions h2{font-family:"Inter",ui-sans-serif,system-ui,sans-serif;font-size:clamp(1.65rem,2.4vw,2.15rem);font-weight:650}
+@media(max-width:700px){
+  .home-page .home-pricing{padding-top:64px;padding-bottom:56px}
+  .home-page .billing button{padding-inline:10px;font-size:12px}
+  .home-page .home-pricing-grid article{min-height:0;padding:24px}
+  .home-page .home-pricing-grid article>p{min-height:0}
+  .home-page .home-pricing-grid .price-block{min-height:0}
+}
+
 /* Registration form proportions: contained width with comfortably readable type. */
 .home-form{padding-left:max(32px,calc((100vw - 1180px)/2));padding-right:max(32px,calc((100vw - 1180px)/2));grid-template-columns:minmax(340px,444px) minmax(0,680px);gap:56px;justify-content:center}
 .home-form form{width:100%;padding:40px}
@@ -948,3 +987,6 @@ footer{background:#1d283e;color:#fff}
   .contact-form textarea{min-height:100px}
   .contact-form .btn{min-height:44px}
 }
+
+/* Final pricing surface alignment after the global theme overrides. */
+.home-page .home-pricing-grid article.featured{background:#fff;border-color:#8f9db3;box-shadow:0 12px 30px rgba(29,40,62,.09)}

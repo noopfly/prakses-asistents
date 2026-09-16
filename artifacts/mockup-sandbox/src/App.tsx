@@ -57,7 +57,7 @@ const serviceFaq = [
 
 const priceFaq = [
   ["Vai cena ir par katru lietotāju?", "Nē. Norādītā cena ir par visu ārsta praksi neatkarīgi no lietotāju skaita."],
-  ["Vai cenai ir pieskaitīts PVN?", "Plāna galvenā cena ir norādīta bez PVN, un zem tās vienmēr redzama arī gala summa ar 21% PVN."],
+  ["Vai cenā ir iekļauts PVN?", "Jā. Visas cenas ir norādītas ar 21% PVN."],
   ["Kurš plāns ir piemērots manai praksei?", "Tas atkarīgs no jūsu specialitātes un nepieciešamās funkcionalitātes. Pēc pieteikuma saņemšanas palīdzēsim izvēlēties piemērotāko plānu."],
   ["Vai plānu vēlāk var mainīt?", "Jā. Praksei mainoties, varēsiet pāriet uz plānu ar plašāku vai mazāku funkcionalitāti."],
 ] as const;
@@ -196,6 +196,7 @@ function RoleSwitch({ role, setRole }: { role: Role; setRole: (r: Role)=>void })
 function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
   const monthlyPrice = Number(price);
   const annualPrice = monthlyPrice * 10;
+  const monthlyWithVat = monthlyPrice * 1.21;
   const annualMonthlyWithVat = annualPrice * 1.21 / 12;
   const formatPrice = (value:number, minimumFractionDigits=0) => value.toLocaleString("lv-LV", {
     minimumFractionDigits,
@@ -208,8 +209,8 @@ function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
 
   return <div className="price-block">
     {annual&&<p className="annual-label">Efektīvā mēneša cena</p>}
-    <div className={`price${annual?" price--annual":""}`}><strong>€{annual?formatPrice(annualMonthlyWithVat,2):formatPrice(monthlyPrice)}</strong><span>{annual?"/ mēnesī ar PVN":<><span>/ mēnesī</span><br/>+ PVN</>}</span></div>
-    {annual?<p className="annual-payment">Gada priekšapmaksa: <strong>€{priceWithVat}</strong> ar PVN</p>:<p className="price-with-vat"><strong>€{priceWithVat}</strong> mēnesī ar 21% PVN</p>}
+    <div className={`price${annual?" price--annual":""}`}><strong>€{formatPrice(annual?annualMonthlyWithVat:monthlyWithVat,2)}</strong><span>/ mēnesī<br/>ar PVN</span></div>
+    {annual&&<p className="annual-payment">Gada priekšapmaksa: <strong>€{priceWithVat}</strong> ar PVN</p>}
   </div>;
 }
 
@@ -288,9 +289,10 @@ function Home() {
       </div>
     </section>
     <section className="home-pricing" id="cenas">
-      <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2></div>
+      <div className="section-head"><h2>Izvēlieties plānu savai praksei</h2><p>Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem. PVN ir iekļauts.</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
-      <div className="pricing-grid home-pricing-grid">{plans.map(([name,price,text,items],i)=><article className={`${i===1?"featured ":""}${annual?"annual-tier":""}`} key={name}>{annual&&<span className="annual-ribbon"><span>2 mēneši<br/>bez maksas</span></span>}<h3>{name}</h3>{i===1&&<span className="popular">Populārākā izvēle</span>}<p>{text}</p><PriceBlock price={price} annual={annual}/><ul className="check-list">{items.map(x=><li key={x}>{x}</li>)}</ul><Link href="/#klut-par-klientu" className="btn ghost">Izvēlēties plānu</Link></article>)}</div>
+      <div className="pricing-grid home-pricing-grid">{plans.map(([name,price,text,items],i)=><article className={i===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{i===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${i===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{items.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>)}</div>
+      <section className="pricing-conditions" aria-labelledby="pricing-conditions-title"><h2 id="pricing-conditions-title">Cenu nosacījumi</h2><div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div></section>
     </section>
     <PlanHelp compact/>
     <FAQ title="Par cenām un plāniem" items={priceFaq}/>
@@ -328,43 +330,6 @@ const plans = [
   ["Standarta","45","Pilnvērtīgs profilaktiskā darba komplekts ģimenes ārsta praksei.",["Viss, kas iekļauts Pamata plānā","SCORE2 riska novērtēšana","Vakcinācijas un profilaktiskās apskates","Izrakstu kopsavilkumi"]],
   ["Pilnais","110","Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.",["Viss, kas iekļauts Standarta plānā","Pacienta pārskats","Automātiski SMS atgādinājumi pacientiem","Prioritārs klientu atbalsts"]],
 ] as const;
-
-function Pricing() {
-  const [annual,setAnnual]=useState(false);
-  return <main id="main" className="pricing-page">
-    <section className="pricing90" aria-labelledby="pricing-title">
-      <header className="pricing90-head">
-        <p className="eyebrow">Cenas</p>
-        <h1 id="pricing-title">Izvēlieties plānu savai praksei</h1>
-        <p className="pricing90-intro">Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem. Cena ir par praksi, nevis par ārstu.</p>
-        <div className="pricing90-toggle" role="group" aria-label="Izvēlieties abonēšanas periodu">
-          <button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button>
-          <button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button>
-        </div>
-      </header>
-      <div className="pricing90-grid">
-        {plans.map(([name,price,text,items],i)=><article className={`pricing90-card${i===1?" pricing90-card--featured":""}`} key={name}>
-          <div className="pricing90-card-top">
-            <div className="pricing90-specialties">
-              <span className="specialty-pill specialty-pill--gp">Ģimenes ārstiem</span>
-              {i===2&&<span className="specialty-pill specialty-pill--endo">Endokrinologiem</span>}
-            </div>
-            {i===1&&<span className="pricing90-badge">Populārākā izvēle</span>}
-          </div>
-          <div className="pricing90-summary"><h2>{name}</h2><p>{text}</p></div>
-          <PriceBlock price={price} annual={annual}/>
-          <Link href="/#klut-par-klientu" className={`btn pricing90-button${i===1?"":" ghost"}`}>Izvēlēties plānu <ArrowRight size={16}/></Link>
-          <div className="pricing90-features"><p>Plānā iekļauts</p><ul>{items.map(x=><li key={x}><Check size={17}/><span>{x}</span></li>)}</ul></div>
-        </article>)}
-      </div>
-      <section className="pricing-conditions" aria-labelledby="pricing-conditions-title">
-        <h2 id="pricing-conditions-title">Cenu nosacījumi</h2>
-        <div><p><strong>Vairāk nekā 2 500 pacientu?</strong> Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam.</p><p><strong>Gada priekšapmaksa.</strong> Saņemiet 12 mēnešus par 10 mēnešu cenu.</p><p><strong>Esošajiem klientiem.</strong> Jaunās cenas stājas spēkā 01.01.2027. Līdz 31.12.2026. var saglabāt esošo cenu vēl 12 mēnešus, izvēloties gada priekšapmaksu.</p></div>
-      </section>
-    </section>
-    <FAQ items={priceFaq}/><PlanHelp/>
-  </main>;
-}
 
 const posts = [
   ["06.03.2026","Kāpēc pacienti uzticas digitāliem risinājumiem?","Skaidra komunikācija un pārskatāma informācija palīdz pacientam justies drošāk.",["gp","endo"]],
@@ -404,8 +369,9 @@ function CTA({title,text}:{title:string;text:string}) {
 function App() {
   const [path,setPath]=useState(routePath());
   useEffect(()=>{const fn=()=>setPath(routePath());addEventListener("popstate",fn);return()=>removeEventListener("popstate",fn)},[]);
+  useEffect(()=>{if(path==="/cenas"){window.history.replaceState({},"",withBase("/#cenas"));setPath("/")}},[path]);
   useEffect(()=>{if(location.hash)setTimeout(()=>document.querySelector(location.hash)?.scrollIntoView({behavior:"smooth"}),80)},[path]);
-  let page = path==="/pakalpojumi"?<Services/>:path==="/cenas"?<Pricing/>:path==="/prakses-dienasgramata"?<Journal/>:path==="/kontakti"?<Contact/>:<Home/>;
+  let page = path==="/pakalpojumi"?<Services/>:path==="/prakses-dienasgramata"?<Journal/>:path==="/kontakti"?<Contact/>:<Home/>;
   return <><Header/>{page}<Footer/><BackToTop/></>;
 }
 
