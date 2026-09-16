@@ -89,7 +89,7 @@ const nav = [
 const basePrefix = import.meta.env.BASE_URL.replace(/\/$/, "");
 const specialtyKey = "prakses-asistents-specialty";
 const specialtyTargetKey = "prakses-asistents-specialty-target";
-const specialtyTargets = new Set(["/#pakalpojumi", "/#funkcionalitate", "/#cenas"]);
+const specialtyTargets = new Set(["/#pakalpojumi", "/#funkcionalitate", "/#cenas", "/#klut-par-klientu"]);
 
 function storedSpecialty(): Role | null {
   const value = window.localStorage.getItem(specialtyKey);
