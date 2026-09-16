@@ -164,6 +164,40 @@ footer{padding:64px var(--gutter)}
   .home-contact .btn{width:100%}
 }
 
+/* Prakses dienasgrāmata: editorial hierarchy with one lead story. */
+.journal-page{background:#fcfcfb}
+.journal-hero{max-width:1180px;margin:0 auto;padding:clamp(72px,10vw,128px) var(--gutter) clamp(48px,7vw,88px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:clamp(40px,8vw,120px);align-items:end;border-bottom:1px solid var(--line)}
+.journal-hero h1{max-width:8ch;font-size:clamp(3.5rem,7vw,6.5rem);line-height:.92}
+.journal-hero p{max-width:48ch;margin:0 0 6px;color:#626174;font-size:17px;line-height:1.7}
+.journal-feature{max-width:1180px;margin:0 auto;padding:clamp(56px,8vw,96px) var(--gutter);display:grid;grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr);gap:clamp(36px,6vw,76px);align-items:center}
+.journal-feature-image,.journal-card-image{display:grid;place-items:center;border:1px solid #dde1e7;border-radius:10px;background:#f2f3f5;color:#7a7d86;overflow:hidden}
+.journal-feature-image{min-height:460px}
+.journal-feature-image svg{width:44px;height:44px}
+.journal-feature-copy{max-width:460px}
+.journal-page .post-meta{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.journal-page .post-meta small{color:#747381;font-size:13px}
+.journal-feature-copy h2{font-size:clamp(2.35rem,4.2vw,4rem);line-height:1.02}
+.journal-feature-copy>p{margin:22px 0 28px;font-size:16px;line-height:1.7}
+.journal-read-link{display:inline-flex;align-items:center;gap:9px;padding-bottom:5px;border-bottom:1px solid currentColor;color:var(--navy);font-size:14px;font-weight:750}
+.journal-read-link:hover svg{transform:translateX(3px)}
+.journal-read-link svg{transition:transform .16s ease}
+.journal-archive{max-width:1180px;margin:0 auto;padding:24px var(--gutter) clamp(80px,10vw,128px);border-top:1px solid var(--line)}
+.journal-archive-heading{display:flex;align-items:end;justify-content:space-between;gap:40px;padding:48px 0 32px}
+.journal-archive-heading h2{font-size:clamp(2.2rem,3.6vw,3.4rem)}
+.journal-archive-heading p{max-width:42ch;margin:0;font-size:14px}
+.journal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 32px}
+.journal-grid article{min-width:0;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.journal-card-image{min-height:250px;margin-bottom:20px}
+.journal-card-image svg{width:32px;height:32px}
+.journal-page .photo-placeholder span{margin-top:10px;color:#7a7d86;font-size:12px;font-weight:650}
+.journal-grid .post-meta{margin-bottom:14px}
+.journal-grid h3{max-width:24ch;font-family:"DM Sans",sans-serif;font-size:clamp(1.35rem,2vw,1.7rem);font-weight:750;letter-spacing:-.025em;line-height:1.2}
+.journal-grid article>p{max-width:58ch;margin:12px 0 20px;font-size:14px;line-height:1.65}
+.journal-page .post-status{color:#777587;font-size:13px;font-weight:650}
+.journal-page>.cta{margin-top:0}
+@media(max-width:900px){.journal-hero,.journal-feature{grid-template-columns:1fr}.journal-hero{gap:28px}.journal-hero h1{max-width:11ch}.journal-feature-copy{max-width:680px}.journal-feature-image{min-height:360px}}
+@media(max-width:620px){.journal-hero{padding-top:56px;padding-bottom:48px}.journal-hero h1{font-size:clamp(3rem,15vw,4.25rem)}.journal-hero p{font-size:15px}.journal-feature{padding-block:48px}.journal-feature-image{min-height:240px}.journal-feature-copy h2{font-size:2.35rem}.journal-archive{padding-top:8px}.journal-archive-heading{display:block;padding:40px 0 28px}.journal-archive-heading p{margin-top:12px}.journal-grid{grid-template-columns:1fr;gap:36px}.journal-card-image{min-height:220px}.journal-page .post-meta{align-items:flex-start;flex-direction:column;gap:10px}}
+
 /* Contact page: compact editorial split inspired by clean contact-form references. */
 .contact-page{background:#fff}
 .contact-shell{max-width:1080px;margin:0 auto;padding:56px var(--gutter) 64px}

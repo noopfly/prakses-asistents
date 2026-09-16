@@ -388,7 +388,32 @@ function PostTags({tags}:{tags:readonly ("gp"|"endo")[]}) {
 }
 
 function Journal() {
-  return <main id="main"><PageHero eyebrow="Prakses dienasgrāmata" title="Sarunas no prakses. Nevis teorija." text="Sarunas starp ģimenes ārstiem par ikdienas prakses realitāti Latvijā — praktiska pieredze un pārdomas, nevis teorija."/><section className="journal-intro"><div><MessageCircle/><b>Profesionāla saruna</b></div><div><Clock3/><b>Reizi nedēļā</b></div><div><Stethoscope/><b>Latvijā</b></div></section><section className="section"><div className="section-head left"><p className="eyebrow">Jaunākie ieraksti</p><h2>Rakstu arhīvs</h2></div><div className="post-grid">{posts.map(([date,title,text,tags],i)=><article key={title}><div className="post-art photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p>{i===3?<a href="https://praksesasistents.lv/prakses-dienasgramata/andris-baumanis-atklati-par-e-veselibu">Lasīt rakstu <ArrowRight size={14}/></a>:<span className="post-status">Raksts drīzumā</span>}</article>)}</div></section><CTA title="Ir pieredze, ar ko dalīties?" text="Piedalieties sarunā un palīdziet veidot Latvijas prakses kopienas zināšanas."/></main>;
+  const featured=posts[3];
+  const archive=posts.filter((_,index)=>index!==3);
+  return <main id="main" className="journal-page">
+    <header className="journal-hero">
+      <h1>Prakses dienasgrāmata</h1>
+      <p>Sarunas ar ārstiem un veselības aprūpes ekspertiem par ikdienas prakses realitāti Latvijā — praktiska pieredze, ko var izmantot darbā.</p>
+    </header>
+    <section className="journal-feature" aria-labelledby="featured-story-title">
+      <div className="journal-feature-image photo-placeholder" role="img" aria-label="Galvenā raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div>
+      <div className="journal-feature-copy">
+        <div className="post-meta"><small>{featured[0]} · 6 min</small><PostTags tags={featured[3]}/></div>
+        <h2 id="featured-story-title">{featured[1]}</h2>
+        <p>{featured[2]}</p>
+        <a className="journal-read-link" href="https://praksesasistents.lv/prakses-dienasgramata/andris-baumanis-atklati-par-e-veselibu">Lasīt sarunu <ArrowRight size={17}/></a>
+      </div>
+    </section>
+    <section className="journal-archive" aria-labelledby="journal-archive-title">
+      <div className="journal-archive-heading"><h2 id="journal-archive-title">Jaunākie ieraksti</h2><p>Jaunas sarunas un praktiski novērojumi no ārstu ikdienas.</p></div>
+      <div className="journal-grid">{archive.map(([date,title,text,tags],i)=><article key={title}>
+        <div className="journal-card-image photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div>
+        <div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div>
+        <h3>{title}</h3><p>{text}</p><span className="post-status">Raksts drīzumā</span>
+      </article>)}</div>
+    </section>
+    <CTA title="Ir pieredze, ar ko dalīties?" text="Piedalieties sarunā un palīdziet veidot Latvijas prakses kopienas zināšanas."/>
+  </main>;
 }
 
 function Contact() {
