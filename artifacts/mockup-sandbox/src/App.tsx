@@ -5,6 +5,7 @@ import {
   ExternalLink, FileText, Stethoscope, Syringe, X
 } from "lucide-react";
 import originalPatientOverview from "../../../attached_assets/original-patient-overview.png";
+import brandLogo from "../../../attached_assets/prakses-asistents-logo.png";
 
 type Role = "gp" | "endo";
 
@@ -142,7 +143,7 @@ function Header() {
     <a className="skip" href="#main">Pāriet uz saturu</a>
     <div className="announcement">Jaunums endokrinologiem — Pacienta pārskats <Link href="/#pakalpojumi">Uzzināt vairāk <ArrowRight size={14}/></Link></div>
     <header className={`header${hidden&&!open?" header--hidden":""}`} onFocusCapture={()=>setHidden(false)}>
-      <Link href="/" className="brand"><span className="brandmark"><HeartPulse size={17}/></span><span>Prakses Asistents</span></Link>
+      <Link href="/" className="brand" aria-label="Prakses Asistents — sākums"><img src={brandLogo} alt="Prakses Asistents"/></Link>
       <nav className="desktop-nav" aria-label="Galvenā navigācija">
         {headerNav.map(([href, label]) => {
           const isActive = href === "/" ? currentPath === "/" && !location.hash : activeHref === href || currentPath === href;

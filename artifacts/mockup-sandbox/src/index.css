@@ -915,6 +915,7 @@ p{line-height:1.65}
 .announcement{background:#1d283e;color:#d0d6e0}
 .header{background:rgba(255,255,255,.94);border-color:var(--line);backdrop-filter:blur(14px)}
 .brandmark{border-radius:8px;background:#1d283e;box-shadow:none}
+.brand img{display:block;width:auto;height:38px;object-fit:contain}
 .desktop-nav{color:#62666d}.desktop-nav a:hover,.desktop-nav a.active{color:#0f1011;border-color:#1d283e}
 .btn{min-height:40px;padding:.7rem 1rem;border-radius:6px;background:#1d283e;font-size:.82rem;font-weight:600;box-shadow:none;transition:background .18s ease,border-color .18s ease,color .18s ease}
 .btn:hover{transform:none;background:#2b3750}.btn.ghost{border-color:#dde2e9;color:#1d283e;background:#fff}.btn.ghost:hover{border-color:#b8c1cd;background:#f5f7fa}
@@ -951,6 +952,7 @@ footer{background:#1d283e;color:#fff}
 .footer-grid p,.footer-grid small,.footer-bottom{color:#d9dee8}
 .footer-bottom{border-color:rgba(255,255,255,.16)}
 @media(max-width:760px){.mobile-nav{background:#fff}}
+@media(max-width:620px){.brand img{height:30px;max-width:210px}}
 
 /* Homepage service story refinements. */
 .home-page .hero h1{font-size:clamp(2.75rem,4.8vw,4.5rem)}
