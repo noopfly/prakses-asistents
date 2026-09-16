@@ -252,6 +252,7 @@ function Home() {
   const [sent, setSent] = useState(false);
   const [signupValid, setSignupValid] = useState(false);
   const [gateVisible,setGateVisible]=useState(false);
+  const [previewMedia,setPreviewMedia]=useState<{src:string;alt:string}|null>(null);
   const gateRef=useRef<HTMLElement>(null);
   const activeRole: Role = role ?? "gp";
   const c = roleContent[activeRole];
@@ -265,6 +266,17 @@ function Home() {
     observer.observe(gate);
     return()=>observer.disconnect();
   },[role,gateVisible]);
+  useEffect(()=>{
+    if(!previewMedia)return;
+    const previousOverflow=document.body.style.overflow;
+    const close=(event:KeyboardEvent)=>{if(event.key==="Escape")setPreviewMedia(null)};
+    document.body.style.overflow="hidden";
+    window.addEventListener("keydown",close);
+    return()=>{
+      document.body.style.overflow=previousOverflow;
+      window.removeEventListener("keydown",close);
+    };
+  },[previewMedia]);
   const chooseSpecialty=(nextRole:Role)=>{
     window.localStorage.setItem(specialtyKey,nextRole);
     setRole(nextRole);
@@ -299,7 +311,7 @@ function Home() {
     {role&&<>
     <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
       <div className="specialty-section-head"><div><h2>Pakalpojumi {role==="gp"?"ģimenes ārstiem":"endokrinologiem"}</h2><p>{role==="gp"?"Mērķēta pacientu atlase un pārskatāms profilakses darbs vienā secīgā procesā.":"Būtiskākā informācija pirms konsultācijas — apkopota vienā pārskatāmā skatā."}</p></div></div>
-      {role==="gp"?<div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><div className="product-media"><img src={feature.image} alt={feature.alt}/></div></article>)}</div>:<ol className="service-sequence">
+      {role==="gp"?<div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><button className="product-media" type="button" onClick={()=>setPreviewMedia({src:feature.image,alt:feature.alt})} aria-label={`Atvērt pilnekrānā: ${feature.title}`}><img src={feature.image} alt={feature.alt}/><span className="product-media-action">Atvērt pilnekrānā</span></button></article>)}</div>:<ol className="service-sequence">
         <li><div className="sequence-title"><span>1</span><h3>Apkopojiet būtiskāko pirms konsultācijas</h3></div><div className="service-list">{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
         <li><div className="sequence-title"><span>2</span><h3>Sagatavojieties konsultācijai ātrāk</h3></div><div className="service-list service-list--benefits">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
         <li><div className="sequence-title"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div><div className="service-results" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div></li>
@@ -324,6 +336,7 @@ function Home() {
     <FAQ title="Biežāk uzdotie jautājumi" items={serviceFaq}/>
     <section className="section home-journal" id="dienasgramatas-ieskats"><div className="home-section-title"><div><h2>Prakses dienasgrāmata</h2><p>Sarunas ar ārstiem un veselības aprūpes ekspertiem par ikdienas prakses realitāti Latvijā.</p></div><Link href="/prakses-dienasgramata" className="text-link">Apskatīt visus rakstus <ArrowRight size={15}/></Link></div><div className="post-grid">{posts.slice(0,3).map(([date,title,text,tags],i)=><article key={title}><div className="post-art photo-placeholder" role="img" aria-label="Raksta foto vietturis"><ImageIcon/><span>Raksta foto</span></div><div className="post-meta"><small>{date} · {3+i%3} min</small><PostTags tags={tags}/></div><h3>{title}</h3><p>{text}</p><Link href="/prakses-dienasgramata">Lasīt rakstu <ArrowRight size={14}/></Link></article>)}</div></section>
     </>}
+    {previewMedia&&<div className="media-lightbox" role="dialog" aria-modal="true" aria-label={previewMedia.alt} onMouseDown={(event)=>{if(event.target===event.currentTarget)setPreviewMedia(null)}}><button type="button" className="media-lightbox-close" onClick={()=>setPreviewMedia(null)} aria-label="Aizvērt pilnekrāna attēlu" autoFocus><X size={22}/></button><img src={previewMedia.src} alt={previewMedia.alt}/></div>}
   </main>;
 }
 
