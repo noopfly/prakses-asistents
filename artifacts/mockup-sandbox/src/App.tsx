@@ -120,6 +120,10 @@ function Link({ href, children, className = "", onClick }: { href: string; child
     onClick?.();
     if (!href.startsWith("/")) return;
     e.preventDefault();
+    if (href === "/#pakalpojumi" && storedSpecialty() === "endo") {
+      go("/#cenas");
+      return;
+    }
     if (specialtyTargets.has(href) && !storedSpecialty()) {
       window.sessionStorage.setItem(specialtyTargetKey, href);
       go("/#specialitate");
@@ -268,7 +272,6 @@ function Home() {
   const gateRef=useRef<HTMLElement>(null);
   const activeRole: Role = role ?? "gp";
   const c = roleContent[activeRole];
-  const primaryServiceCount = activeRole === "gp" ? 4 : 1;
   const visiblePlans = activeRole === "gp" ? plans : [plans[2]];
   useEffect(()=>{
     if(role||gateVisible)return;
@@ -293,7 +296,8 @@ function Home() {
     window.localStorage.setItem(specialtyKey,nextRole);
     setRole(nextRole);
     window.dispatchEvent(new CustomEvent("specialtychange",{detail:nextRole}));
-    const target=window.sessionStorage.getItem(specialtyTargetKey) || "/#pakalpojumi";
+    const requestedTarget=window.sessionStorage.getItem(specialtyTargetKey) || "/#pakalpojumi";
+    const target=nextRole==="endo"&&requestedTarget==="/#pakalpojumi"?"/#cenas":requestedTarget;
     window.sessionStorage.removeItem(specialtyTargetKey);
     window.setTimeout(()=>go(target),50);
   };
@@ -321,14 +325,10 @@ function Home() {
       {role?<div className="specialty-context"><span>Jūsu skats</span><strong>{c.label}</strong><button type="button" onClick={changeSpecialty}>Mainīt specialitāti</button></div>:<><div className="specialty-lock-preview" aria-hidden="true"><h2>Pakalpojumi</h2><div><article><span>01</span><strong>Pacientu atlase</strong></article><article><span>02</span><strong>Pārskatāms darba saraksts</strong></article><article><span>03</span><strong>Rezultāti ikdienas darbā</strong></article></div></div><div className={`specialty-choice${gateVisible?" specialty-choice--visible":""}`} role="group" aria-describedby="specialty-description"><div className="specialty-choice-copy"><span className="specialty-lock-icon"><LockKeyhole size={20}/></span><h2 id="specialty-title">Izvēlieties savu specialitāti</h2></div><div className="specialty-options"><button type="button" onClick={()=>chooseSpecialty("gp")}><Stethoscope size={26}/><span><strong>Ģimenes ārsts</strong><small>Skrīningi, SCORE2, vakcinācijas un profilakse</small></span><ArrowRight size={19}/></button><button type="button" onClick={()=>chooseSpecialty("endo")}><HeartPulse size={26}/><span><strong>Endokrinologs</strong><small>Pacienta pārskats, analīžu dinamika un terapija</small></span><ArrowRight size={19}/></button></div><p id="specialty-description" className="specialty-choice-note">Lai turpinātu, izvēlieties savu specialitāti.</p></div></>}
     </section>
     {role&&<>
-    <section className={`section functionality specialty-services specialty-services--${role}`} id="pakalpojumi">
-      <div className="specialty-section-head"><div><h2>Pakalpojumi {role==="gp"?"ģimenes ārstiem":"endokrinologiem"}</h2><p>{role==="gp"?"Mērķēta pacientu atlase un pārskatāms profilakses darbs vienā secīgā procesā.":"Būtiskākā informācija pirms konsultācijas — apkopota vienā pārskatāmā skatā."}</p></div></div>
-      {role==="gp"?<div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><button className="product-media" type="button" onClick={()=>setPreviewMedia({src:feature.image,alt:feature.alt})} aria-label={`Atvērt pilnekrānā: ${feature.title}`}><img src={feature.image} alt={feature.alt}/><span className="product-media-action">Atvērt pilnekrānā</span></button></article>)}</div>:<ol className="service-sequence">
-        <li><div className="sequence-title"><span>1</span><h3>Apkopojiet būtiskāko pirms konsultācijas</h3></div><div className="service-list">{c.features.slice(0,primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
-        <li><div className="sequence-title"><span>2</span><h3>Sagatavojieties konsultācijai ātrāk</h3></div><div className="service-list service-list--benefits">{c.features.slice(primaryServiceCount).map(([title,text,Icon])=><article key={title}><Icon size={20}/><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></li>
-        <li><div className="sequence-title"><span>3</span><h3>Redziet ieguvumu ikdienas darbā</h3></div><div className="service-results" aria-label={`${c.label} ieguvumi`}>{c.stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div></li>
-      </ol>}
-    </section>
+    {role==="gp"&&<section className="section functionality specialty-services specialty-services--gp" id="pakalpojumi">
+      <div className="specialty-section-head"><div><h2>Pakalpojumi ģimenes ārstiem</h2><p>Mērķēta pacientu atlase un pārskatāms profilakses darbs vienā secīgā procesā.</p></div></div>
+      <div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><button className="product-media" type="button" onClick={()=>setPreviewMedia({src:feature.image,alt:feature.alt})} aria-label={`Atvērt pilnekrānā: ${feature.title}`}><img src={feature.image} alt={feature.alt}/><span className="product-media-action">Atvērt pilnekrānā</span></button></article>)}</div>
+    </section>}
     <section className={`home-pricing home-pricing--${role}`} id="cenas">
       <div className="section-head"><h2>{role==="gp"?"Plāni ģimenes ārsta praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem.":"Svarīgākā pacienta informācija vienuviet ērtākai sagatavošanās vizītei un ātrākai lēmumu pieņemšanai."}</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
