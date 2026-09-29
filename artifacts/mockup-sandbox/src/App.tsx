@@ -69,14 +69,15 @@ const serviceFaq = [
 
 const priceFaq = [
   ["Vai cena ir par katru lietotāju?", "Nē. Norādītā cena ir par visu ārsta praksi neatkarīgi no lietotāju skaita."],
-  ["Vai cenā ir iekļauts PVN?", "Jā. Visas cenas ir norādītas ar 21% PVN."],
+  ["Vai cenā ir iekļauts PVN?", "Pie katra plāna redzama gan cena bez PVN, gan precīza cena ar 21% PVN."],
   ["Kurš plāns ir piemērots manai praksei?", "Tas atkarīgs no jūsu specialitātes un nepieciešamās funkcionalitātes. Pēc pieteikuma saņemšanas palīdzēsim izvēlēties piemērotāko plānu."],
   ["Vai plānu vēlāk var mainīt?", "Jā. Praksei mainoties, varēsiet pāriet uz plānu ar plašāku vai mazāku funkcionalitāti."],
 ] as const;
 
 const gpPriceFaq = [
   ...priceFaq,
-  ["Kas notiek, ja praksē ir vairāk nekā 2 500 pacientu?", "Par katriem nākamajiem 1 000 pacientiem mēneša cenai bez PVN tiek pieskaitīti 10 € Pamata, 15 € Standarta vai 25 € Pilnais plānam."],
+  ["Kā tiek aprēķināta cena pēc pacientu skaita?", "Cena sākas no 1 500 pacientiem un pakāpeniski aug līdz ar prakses izmēru. Pārbīdot slīdni, redzēsiet precīzu cenu savai praksei."],
+  ["Kas notiek, ja praksē ir vairāk nekā 8 000 pacientu?", "Praksēm ar vairāk nekā 8 000 pacientiem sagatavojam individuālu piedāvājumu."],
 ] as const;
 
 const nav = [
@@ -248,6 +249,76 @@ function PriceBlock({ price, annual }: { price: string; annual: boolean }) {
   </div>;
 }
 
+const money = (value:number) => value.toLocaleString("lv-LV", {minimumFractionDigits: value % 1 ? 2 : 0, maximumFractionDigits: 2});
+const billedPrice = (monthly:number, annual:boolean) => annual ? monthly * 10 / 12 : monthly;
+
+function RangeControl({label,value,min,max,step,onChange,unit,presets}:{label:string;value:number;min:number;max:number;step:number;onChange:(value:number)=>void;unit:string;presets?:number[]}) {
+  return <div className="pricing-control">
+    <div className="pricing-control-label"><span>{label}</span><strong>{value.toLocaleString("lv-LV")} <small>{unit}</small></strong></div>
+    <input type="range" aria-label={label} min={min} max={max} step={step} value={value} onChange={event=>onChange(Number(event.target.value))}/>
+    {presets&&<div className="pricing-presets">{presets.map(preset=><button type="button" className={value===preset?"selected":""} onClick={()=>onChange(preset)} key={preset}>{preset.toLocaleString("lv-LV")}{preset===max?"+":""}</button>)}</div>}
+  </div>;
+}
+
+const gpCalculatorPlans = [
+  {id:"core",name:"Core",base:45,max:200,step:5,text:"Savlaicīgi skrīningi, vakcinācijas un ikgadējās pārbaudes.",features:["Vēža skrīningu atgādinājumi","Vakcināciju atgādinājumi","SAS un diabēta skrīningi","Ikgadējo pārbaužu atgādinājumi","Neierobežots prakses darbinieku skaits"]},
+  {id:"standard",name:"Standard",base:65,max:290,step:5,text:"Pilna aina par pacientiem, kuriem nepieciešama uzmanība.",features:["Viss no Core","Izrakstīto pacientu informācija","SCORE2 kalkulators","Pacientu filtrēšana pēc diagnozēm","Nepārtraukta skrīningu uzraudzība"]},
+  {id:"complete",name:"Complete",base:150,max:600,step:10,text:"Pacienta pārskats un darba rīki pašai vizītei.",features:["Viss no Standard","Pacienta pārskats","Vizītes pieraksti — drīzumā","Automātiski aizpildāmas veidnes — drīzumā","E-receptes un e-nosūtījumi — drīzumā"]},
+] as const;
+
+function GpPricingCalculator({annual}:{annual:boolean}) {
+  const [patients,setPatients]=useState(1800);
+  const [communication,setCommunication]=useState(false);
+  const custom=patients>8000;
+  const priceFor=(plan:typeof gpCalculatorPlans[number])=>{
+    const capped=Math.min(patients,8000);
+    const totalSteps=(plan.max-plan.base)/plan.step;
+    const usedSteps=Math.round(Math.max(0,capped-1500)/(8000-1500)*totalSteps);
+    return plan.base+usedSteps*plan.step+(communication&&plan.id!=="core"?25:0);
+  };
+  return <>
+    <div className="pricing-calculator-panel">
+      <RangeControl label="Reģistrēto pacientu skaits praksē" value={patients} min={1500} max={8500} step={50} onChange={setPatients} unit="pacienti" presets={[1500,2500,4000,6000,8000,8500]}/>
+      <div className="pricing-calculator-note"><strong>Viena cena visai praksei.</strong><span>Ārsti, māsas un reģistratūra bez maksas par papildu lietotājiem.</span></div>
+    </div>
+    <div className="pricing-grid home-pricing-grid calculator-plans">{gpCalculatorPlans.map((plan,index)=>{
+      const full=priceFor(plan);
+      const intro=plan.id==="complete"?full*.5:full;
+      const shown=billedPrice(intro,annual);
+      return <article className={index===1?"featured":""} key={plan.id}>
+        <div className="plan-card-heading"><h3>{plan.name}</h3>{index===1&&<span className="popular">Izvēlas visvairāk</span>}{plan.id==="complete"&&<span className="intro-badge">−50% līdz 31.12.2026</span>}</div>
+        <p>{plan.text}</p>
+        {custom?<div className="custom-price"><strong>Individuāla cena</strong><span>Praksei ar vairāk nekā 8 000 pacientiem</span></div>:<div className="calculator-price">{plan.id==="complete"&&<del>€{money(billedPrice(full,annual))}</del>}<strong>€{money(shown)}</strong><span>/ mēnesī bez PVN</span><small>€{money(shown*1.21)} ar PVN</small></div>}
+        <Link href="/#klut-par-klientu" className={`btn${index===1?"":" ghost"}`}>{custom?"Saņemt piedāvājumu":"Izvēlēties plānu"}</Link>
+        <div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{plan.features.map(item=><li key={item}><Check size={16}/><span>{item}</span></li>)}</ul></div>
+        {plan.id==="standard"&&<label className="pricing-addon"><input type="checkbox" checked={communication} onChange={event=>setCommunication(event.target.checked)}/><span><strong>Komunikācija ar pacientiem</strong><small>+€25 / mēnesī · drīzumā</small></span></label>}
+      </article>})}</div>
+  </>;
+}
+
+function SpecialistPricingCalculator({annual}:{annual:boolean}) {
+  const [view,setView]=useState<"specialist"|"clinic">("specialist");
+  const [seats,setSeats]=useState(1);
+  const [cases,setCases]=useState(120);
+  const [doctors,setDoctors]=useState(8);
+  const included=seats*200;
+  const overage=Math.max(0,cases-included)*.42;
+  const specialistBase=48.5*seats;
+  const clinicBand=doctors<=5?{name:"S",price:500,setup:500}:doctors<=15?{name:"M",price:1000,setup:1000}:doctors<=40?{name:"L",price:2000,setup:1500}:{name:"XL",price:2500+40*(doctors-40),setup:1500};
+  const monthly=view==="specialist"?specialistBase+overage:clinicBand.price;
+  const shown=billedPrice(monthly,annual);
+  return <>
+    <div className="pricing-subview" role="group" aria-label="Izvēlieties prakses veidu"><button type="button" className={view==="specialist"?"selected":""} onClick={()=>setView("specialist")}>Speciālista prakse</button><button type="button" className={view==="clinic"?"selected":""} onClick={()=>setView("clinic")}>Klīnika</button></div>
+    <div className="pricing-calculator-panel specialist-controls">
+      {view==="specialist"?<><div className="seat-control"><span>Ārstu vietas</span><div><button type="button" onClick={()=>setSeats(Math.max(1,seats-1))}>−</button><strong>{seats}</strong><button type="button" onClick={()=>setSeats(Math.min(5,seats+1))}>+</button></div><small>200 gadījumi mēnesī uz katru ārstu ir iekļauti.</small></div><RangeControl label="Gadījumu skaits mēnesī" value={cases} min={20} max={1000} step={10} onChange={setCases} unit="gadījumi"/></>:<><RangeControl label="Aktīvo ārstu skaits klīnikā" value={doctors} min={1} max={60} step={1} onChange={setDoctors} unit="ārsti" presets={[5,10,20,40,60]}/><div className="pricing-calculator-note"><strong>{clinicBand.name} klīnikas līmenis</strong><span>Viena licence visiem ārstiem izvēlētajā apjomā.</span></div></>}
+    </div>
+    <article className="specialist-price-card">
+      <div className="specialist-price-summary"><span className="intro-badge">Ieviešanas cena līdz 31.12.2026</span><h3>{view==="specialist"?"Pacienta pārskats":"Klīnikas licence"}</h3><p>{view==="specialist"?"Svarīgākā pacienta informācija vienuviet ērtākai sagatavošanās vizītei.":"Viena licence visai klīnikai ar pārvaldības pārskatu."}</p><div className="calculator-price"><strong>€{money(shown)}</strong><span>/ mēnesī bez PVN</span><small>€{money(shown*1.21)} ar PVN</small></div><Link href="/#klut-par-klientu" className="btn">Izvēlēties</Link></div>
+      <div className="specialist-price-features"><h3>Iekļauts</h3><ul>{(view==="specialist"?["Pacienta pārskats — diagnozes, zāles, analīzes un vizīšu vēsture","200 gadījumi mēnesī uz katru ārstu",cases>included?`${cases-included} papildu gadījumi × €0,42`:`Vēl ${included-cases} gadījumi iekļautajā apjomā`,"Piekļuve vienam ārstam par vietu"]:["Neierobežotas ārstu vietas izvēlētajā līmenī","Pārvaldības pārskats klīnikas administratoram",`Vienreizēja ieviešana no €${money(clinicBand.setup)}`,"Gada līgums ar ikmēneša rēķinu"]).map(item=><li key={item}><Check size={17}/><span>{item}</span></li>)}</ul></div>
+    </article>
+  </>;
+}
+
 function PlanHelp({compact=false}:{compact?:boolean}) {
   return <section className={`plan-help${compact?" plan-help--compact":" plan-help--large"}`} aria-label="Palīdzība plāna izvēlē">
     {compact&&<span className="plan-help-icon" aria-hidden="true"><MessageCircle size={22}/></span>}
@@ -266,7 +337,6 @@ function Home() {
   const gateRef=useRef<HTMLElement>(null);
   const activeRole: Role = role ?? "gp";
   const c = roleContent[activeRole];
-  const visiblePlans = activeRole === "gp" ? plans : [plans[2]];
   useEffect(()=>{
     if(role||gateVisible)return;
     const gate=gateRef.current;
@@ -324,15 +394,9 @@ function Home() {
       <div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><button className="product-media" type="button" onClick={()=>setPreviewMedia({src:feature.image,alt:feature.alt})} aria-label={`Atvērt pilnekrānā: ${feature.title}`}><img src={feature.image} alt={feature.alt}/><span className="product-media-action">Atvērt pilnekrānā</span></button></article>)}</div>
     </section>}
     <section className={`home-pricing home-pricing--${role}`} id="cenas">
-      <div className="section-head"><h2>{role==="gp"?"Plāni ģimenes ārsta praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Viena cena ģimenes ārsta praksei līdz 2 500 pacientiem.":"Svarīgākā pacienta informācija vienuviet ērtākai sagatavošanās vizītei un ātrākai lēmumu pieņemšanai."}</p></div>
+      <div className="section-head"><h2>{role==="gp"?"Viena cena visai praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Pielāgojiet pacientu skaitu un uzreiz redziet precīzu mēneša maksu. Visi prakses darbinieki strādā ar vienu abonementu.":"Pielāgojiet ārstu un gadījumu skaitu, lai redzētu savai praksei atbilstošu cenu."}</p></div>
       <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
-      {role==="gp"?<div className="pricing-grid home-pricing-grid">{visiblePlans.map(([name,price,text,items])=>{const planIndex=plans.findIndex(plan=>plan[0]===name);return <article className={planIndex===1?"featured":""} key={name}><div className="plan-card-heading"><h3>{name}</h3>{planIndex===1&&<span className="popular">Populārākā izvēle</span>}</div><p>{text}</p><PriceBlock price={price} annual={annual}/><Link href="/#klut-par-klientu" className={`btn${planIndex===1?"":" ghost"}`}>Izvēlēties plānu</Link><div className="plan-features"><span>Plānā iekļauts</span><ul className="check-list">{items.map(x=><li key={x}><Check size={16}/><span>{x}</span></li>)}</ul></div></article>})}</div>:<>
-        <article className="endo-pricing-card">
-          <div className="endo-pricing-summary"><h3>Pacienta pārskats</h3><p>Plašāks pacienta veselības pārskats un prioritārs atbalsts prakses darbam.</p><PriceBlock price="110" annual={annual}/><Link href="/#klut-par-klientu" className="btn">Izvēlēties</Link></div>
-          <div className="endo-pricing-features"><h3>Iekļauts</h3><ul>{["Pacienta pārskats","Analīžu dinamika un aktuālā terapija","Svarīgākie dati vienuviet","Prioritārs klientu atbalsts"].map(item=><li key={item}><Check size={17}/><span>{item}</span></li>)}</ul></div>
-        </article>
-        <p className="endo-pricing-note"><Info size={19}/> Šobrīd endokrinologiem pieejama šī funkcionalitāte.</p>
-      </>}
+      {role==="gp"?<GpPricingCalculator annual={annual}/>:<SpecialistPricingCalculator annual={annual}/>}
     </section>
     {role==="gp"&&<PlanHelp compact/>}
     {role==="gp"&&<FAQ title="Par cenām un plāniem" items={gpPriceFaq}/>}
