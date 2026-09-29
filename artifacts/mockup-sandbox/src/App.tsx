@@ -394,8 +394,10 @@ function Home() {
       <div className="gp-product-showcase">{gpProductFeatures.map((feature,index)=><article className="product-feature" key={feature.title}><div className="product-feature-copy"><span>{String(index+1).padStart(2,"0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></div><button className="product-media" type="button" onClick={()=>setPreviewMedia({src:feature.image,alt:feature.alt})} aria-label={`Atvērt pilnekrānā: ${feature.title}`}><img src={feature.image} alt={feature.alt}/><span className="product-media-action">Atvērt pilnekrānā</span></button></article>)}</div>
     </section>}
     <section className={`home-pricing home-pricing--${role}`} id="cenas">
-      <div className="section-head"><h2>{role==="gp"?"Viena cena visai praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Pielāgojiet pacientu skaitu un uzreiz redziet precīzu mēneša maksu. Visi prakses darbinieki strādā ar vienu abonementu.":"Pielāgojiet ārstu un gadījumu skaitu, lai redzētu savai praksei atbilstošu cenu."}</p></div>
-      <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā · 2 mēneši bez maksas</button></div>
+      <div className="pricing-intro">
+        <div className="section-head"><h2>{role==="gp"?"Viena cena visai praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Pielāgojiet pacientu skaitu un uzreiz redziet precīzu mēneša maksu. Visi prakses darbinieki strādā ar vienu abonementu.":"Pielāgojiet ārstu un gadījumu skaitu, lai redzētu savai praksei atbilstošu cenu."}</p></div>
+        <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button></div>
+      </div>
       {role==="gp"?<GpPricingCalculator annual={annual}/>:<SpecialistPricingCalculator annual={annual}/>}
     </section>
     {role==="gp"&&<PlanHelp compact/>}
