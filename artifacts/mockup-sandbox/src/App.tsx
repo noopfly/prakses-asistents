@@ -299,22 +299,20 @@ function GpPricingCalculator({annual}:{annual:boolean}) {
 function SpecialistPricingCalculator({annual}:{annual:boolean}) {
   const [view,setView]=useState<"specialist"|"clinic">("specialist");
   const [seats,setSeats]=useState(1);
-  const [cases,setCases]=useState(120);
   const [doctors,setDoctors]=useState(8);
   const included=seats*200;
-  const overage=Math.max(0,cases-included)*.42;
   const specialistBase=48.5*seats;
   const clinicBand=doctors<=5?{name:"S",price:500,setup:500}:doctors<=15?{name:"M",price:1000,setup:1000}:doctors<=40?{name:"L",price:2000,setup:1500}:{name:"XL",price:2500+40*(doctors-40),setup:1500};
-  const monthly=view==="specialist"?specialistBase+overage:clinicBand.price;
+  const monthly=view==="specialist"?specialistBase:clinicBand.price;
   const shown=billedPrice(monthly,annual);
   return <>
     <div className="pricing-subview" role="group" aria-label="Izvēlieties prakses veidu"><button type="button" className={view==="specialist"?"selected":""} onClick={()=>setView("specialist")}>Speciālista prakse</button><button type="button" className={view==="clinic"?"selected":""} onClick={()=>setView("clinic")}>Klīnika</button></div>
     <div className="pricing-calculator-panel specialist-controls">
-      {view==="specialist"?<><div className="seat-control"><span>Ārstu vietas</span><div><button type="button" onClick={()=>setSeats(Math.max(1,seats-1))}>−</button><strong>{seats}</strong><button type="button" onClick={()=>setSeats(Math.min(5,seats+1))}>+</button></div><small>200 gadījumi mēnesī uz katru ārstu ir iekļauti.</small></div><RangeControl label="Gadījumu skaits mēnesī" value={cases} min={20} max={1000} step={10} onChange={setCases} unit="gadījumi"/></>:<><RangeControl label="Aktīvo ārstu skaits klīnikā" value={doctors} min={1} max={60} step={1} onChange={setDoctors} unit="ārsti" presets={[5,10,20,40,60]}/><div className="pricing-calculator-note"><strong>{clinicBand.name} klīnikas līmenis</strong><span>Viena licence visiem ārstiem izvēlētajā apjomā.</span></div></>}
+      {view==="specialist"?<><div className="doctor-seat-picker"><div><strong>Cik ārsti izmantos Pacienta pārskatu?</strong><span>Izvēlieties nepieciešamo ārstu vietu skaitu.</span></div><div className="doctor-seat-options" role="group" aria-label="Ārstu vietu skaits">{[1,2,3,4,5].map(count=><button type="button" className={seats===count?"selected":""} aria-pressed={seats===count} onClick={()=>setSeats(count)} key={count}>{count}</button>)}</div></div><div className="pricing-calculator-note"><strong>{included.toLocaleString("lv-LV")} gadījumi mēnesī ir iekļauti</strong><span>200 gadījumi katram ārstam. Papildu gadījumi tiek uzskaitīti automātiski par €0,42 — ārstam nekas nav jāaprēķina.</span></div></>:<><RangeControl label="Aktīvo ārstu skaits klīnikā" value={doctors} min={1} max={60} step={1} onChange={setDoctors} unit="ārsti" presets={[5,10,20,40,60]}/><div className="pricing-calculator-note"><strong>{clinicBand.name} klīnikas līmenis</strong><span>Viena licence visiem ārstiem izvēlētajā apjomā.</span></div></>}
     </div>
     <article className="specialist-price-card">
       <div className="specialist-price-summary"><span className="intro-badge">Ieviešanas cena līdz 31.12.2026</span><h3>{view==="specialist"?"Pacienta pārskats":"Klīnikas licence"}</h3><p>{view==="specialist"?"Svarīgākā pacienta informācija vienuviet ērtākai sagatavošanās vizītei.":"Viena licence visai klīnikai ar pārvaldības pārskatu."}</p><div className="calculator-price"><strong>€{money(shown)}</strong><span>/ mēnesī bez PVN</span><small>€{money(shown*1.21)} ar PVN</small></div><Link href="/#klut-par-klientu" className="btn">Izvēlēties</Link></div>
-      <div className="specialist-price-features"><h3>Iekļauts</h3><ul>{(view==="specialist"?["Pacienta pārskats — diagnozes, zāles, analīzes un vizīšu vēsture","200 gadījumi mēnesī uz katru ārstu",cases>included?`${cases-included} papildu gadījumi × €0,42`:`Vēl ${included-cases} gadījumi iekļautajā apjomā`,"Piekļuve vienam ārstam par vietu"]:["Neierobežotas ārstu vietas izvēlētajā līmenī","Pārvaldības pārskats klīnikas administratoram",`Vienreizēja ieviešana no €${money(clinicBand.setup)}`,"Gada līgums ar ikmēneša rēķinu"]).map(item=><li key={item}><Check size={17}/><span>{item}</span></li>)}</ul></div>
+      <div className="specialist-price-features"><h3>Iekļauts</h3><ul>{(view==="specialist"?["Pacienta pārskats — diagnozes, zāles, analīzes un vizīšu vēsture",`${included.toLocaleString("lv-LV")} gadījumi mēnesī`,"Papildu gadījumu automātiska uzskaite par €0,42","Piekļuve vienam ārstam par vietu"]:["Neierobežotas ārstu vietas izvēlētajā līmenī","Pārvaldības pārskats klīnikas administratoram",`Vienreizēja ieviešana no €${money(clinicBand.setup)}`,"Gada līgums ar ikmēneša rēķinu"]).map(item=><li key={item}><Check size={17}/><span>{item}</span></li>)}</ul></div>
     </article>
   </>;
 }
@@ -395,7 +393,7 @@ function Home() {
     </section>}
     <section className={`home-pricing home-pricing--${role}`} id="cenas">
       <div className="pricing-intro">
-        <div className="section-head"><h2>{role==="gp"?"Viena cena visai praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Pielāgojiet pacientu skaitu un uzreiz redziet precīzu mēneša maksu. Visi prakses darbinieki strādā ar vienu abonementu.":"Pielāgojiet ārstu un gadījumu skaitu, lai redzētu savai praksei atbilstošu cenu."}</p></div>
+        <div className="section-head"><h2>{role==="gp"?"Viena cena visai praksei":"Pacienta pārskats endokrinologiem"}</h2><p>{role==="gp"?"Pielāgojiet pacientu skaitu un uzreiz redziet precīzu mēneša maksu. Visi prakses darbinieki strādā ar vienu abonementu.":"Izvēlieties ārstu skaitu, kuri izmantos Pacienta pārskatu. Gadījumu apjomu sistēma uzskaita automātiski."}</p></div>
         <div className="billing" role="group" aria-label="Izvēlieties abonēšanas periodu"><button type="button" aria-pressed={!annual} className={!annual?"selected":""} onClick={()=>setAnnual(false)}>Mēnesī</button><button type="button" aria-pressed={annual} className={annual?"selected":""} onClick={()=>setAnnual(true)}>Gadā <span>2 mēneši bez maksas</span></button></div>
       </div>
       {role==="gp"?<GpPricingCalculator annual={annual}/>:<SpecialistPricingCalculator annual={annual}/>}
